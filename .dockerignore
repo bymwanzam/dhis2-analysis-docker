@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+.env*
+!.env.example
+*.zip
+Dockerfile
+docker-compose.yml
+DEPLOY-DOCKER.md

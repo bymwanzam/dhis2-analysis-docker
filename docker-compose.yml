@@ -1,0 +1,15 @@
+# docker compose up -d --build
+#
+# Settings go in a .env file beside this one (copy .env.example). The file is
+# optional: without it, each viewer connects with their own token.
+services:
+  dhis2-analysis:
+    build: .
+    image: dhis2-analysis:latest
+    container_name: dhis2-analysis
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    env_file:
+      - path: .env
+        required: false
+    restart: unless-stopped
