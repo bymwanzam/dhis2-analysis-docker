@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import { readConnection } from "@/lib/dhis2/connection";
 import { Dhis2Error, dhis2Json } from "@/lib/dhis2/server";
+import { hasSameOrigin } from "@/lib/same-origin";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -83,8 +84,7 @@ async function proxy(request: Request, context: RouteContext): Promise<Response>
   }
 
   if (request.method === "POST") {
-    const origin = request.headers.get("origin");
-    if (origin && origin !== new URL(request.url).origin) {
+    if (!hasSameOrigin(request)) {
       return NextResponse.json({ error: "Cross-origin GeoEpi requests are not allowed." }, {
         status: 403,
       });
