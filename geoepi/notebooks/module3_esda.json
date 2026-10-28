@@ -1,0 +1,13 @@
+{
+ "id": "module3_esda",
+ "title": "Module 3 \u2013 Exploratory Spatial Data Analysis and Visualisation",
+ "module": 3,
+ "about": "Exploratory spatio-temporal analysis of the panel: maps, seasonality, LISA persistence, interactive map.",
+ "requires": [
+  "data_dictionary.csv",
+  "ghana_districts.gpkg",
+  "panel.rds"
+ ],
+ "default_dataset": "module3_data",
+ "handoff": false
+}

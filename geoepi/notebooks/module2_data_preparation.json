@@ -1,0 +1,20 @@
+{
+ "id": "module2_data_preparation",
+ "title": "Module 2 \u2013 Advanced Data Preparation and Management in R",
+ "module": 2,
+ "about": "Import, harmonise and validate DHIMS2 and NADMO data and build the district-month panel (hand-off for Modules 3-5).",
+ "requires": [
+  "dhims2_climate_app_export.csv",
+  "dhims2_malaria_export.csv",
+  "dhims2_reporting_rates.csv",
+  "district_lookup.csv",
+  "facility_master.csv",
+  "ghana_districts.gpkg",
+  "nadmo_flood_register.xlsx",
+  "population_district.csv",
+  "rasters/ndvi_2024.tif",
+  "rasters/srtm_ghana.tif"
+ ],
+ "default_dataset": "module2_data",
+ "handoff": true
+}

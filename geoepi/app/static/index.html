@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spatial Disease Modeling with R (GHS)</title>
+<link rel="stylesheet" href="/geoepi/vendor/leaflet.css">
+<style>
+:root{--ink:#17262b;--muted:#5d6f74;--line:#d5dddf;--panel:#f6f9f9;--accent:#0b6e75;--hot:#c43d2a;--ok:#2f7d4f;--warn:#b7791f}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font:14px/1.45 "Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);display:grid;grid-template-columns:340px 1fr}
+aside{background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:20px 18px;display:flex;flex-direction:column;gap:18px}
+h1{font:600 20px/1.2 Charter,Georgia,serif;margin:0}
+h1 small{display:block;font:400 12.5px/1.4 "Segoe UI",sans-serif;color:var(--muted);margin-top:6px}
+h1 small a{color:var(--accent);white-space:nowrap}
+h2{font-size:13px;margin:0 0 8px;font-weight:600}
+label{display:block;font-size:12.5px;color:var(--muted);margin:10px 0 3px}
+select,input[type=text],input[type=file]{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:4px;background:#fff;font:inherit;color:inherit}
+button{font:inherit;font-weight:600;padding:9px 12px;border-radius:4px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;width:100%;margin-top:12px}
+button.ghost{background:#fff;color:var(--accent)}
+button:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+details summary{cursor:pointer;color:var(--accent);font-size:13px}
+.msg{font-size:12.5px;margin-top:8px;min-height:1em;color:var(--hot)}
+.job{display:grid;grid-template-columns:auto 1fr auto;gap:2px 10px;padding:9px 8px;border:1px solid transparent;border-bottom-color:var(--line);cursor:pointer;border-radius:4px;background:none;font-weight:400;color:inherit;text-align:left;margin:0;width:100%}
+.job:hover,.job.sel{background:#fff;border-color:var(--line)}
+.dot{width:9px;height:9px;border-radius:50%;margin-top:5px;background:var(--muted)}
+.queued .dot{background:var(--warn)}.running .dot{background:var(--accent);animation:pulse 1.2s infinite}
+.done .dot{background:var(--ok)}.failed .dot{background:var(--hot)}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.running .dot{animation:none}}
+.job b{font-weight:600}.job span{color:var(--muted);font-size:12px}
+.links a{color:var(--accent);margin-right:12px;font-size:13px}
+#map{height:100vh;background:#dfe7e8}
+#layers{position:absolute;z-index:500;top:12px;right:12px;width:290px;max-height:calc(100vh - 24px);overflow-y:auto;background:#fff;border:1px solid var(--line);border-radius:6px;padding:12px 14px;box-shadow:0 1px 6px rgba(0,0,0,.12)}
+#layers:empty{display:none}
+.lyr{padding:7px 0;border-bottom:1px solid var(--line)}.lyr:last-child{border:0}
+.lyr label{display:flex;gap:8px;align-items:center;color:var(--ink);font-size:13px;margin:0}
+.lyr select{margin-top:6px;font-size:12.5px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:7px;font-size:11.5px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:4px;vertical-align:-2px;border:1px solid rgba(0,0,0,.15)}
+.ramp{height:9px;border-radius:2px;margin-top:8px;background:linear-gradient(90deg,#3b4cc0,#3fb1a0 35%,#f5d33f 65%,#d1342a)}
+.ramp+div{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
+.prog{height:4px;background:var(--line);border-radius:2px;margin-top:4px;grid-column:2/4}.prog i{display:block;height:100%;background:var(--accent);border-radius:2px}
+.files a{display:block;font-size:12.5px;color:var(--accent)}.files span{color:var(--muted)}
+.slider{display:flex;gap:8px;align-items:center;margin-top:8px}.slider input{flex:1}.slider button{width:auto;margin:0;padding:3px 9px}
+.about{font-size:12px;color:var(--muted);margin-top:6px}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:4px}.tools button{grid-column:span 1;margin:0;padding:7px 6px;font-size:12.5px}.tools label{display:flex;gap:6px;align-items:center;margin:0;font-size:12.5px;color:var(--ink)}.tools select{padding:5px}.tools .wide{grid-column:1/3}.xs{grid-column:1/3;font-size:12px;color:var(--muted);min-height:1em}
+.empty{color:var(--muted);font-size:13px;padding:6px 0}
+.leaflet-popup-content{font-size:12.5px}.leaflet-popup-content td{padding:1px 8px 1px 0}
+@media (max-width:760px){body{grid-template-columns:1fr;grid-template-rows:auto 60vh}aside{border:0}#map{height:60vh}}
+</style>
+</head>
+<body>
+<aside>
+  <h1>Spatial Disease Modeling with R (GHS)<small>Run a spatial-epidemiology module on the server and explore its maps. <a href="/">Back to DHIS2 Analysis</a></small></h1>
+  <section>
+    <h2>New run</h2>
+    <label for="nb">Module</label><select id="nb"></select><div class="about" id="about"></div>
+    <label for="ds">Dataset</label><select id="ds"></select><div class="msg" id="dsmsg"></div>
+    <button id="run">Run notebook</button>
+    <div class="msg" id="runmsg" role="status"></div>
+  </section>
+  <details>
+    <summary>Upload a dataset (.zip)</summary>
+    <label for="dsname">Dataset name</label><input type="text" id="dsname" placeholder="e.g. module3_data">
+    <label for="dsfile">Zip file</label><input type="file" id="dsfile" accept=".zip">
+    <button class="ghost" id="up">Upload</button>
+    <div class="msg" id="upmsg" role="status"></div>
+  </details>
+  <section><h2>Runs</h2><div id="jobs"></div></section>
+  <section id="detail" hidden>
+    <h2>Selected run</h2>
+    <div class="links" id="links"></div>
+    <div id="handoff"></div>
+    <div class="files" id="files"></div>
+    <div class="msg" id="joberr"></div>
+  </section>
+</aside>
+<main style="position:relative"><div id="map"></div><div id="layers" aria-label="Map layers"></div></main>
+<script src="/geoepi/vendor/leaflet.js"></script>
+<script src="/geoepi/vendor/leaflet-heat.js"></script>
+<script src="/geoepi/lib.js"></script>
+<script src="/geoepi/export.js"></script>
+<script>
+const $ = s => document.querySelector(s), esc = GeoLib.esc;
+const launch = new URLSearchParams(location.search);
+const requestedDataset = launch.get('dataset'), requestedNotebook = launch.get('notebook');
+async function api(url, opts) {
+  const r = await fetch('/geoepi' + url, opts);
+  if (!r.ok) { let d = r.statusText; try { d = (await r.json()).detail || d } catch {} throw new Error(d) }
+  return r.json();
+}
+let map, job = null, pollTimer = null, group = {}, NBS = [], cache = {}, timer = null;
+if (window.L) {
+  map = L.map('map').setView([7.9, -1.0], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, crossOrigin: true, attribution: '&copy; OpenStreetMap contributors'}).addTo(map);
+} else $('#map').innerHTML = '<p style="padding:20px">Map library missing. Run <code>scripts/fetch_vendor.sh</code>.</p>';
+
+async function loadDatasets() {
+  const nb = $('#nb').value, keep = $('#ds').value;
+  const dss = await api('/api/datasets' + (nb ? '?notebook=' + encodeURIComponent(nb) : ''));
+  const n = NBS.find(x => x.id === nb);
+  $('#about').textContent = n ? n.about : '';
+  $('#ds').innerHTML = dss.length ? dss.map(d => `<option value="${esc(d.id)}" ${d.missing && d.missing.length ? 'disabled' : ''}>${esc(d.id)} (${d.files} files)${d.missing && d.missing.length ? ' - missing ' + esc(d.missing.join(', ')) : ''}</option>`).join('')
+    : '<option value="">No datasets yet: upload one</option>';
+  const ok = dss.filter(d => !(d.missing && d.missing.length));
+  const pick = [requestedDataset, keep, n && n.default_dataset].find(v => v && ok.some(d => d.id === v)) || (ok[0] && ok[0].id);
+  if (pick) $('#ds').value = pick;
+  $('#dsmsg').textContent = dss.length && !ok.length ? 'No uploaded dataset has the files this module needs: ' + (n ? n.requires.join(', ') : '') : '';
+  $('#run').disabled = !pick;
+}
+async function init() {
+  NBS = await api('/api/notebooks');
+  $('#nb').innerHTML = NBS.map(n => `<option value="${esc(n.id)}">${n.module ? 'Module ' + n.module + ': ' : ''}${esc(n.title.replace(/^Module \d+\s*[–-]\s*/, ''))}</option>`).join('');
+  if (NBS.some(n => n.id === requestedNotebook)) $('#nb').value = requestedNotebook;
+  await loadDatasets(); await refreshJobs();
+}
+$('#nb').onchange = loadDatasets;
+
+const fmt = t => t ? new Date(t * 1000).toLocaleString([], {dateStyle: 'short', timeStyle: 'short'}) : '';
+async function refreshJobs() {
+  const jobs = await api('/api/jobs');
+  const prog = await Promise.all(jobs.map(j => j.status === 'running' ? api('/api/jobs/' + j.id).then(x => x.progress) : null));
+  $('#jobs').innerHTML = jobs.length ? jobs.map((j, i) => `<button class="job ${j.status} ${job && job.id === j.id ? 'sel' : ''}" data-id="${j.id}">
+    <i class="dot"></i><b>${esc(j.notebook.replace(/_/g, ' '))}</b><span>${j.status}</span><span></span><span>${esc(j.dataset)} &middot; ${fmt(j.created)}</span><span></span>
+    ${prog[i] ? `<div class="prog"><i style="width:${Math.round(100 * prog[i].done / prog[i].total)}%"></i></div>` : ''}</button>`).join('') : '<div class="empty">No runs yet.</div>';
+  clearTimeout(pollTimer);
+  if (jobs.some(j => j.status === 'queued' || j.status === 'running')) pollTimer = setTimeout(async () => {
+    await refreshJobs();
+    if (job) { const j = await api('/api/jobs/' + job.id); if (j.status !== job.status) openJob(job.id) }
+  }, 4000);
+}
+$('#jobs').addEventListener('click', e => { const b = e.target.closest('.job'); if (b) openJob(b.dataset.id) });
+$('#run').onclick = async () => {
+  $('#runmsg').textContent = '';
+  try {
+    const j = await api('/api/jobs', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({notebook: $('#nb').value, dataset: $('#ds').value})});
+    await refreshJobs(); openJob(j.id);
+  } catch (e) { $('#runmsg').textContent = e.message }
+};
+$('#up').onclick = async () => {
+  const f = $('#dsfile').files[0], name = $('#dsname').value.trim();
+  if (!f || !name) { $('#upmsg').textContent = 'Give a name and choose a .zip file.'; return }
+  const fd = new FormData(); fd.append('name', name); fd.append('file', f);
+  $('#upmsg').style.color = 'var(--muted)'; $('#upmsg').textContent = 'Uploading...';
+  try { await api('/api/datasets', {method: 'POST', body: fd}); await loadDatasets(); $('#upmsg').textContent = 'Uploaded.' }
+  catch (e) { $('#upmsg').style.color = 'var(--hot)'; $('#upmsg').textContent = e.message }
+};
+
+async function openJob(id) {
+  job = await api('/api/jobs/' + id);
+  document.querySelectorAll('.job').forEach(b => b.classList.toggle('sel', b.dataset.id === id));
+  $('#detail').hidden = false;
+  const has = n => job.files.some(f => f.name === n), nbm = NBS.find(n => n.id === job.notebook);
+  $('#links').innerHTML = [has('report.html') && `<a href="/geoepi/results/${id}/report.html" target="_blank" rel="noopener">Report</a>`,
+    `<a href="/geoepi/api/jobs/${id}/log" target="_blank" rel="noopener">Log</a>`,
+    job.files.length && `<a href="/geoepi/api/jobs/${id}/download.zip">Download all</a>`].filter(Boolean).join('');
+  $('#files').innerHTML = job.files.filter(f => !/^(handoff|project)\//.test(f.name) && !/^(report\.html|layers\.json)$/.test(f.name))
+    .map(f => `<a href="/geoepi/results/${id}/${encodeURI(f.name)}" target="_blank" rel="noopener">${esc(f.name)} <span>${(f.bytes / 1024).toFixed(0)} KB</span></a>`).join('');
+  $('#handoff').innerHTML = job.status === 'done' && nbm && nbm.handoff && job.files.some(f => f.name.startsWith('handoff/'))
+    ? '<button class="ghost" id="hand">Use outputs as a dataset for Modules 3-5</button>' : '';
+  if ($('#hand')) $('#hand').onclick = async () => {
+    const name = prompt('Name for the new dataset', 'panel_' + id);
+    if (!name) return;
+    try { await api('/api/datasets/from-job', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({job_id: id, name})}); await loadDatasets(); $('#joberr').style.color = 'var(--ok)'; $('#joberr').textContent = 'Dataset "' + name + '" created. Choose Module 3, 4 or 5.' }
+    catch (e) { $('#joberr').style.color = 'var(--hot)'; $('#joberr').textContent = e.message }
+  };
+  $('#joberr').style.color = 'var(--hot)'; $('#joberr').textContent = job.error || '';
+  clearLayers();
+  if (job.status === 'done' && has('layers.json')) buildLayers(id, await api(`/results/${id}/layers.json`));
+  else if (job.status === 'done') $('#layers').innerHTML = '<div class="empty">This run produced no map layers.</div>';
+}
+function clearLayers() { clearInterval(timer); Object.values(group).forEach(l => map && map.removeLayer(l)); group = {}; cache = {}; $('#layers').innerHTML = '' }
+const getJSON = (id, f) => cache[f] || (cache[f] = api(`/results/${id}/${f}`));
+
+let reg = [];
+const slug = t => String(t).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+function makeSpecs(Ly, data) {
+  if (Ly.kind === 'points') return [{kind: 'points', title: Ly.title, label: '', data, legend: {type: 'items', items: [{color: '#d7301f', label: 'Case'}]}}];
+  if (Ly.kind === 'heat') { const [lo, hi] = GeoLib.range(data.points.map(p => p.value));
+    return [{kind: 'heat', title: Ly.title, label: '', points: data.points, legend: {type: 'heat', lo, hi}}] }
+  const mkSpec = (f, label, sc) => ({kind: 'choropleth', title: Ly.title, label, data, field: f, colour: sc.fn, legend: {type: 'items', items: sc.items}});
+  if (Ly.series) {                                 // one colour scale shared by every month and group
+    const sc = GeoLib.numericScale(Ly.series.flatMap(g => g.fields.flatMap(f => data.features.map(x => x.properties[f.field]))));
+    return Ly.series.flatMap(g => g.fields.map(f => mkSpec(f.field, (Ly.series.length > 1 ? g.label + ' \u00b7 ' : '') + f.label, sc)));
+  }
+  return Ly.fields.map(f => { const vals = data.features.map(x => x.properties[f.field]);
+    return mkSpec(f.field, f.label, f.type === 'numeric' ? GeoLib.numericScale(vals) : GeoLib.categoryScale(vals, f.colors)) });
+}
+const applySpec = (layer, sp) => layer.setStyle(ft => ({fillColor: sp.colour(ft.properties[sp.field])}));
+
+function toolbar(id) {
+  const t = document.createElement('div'); t.className = 'tools';
+  t.innerHTML = `<select id="xfmt" aria-label="Image format"><option value="png">PNG</option><option value="jpeg">JPEG</option></select>
+    <select id="xscale" aria-label="Resolution"><option value="1">1x</option><option value="2" selected>2x (sharp)</option><option value="3">3x (print)</option></select>
+    <label class="wide"><input type="checkbox" id="xbase" checked> Include basemap</label>
+    <button type="button" id="xone">Export this view</button><button type="button" class="ghost" id="xall">All maps (ZIP)</button><div class="xs" id="xstatus" role="status"></div>`;
+  const st = m => $('#xstatus').textContent = m;
+  const opts = () => ({scale: +$('#xscale').value, format: $('#xfmt').value, basemap: $('#xbase').checked});
+  const nb = (NBS.find(n => n.id === job.notebook) || {}).title || job.notebook, sub = `Run ${id} \u00b7 ${job.dataset} \u00b7 ${new Date().toLocaleDateString()}`;
+  const draw = async (specs, o) => {                        // retry without basemap if the tiles taint the canvas
+    try { return await GeoExport.render({map, specs, title: nb.replace(/^Module \d+\s*[\u2013-]\s*/, ''), subtitle: sub, ...o}) }
+    catch (e) { if (!o.basemap) throw e; st('Basemap tiles blocked the export; saving without the basemap.'); return GeoExport.render({map, specs, title: nb, subtitle: sub, ...o, basemap: false}) }
+  };
+  const ext = () => $('#xfmt').value === 'jpeg' ? 'jpg' : 'png';
+  t.querySelector('#xone').onclick = async () => {
+    const specs = reg.filter(e => e.box.checked).map(e => e.specs[e.idx]);
+    if (!specs.length) return st('Tick at least one layer first.');
+    st('Rendering...');
+    try { GeoExport.download(await draw(specs, opts()), `${job.notebook}_${id}_${slug(specs.map(x => x.label || x.title).join('_')).slice(0, 80)}.${ext()}`); st('Saved.') } catch (e) { st('Export failed: ' + e.message) }
+  };
+  t.querySelector('#xall').onclick = async () => {
+    const all = reg.flatMap(e => e.specs.map(sp => ({sp, name: `${slug(e.Ly.id)}/${slug(sp.label || e.Ly.title)}.${ext()}`}))), files = [], o = opts();
+    try {
+      for (let i = 0; i < all.length; i++) {
+        st(`Rendering ${i + 1} of ${all.length}...`); await new Promise(r => setTimeout(r));
+        files.push({name: all[i].name, data: new Uint8Array(await (await draw([all[i].sp], o)).arrayBuffer())});
+      }
+      GeoExport.download(new Blob([GeoLib.zip(files)], {type: 'application/zip'}), `${job.notebook}_${id}_maps.zip`); st(`Saved ${files.length} maps.`);
+    } catch (e) { st('Export failed: ' + e.message) }
+  };
+  return t;
+}
+
+async function buildLayers(id, manifest) {
+  const panel = $('#layers'); reg = []; let first = true;
+  panel.appendChild(toolbar(id));
+  for (const Ly of manifest.layers) {
+    const row = document.createElement('div'); row.className = 'lyr';
+    row.innerHTML = `<label><input type="checkbox"> ${esc(Ly.title)}</label><div class="ctl"></div>`;
+    panel.appendChild(row);
+    const box = row.querySelector('input'), ctl = row.querySelector('.ctl'), data = await getJSON(id, Ly.file);
+    const entry = {Ly, box, specs: makeSpecs(Ly, data), idx: 0}; reg.push(entry);
+    let layer;
+    if (Ly.kind === 'points') layer = L.geoJSON(data, {pointToLayer: (f, ll) => L.circleMarker(ll, {radius: 3, color: '#7a1010', weight: .6, fillColor: '#d7301f', fillOpacity: .55})});
+    else if (Ly.kind === 'heat') {
+      const lg = entry.specs[0].legend;
+      layer = L.heatLayer(data.points.map(p => [p.lat, p.lng, GeoLib.scale01(p.value, lg.lo, lg.hi)]), {radius: 16, blur: 18, minOpacity: .3, maxZoom: 11});
+      ctl.innerHTML = `<div class="ramp"></div><div><span>${lg.lo.toPrecision(3)}</span><span>${lg.hi.toPrecision(3)}</span></div>`;
+    } else {
+      layer = L.geoJSON(data, {style: {weight: .6, color: '#fff', fillOpacity: .85},
+        onEachFeature: (f, l) => l.bindPopup('<table>' + Object.entries(f.properties).filter(([k, v]) => v !== null).map(([k, v]) =>
+          `<tr><td><b>${esc(k)}</b></td><td>${esc(typeof v === 'number' ? +v.toFixed(3) : v)}</td></tr>`).join('') + '</table>')});
+      const lg = document.createElement('div'); lg.className = 'legend';
+      const show = () => { const sp = entry.specs[entry.idx]; applySpec(layer, sp); lg.innerHTML = GeoLib.legendHTML(sp.legend.items); return sp };
+      if (Ly.series) {
+        const sel = document.createElement('select'), sl = document.createElement('div'), n = Ly.series[0].fields.length;
+        sel.innerHTML = Ly.series.map((g, i) => `<option value="${i}">${esc(g.label)}</option>`).join(''); sel.style.display = Ly.series.length > 1 ? '' : 'none';
+        sl.className = 'slider'; sl.innerHTML = `<button class="ghost" type="button">&#9654;</button><input type="range" min="0" max="${n - 1}" value="${n - 1}" aria-label="Month"><span></span>`;
+        ctl.append(sel, sl, lg);
+        const rng = sl.querySelector('input'), lab = sl.querySelector('span'), btn = sl.querySelector('button');
+        const paint = () => { entry.idx = sel.value * n + +rng.value; lab.textContent = Ly.series[sel.value].fields[rng.value].label; show() };
+        sel.onchange = rng.oninput = paint; paint();
+        btn.onclick = () => { if (timer) { clearInterval(timer); timer = null; btn.innerHTML = '&#9654;'; return }
+          btn.innerHTML = '&#10074;&#10074;'; timer = setInterval(() => { rng.value = (+rng.value + 1) % n; paint() }, 900) };
+      } else {
+        const sel = document.createElement('select');
+        sel.innerHTML = Ly.fields.map((f, i) => `<option value="${i}">${esc(f.label)}</option>`).join(''); ctl.append(sel, lg);
+        sel.onchange = () => { entry.idx = +sel.value; show() }; show();
+      }
+    }
+    group[Ly.id] = layer;
+    box.onchange = () => box.checked ? layer.addTo(map) : map.removeLayer(layer);
+    if (first) { box.checked = true; layer.addTo(map); first = false;
+      if (layer.getBounds) map.fitBounds(layer.getBounds(), {padding: [30, 30]}); else map.fitBounds(data.points.map(p => [p.lat, p.lng])) }
+  }
+}
+init().catch(e => $('#runmsg').textContent = e.message);
+</script>
+</body>
+</html>

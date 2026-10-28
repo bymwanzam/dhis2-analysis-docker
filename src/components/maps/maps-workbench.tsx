@@ -78,6 +78,9 @@ const DEFAULT_STATE: MapsState = {
 export function MapsWorkbench() {
   const { status, loading: checking } = useConnection();
   const connected = status?.connected === true;
+  const [geoEpiDataset, setGeoEpiDataset] = React.useState<string | null>(null);
+  const [sendingToGeoEpi, setSendingToGeoEpi] = React.useState(false);
+  const [geoEpiError, setGeoEpiError] = React.useState<string | null>(null);
 
   // Unit ids mean nothing on another server, so the selection is kept per server.
   const [state, setState, hydrated] = usePersistentState<MapsState>(
@@ -222,6 +225,46 @@ export function MapsWorkbench() {
   const within = scope && parent && parent.level < scope.level ? ` in ${parent.name}` : "";
   const format = (value: number) => formatMapValue(state.dataType, value);
   const nextLevel = scope && scope.level < MAX_MAP_LEVEL ? levelName(scope.level + 1) : null;
+
+  async function sendToGeoEpi() {
+    if (!state.item) return;
+    setSendingToGeoEpi(true);
+    setGeoEpiError(null);
+    setGeoEpiDataset(null);
+
+    try {
+      const response = await fetch("/geoepi/api/datasets/dhis2-map", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+          toMapGeoJson(model.all, model.values, {
+            name: state.item.displayName,
+            dataType: state.dataType,
+            dataTypeName:
+              MAP_DATA_TYPES.find((type) => type.value === state.dataType)?.label ??
+              state.dataType,
+            dataItemId: state.item.id,
+            dataItem: state.item.displayName,
+            periods: state.periods,
+            periodLabel: periodSummary,
+            organisationUnitLevel: shownLevel,
+            parentOrganisationUnit: parent?.name ?? null,
+          }),
+        ),
+      });
+      const result = (await response.json()) as { id?: string; detail?: string; error?: string };
+      if (!response.ok || !result.id) {
+        throw new Error(result.detail ?? result.error ?? "The map data could not be sent.");
+      }
+      setGeoEpiDataset(result.id);
+    } catch (cause) {
+      setGeoEpiError(
+        cause instanceof Error ? cause.message : "The map data could not be sent to GeoEpi.",
+      );
+    } finally {
+      setSendingToGeoEpi(false);
+    }
+  }
 
   return (
     <div className="grid gap-5 lg:grid-cols-[336px_minmax(0,1fr)]">
@@ -433,6 +476,11 @@ export function MapsWorkbench() {
                 check that analytics tables have been generated since the data was entered.
               </Alert>
             ) : null}
+            {geoEpiError ? (
+              <Alert tone="error" title="Could not send map to GeoEpi">
+                {geoEpiError}
+              </Alert>
+            ) : null}
 
             <ChartFrame
               title={`${state.item.displayName} by ${shownLevel.toLowerCase()}${within}`}
@@ -443,6 +491,31 @@ export function MapsWorkbench() {
               toolbar={
                 <>
                   <BackgroundPicker value={panelBackground} onChange={setPanelBackground} />
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => void sendToGeoEpi()}
+                    disabled={sendingToGeoEpi || !model.all.some((unit) => unit.geometry)}
+                    loading={sendingToGeoEpi}
+                    title="Send the selected DHIS2 values and boundaries to GeoEpi"
+                  >
+                    Send to GeoEpi
+                  </Button>
+                  {geoEpiDataset ? (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => {
+                        // GeoEpi is a full-page app served by the proxy route, not a Next page.
+                        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+                        window.location.assign(
+                          `/geoepi/?notebook=dhis2_map_explorer&dataset=${encodeURIComponent(geoEpiDataset)}`,
+                        );
+                      }}
+                    >
+                      Open in GeoEpi
+                    </Button>
+                  ) : null}
                   <Button
                     size="sm"
                     variant="secondary"

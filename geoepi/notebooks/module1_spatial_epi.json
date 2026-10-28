@@ -1,0 +1,21 @@
+{
+ "id": "module1_spatial_epi",
+ "title": "Module 1 \u2013 Advanced Spatial Epidemiology",
+ "module": 1,
+ "about": "Point patterns, area-data hotspots, kriging, multi-criteria risk and raster exposure for malaria in Ghana.",
+ "requires": [
+  "bolga_cases_2024.csv",
+  "district_indicators.csv",
+  "facilities.csv",
+  "ghana_districts.gpkg",
+  "malaria_district_2024.csv",
+  "mis_clusters_2024.csv",
+  "rasters/ndvi_2024.tif",
+  "rasters/srtm_ghana.tif",
+  "rasters/worldpop_2023.tif",
+  "rasters/chirps_2024*",
+  "rasters/era5_temp_2024*"
+ ],
+ "default_dataset": "module1_data",
+ "handoff": false
+}

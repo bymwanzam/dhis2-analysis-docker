@@ -12,4 +12,39 @@ services:
     env_file:
       - path: .env
         required: false
+    environment:
+      GEOEPI_UPSTREAM_URL: http://geoepi:8000
+    depends_on:
+      geoepi:
+        condition: service_healthy
     restart: unless-stopped
+
+  geoepi:
+    build:
+      context: ./geoepi
+    image: dhis2-analysis-geoepi:latest
+    container_name: dhis2-analysis-geoepi
+    expose:
+      - "8000"
+    volumes:
+      - geoepi-data:/data
+      - geoepi-jobs:/srv/jobs
+    environment:
+      JOB_WORKERS: "1"
+      JOB_TIMEOUT: "3600"
+      MAX_UPLOAD_MB: "500"
+    mem_limit: 8g
+    cpus: 4
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/api/notebooks"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  geoepi-data:
+  geoepi-jobs:

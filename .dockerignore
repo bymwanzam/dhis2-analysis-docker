@@ -4,6 +4,7 @@ node_modules
 .env*
 !.env.example
 *.zip
+/geoepi
 Dockerfile
 docker-compose.yml
 DEPLOY-DOCKER.md

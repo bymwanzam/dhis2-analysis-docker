@@ -1,14 +1,16 @@
 # Deploying with Docker
 
-This copy of DHIS2 Analysis runs as a single container. The image is built in three
-stages — install, test and build, then a small runtime holding only the compiled server —
-and runs as a non-root user with a health check.
+This project runs as a Docker Compose stack. DHIS2 Analysis and GeoEpi run in separate
+containers suited to their runtimes; only the Next.js app is published to the host. GeoEpi
+is available through the authenticated `/geoepi/` route, and its datasets and job outputs
+persist in named volumes.
 
 ## What you need
 
 - Docker Engine 24+ with Compose v2 (Docker Desktop on Windows/macOS, or Docker on a
   Linux server/VPS)
 - Internet access during the build (npm packages and the web font are downloaded)
+- Enough build time and disk space for GeoEpi's R spatial packages and notebooks
 
 ## Quick start
 
@@ -20,10 +22,12 @@ docker compose up -d --build
 
 Open http://localhost:3000, go to **Connection** and connect to your DHIS2 server.
 
-The build runs the test suite first; if a test fails, no image is produced.
+The DHIS2 Analysis image runs the test suite before it is built. GeoEpi's first image
+build installs R spatial packages and can take 10–20 minutes.
 
-Stop it with `docker compose down`. It restarts on its own after a reboot unless stopped
-(`restart: unless-stopped`).
+Stop it with `docker compose down`. GeoEpi datasets and run history are kept in named
+volumes. The GeoEpi service is not published as a separate host port; access it through
+the authenticated `/geoepi/` route after connecting to DHIS2.
 
 ## Settings
 
@@ -82,16 +86,6 @@ COOKIE_SECURE=false
 The token still never reaches the browser and the cookie is still `HttpOnly`, but it
 travels unencrypted on that network. Use it only on a network you trust, and prefer HTTPS.
 
-## Without Compose
-
-```bash
-docker build -t dhis2-analysis .
-docker run -d --name dhis2-analysis -p 3000:3000 --restart unless-stopped \
-  --env-file .env dhis2-analysis
-```
-
-(Drop `--env-file .env` if you have no `.env`.)
-
 ## Updating
 
 Replace the source with the new version, then:
@@ -102,16 +96,17 @@ docker compose up -d --build
 
 ## Moving the image to a server without building there
 
-On the machine that built it:
+On the machine that built it, save both service images:
 
 ```bash
-docker save dhis2-analysis:latest -o dhis2-analysis-image.tar
+docker save dhis2-analysis:latest dhis2-analysis-geoepi:latest -o dhis2-analysis-images.tar
 ```
 
-Copy the `.tar`, `docker-compose.yml` and your `.env` to the server, then:
+Copy the `.tar`, the project files (including `geoepi/`), `docker-compose.yml` and your
+`.env` to the server, then:
 
 ```bash
-docker load -i dhis2-analysis-image.tar
+docker load -i dhis2-analysis-images.tar
 docker compose up -d          # no --build: uses the loaded image
 ```
 

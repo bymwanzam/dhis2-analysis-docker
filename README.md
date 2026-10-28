@@ -2,9 +2,9 @@
 
 > **This copy is packaged for Docker.** `docker compose up -d --build` — see [DEPLOY-DOCKER.md](DEPLOY-DOCKER.md).
 
-A read-only analysis workspace for a DHIS2 server. You point it at a DHIS2 instance,
-authenticate with a personal access token, and get trends, rankings, cross-tabulations
-and CSV exports over the aggregate data that instance holds.
+A read-only analysis workspace for a DHIS2 server, integrated with GeoEpi's R-based
+spatial epidemiology workflows. Connect to DHIS2 to explore and export aggregate data,
+then send a selected map and its boundaries to GeoEpi for a GIS-ready dataset.
 
 The token never reaches the browser. Every DHIS2 request is made server-side through a
 proxy that forwards `GET` only, and only to analytics and metadata endpoints.
@@ -20,6 +20,9 @@ proxy that forwards `GET` only, and only to analytics and metadata endpoints.
 npm install
 npm run dev
 ```
+
+`npm run dev` starts the DHIS2 Analysis frontend only. Use `docker compose up -d --build`
+to run the complete integrated deployment, including the private GeoEpi service.
 
 Open http://localhost:3000 and go to **Connection**. Enter:
 
@@ -57,12 +60,31 @@ Copy `.env.example` to `.env.local` for local development. Never commit a real t
 | **Explore** | Build a query (data × period × organisation unit) and read it as a trend, ranking, share, map, figures or table |
 | **Pivot** | Cross-tabulate any two dimensions of the same query, with a heat scale and totals |
 | **Maps** | Shade regions, districts or sub-districts (Levels 1–4) by a count, coverage or indicator; click to drill down, with areas lacking boundaries listed under the map |
+| **GeoEpi** | Run spatial epidemiology notebooks, view generated map layers, and download CSV, GeoJSON and GeoPackage outputs |
 | **Compare** | Check two data elements against each other and report the organisation units where the relationship breaks down |
 | **Metadata** | Search indicators, data elements, data sets, programs and organisation units; copy ids into a query |
 
 Every chart can be read as a table. Metadata can be exported as CSV or JSON, and
 map results can be exported as CSV or GeoJSON with each available boundary and its
 map value together.
+
+### Sending DHIS2 map data to GeoEpi
+
+1. Connect to DHIS2, then open **Maps** and choose a data item, period and organisation-unit scope.
+2. Select **Send to GeoEpi**. The selected values, organisation-unit hierarchy and available
+   DHIS2 geometries are saved together as a GeoEpi dataset.
+3. Open it in GeoEpi and run **Module 6: DHIS2 Map Data Explorer**. The run makes the map
+   available in the GeoEpi viewer and produces downloadable CSV, GeoJSON and GeoPackage
+   files for GIS work.
+
+This handoff is a map-level export, not a replacement for the source data required by
+GeoEpi Modules 1–5. Those modules continue to require their own documented supporting
+tables, rasters and prepared panel datasets.
+
+The `geoepi/` directory contains the GeoEpi source snapshot from
+[bymwanzam/geoepi](https://github.com/bymwanzam/geoepi) at commit
+`70b73c6feb54f252161ffc9a56158e3d4b6f4b44`, plus the DHIS2 map workflow and authenticated
+integration for this project.
 
 ## How the token is handled
 
@@ -72,6 +94,8 @@ map value together.
 4. Forwarded by `/api/dhis2/[...path]` under two rules: `GET` only, and only endpoints on
    the allowlist in `src/lib/dhis2/paths.ts`. Data writes, metadata imports, user
    management and maintenance endpoints are refused before the token is attached.
+5. GeoEpi runs on the private Compose network. Its `/geoepi/` route verifies the DHIS2
+   connection before proxying requests; the DHIS2 token is never forwarded to GeoEpi.
 
 A DHIS2 redirect to a login page is treated as a rejected credential rather than as a
 successful response, which is how an invalid token usually presents itself.

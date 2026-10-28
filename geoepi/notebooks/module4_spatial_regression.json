@@ -1,0 +1,12 @@
+{
+ "id": "module4_spatial_regression",
+ "title": "Module 4 \u2013 Spatial Regression and Bayesian Disease Mapping",
+ "module": 4,
+ "about": "SIR, count regression, Bayesian disease mapping with a spatial prior, exceedance probabilities.",
+ "requires": [
+  "panel.rds",
+  "ghana_districts.gpkg"
+ ],
+ "default_dataset": "module4_data",
+ "handoff": false
+}

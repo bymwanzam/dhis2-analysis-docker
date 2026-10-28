@@ -1,0 +1,12 @@
+{
+ "id": "module5_predictive_modelling",
+ "title": "Module 5 \u2013 Predictive Spatial Modelling in R",
+ "module": 5,
+ "about": "One-month-ahead district forecasts: regression, spatio-temporal GAM, random forest, spatial cross-validation.",
+ "requires": [
+  "ghana_districts.gpkg",
+  "panel.rds"
+ ],
+ "default_dataset": "module5_data",
+ "handoff": false
+}
