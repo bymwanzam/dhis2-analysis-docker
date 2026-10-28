@@ -8,7 +8,9 @@ import { Alert, Button, Card, CardBody, EmptyState, Input, Segmented, Spinner } 
 import { fetchOrgUnitLevels, searchMetadata, type MetadataResource } from "@/lib/dhis2/client";
 import type { Pager } from "@/lib/dhis2/types";
 import { useAsyncData, useDebounced } from "@/lib/hooks";
-import { downloadCsv, stamped } from "@/lib/download";
+import { downloadCsv, downloadJson, stamped } from "@/lib/download";
+
+type ExportFormat = "csv" | "json";
 
 interface MetadataRecord {
   id: string;
@@ -227,6 +229,7 @@ export function MetadataBrowser() {
   const [resource, setResource] = React.useState<MetadataResource>("indicators");
   const [term, setTerm] = React.useState("");
   const [page, setPage] = React.useState(1);
+  const [exportFormat, setExportFormat] = React.useState<ExportFormat>("csv");
   const [exporting, setExporting] = React.useState(false);
   const [exported, setExported] = React.useState(0);
   const [exportError, setExportError] = React.useState<string | null>(null);
@@ -294,11 +297,13 @@ export function MetadataBrowser() {
   const lastRow = firstRow ? firstRow + rows.length - 1 : 0;
 
   function exportPage() {
-    // The row range is in the filename so consecutive batches never collide.
-    downloadCsv(
-      toCsvLines(rows, columns),
-      `${stamped(`dhis2-${resource}-${firstRow}-${lastRow}`)}.csv`,
-    );
+    const stem = stamped(`dhis2-${resource}-${firstRow}-${lastRow}`);
+    if (exportFormat === "json") {
+      downloadJson(rows, `${stem}.json`);
+    } else {
+      // The row range is in the filename so consecutive batches never collide.
+      downloadCsv(toCsvLines(rows, columns), `${stem}.csv`);
+    }
   }
 
   /**
@@ -350,7 +355,12 @@ export function MetadataBrowser() {
           ? config.columns(all, levelName)
           : config.columns;
 
-      downloadCsv(toCsvLines(all, full), `${stamped(`dhis2-${resource}-all`)}.csv`);
+      const stem = stamped(`dhis2-${resource}-all`);
+      if (exportFormat === "json") {
+        downloadJson(all, `${stem}.json`);
+      } else {
+        downloadCsv(toCsvLines(all, full), `${stem}.csv`);
+      }
     } catch (cause) {
       if (controller.signal.aborted) return;
       setExportError(
@@ -372,6 +382,16 @@ export function MetadataBrowser() {
             setPage(1);
           }}
           options={RESOURCES.map((item) => ({ value: item.value, label: item.label }))}
+        />
+
+        <Segmented
+          ariaLabel="Metadata export format"
+          value={exportFormat}
+          onChange={setExportFormat}
+          options={[
+            { value: "csv", label: "CSV" },
+            { value: "json", label: "JSON" },
+          ]}
         />
 
         <div className="relative min-w-56 flex-1">

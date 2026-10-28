@@ -60,7 +60,9 @@ Copy `.env.example` to `.env.local` for local development. Never commit a real t
 | **Compare** | Check two data elements against each other and report the organisation units where the relationship breaks down |
 | **Metadata** | Search indicators, data elements, data sets, programs and organisation units; copy ids into a query |
 
-Every chart can be read as a table, and every result exports to CSV.
+Every chart can be read as a table. Metadata can be exported as CSV or JSON, and
+map results can be exported as CSV or GeoJSON with each available boundary and its
+map value together.
 
 ## How the token is handled
 

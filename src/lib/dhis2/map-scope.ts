@@ -133,6 +133,54 @@ export function hierarchyPath(unit: MapUnit): string {
   return [...unit.ancestors, unit].map((entry) => entry.name).join(" > ");
 }
 
+export interface MapGeoJsonMetadata {
+  name: string;
+  dataType: MapDataType;
+  dataTypeName: string;
+  dataItemId: string;
+  dataItem: string;
+  periods: string[];
+  periodLabel: string;
+  organisationUnitLevel: string;
+  parentOrganisationUnit: string | null;
+}
+
+/** Boundary geometries and the displayed values in a standard GeoJSON export. */
+export function toMapGeoJson(
+  units: MapUnit[],
+  values: Map<string, number>,
+  metadata: MapGeoJsonMetadata,
+) {
+  const features = units.flatMap((unit) => {
+    if (!unit.geometry) return [];
+
+    const geometry =
+      unit.geometry.type === "point"
+        ? { type: "Point" as const, coordinates: unit.geometry.coordinates }
+        : unit.geometry.polygons.length === 1
+          ? { type: "Polygon" as const, coordinates: unit.geometry.polygons[0] }
+          : { type: "MultiPolygon" as const, coordinates: unit.geometry.polygons };
+
+    return [
+      {
+        type: "Feature" as const,
+        id: unit.id,
+        geometry,
+        properties: {
+          id: unit.id,
+          name: unit.name,
+          level: unit.level,
+          parentName: unit.ancestors.at(-1)?.name ?? null,
+          hierarchy: hierarchyPath(unit),
+          value: values.get(unit.id) ?? null,
+        },
+      },
+    ];
+  });
+
+  return { type: "FeatureCollection" as const, name: metadata.name, metadata, features };
+}
+
 /** A boundary to shade, as opposed to nothing or a single point. */
 export function hasBoundary(unit: MapUnit): boolean {
   return unit.geometry?.type === "area";

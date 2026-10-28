@@ -24,6 +24,7 @@ import {
   mapOuDimension,
   parseMapUnits,
   setLevel,
+  toMapGeoJson,
   type MapScope,
   type MapUnit,
 } from "@/lib/dhis2/map-scope";
@@ -108,6 +109,72 @@ describe("parseMapUnits", () => {
   it("returns nothing for an unexpected payload", () => {
     assert.deepEqual(parseMapUnits(null), []);
     assert.deepEqual(parseMapUnits({ organisationUnits: "no" }), []);
+  });
+});
+
+describe("map GeoJSON export", () => {
+  it("keeps geometries and attaches the displayed unit values", () => {
+    const units = parseMapUnits({
+      organisationUnits: [
+        {
+          id: "ZB",
+          displayName: "Zebilla",
+          level: 4,
+          ancestors: [{ id: "GH", displayName: "Ghana", level: 1 }],
+          geometry: {
+            type: "Polygon",
+            coordinates: [[[0, 0], [1, 0], [1, 1], [0, 0]]],
+          },
+        },
+        { id: "AP", displayName: "Apodabogo", level: 4, ancestors: [] },
+      ],
+    });
+
+    const exported = toMapGeoJson(units, new Map([["ZB", 42]]), {
+      name: "Malaria cases",
+      dataType: "count",
+      dataTypeName: "Counts",
+      dataItemId: "DX1",
+      dataItem: "Malaria cases",
+      periods: ["202601"],
+      periodLabel: "January 2026",
+      organisationUnitLevel: "Sub-district",
+      parentOrganisationUnit: "Bawku West",
+    });
+
+    assert.equal(exported.type, "FeatureCollection");
+    assert.equal(exported.features.length, 1);
+    assert.deepEqual(exported.features[0].geometry, {
+      type: "Polygon",
+      coordinates: [[[0, 0], [1, 0], [1, 1], [0, 0]]],
+    });
+    assert.deepEqual(exported.features[0].properties, {
+      id: "ZB",
+      name: "Zebilla",
+      level: 4,
+      parentName: "Ghana",
+      hierarchy: "Ghana > Zebilla",
+      value: 42,
+    });
+    assert.equal(exported.metadata.dataItemId, "DX1");
+    assert.deepEqual(exported.metadata.periods, ["202601"]);
+  });
+
+  it("exports null when a mapped unit has no analytics value", () => {
+    const mappedUnit = unit({ id: "UE", name: "Upper East", level: 2 });
+    const exported = toMapGeoJson([mappedUnit], new Map(), {
+      name: "Coverage",
+      dataType: "coverage",
+      dataTypeName: "Coverages",
+      dataItemId: "DX1",
+      dataItem: "Coverage",
+      periods: ["202601"],
+      periodLabel: "January 2026",
+      organisationUnitLevel: "Region",
+      parentOrganisationUnit: null,
+    });
+
+    assert.equal(exported.features[0].properties.value, null);
   });
 });
 

@@ -44,6 +44,7 @@ import {
   mapClassesFor,
   mapOuDimension,
   setLevel,
+  toMapGeoJson,
   type MapDataType,
   type MapScope,
   type MapUnit,
@@ -51,7 +52,7 @@ import {
 } from "@/lib/dhis2/map-scope";
 import { findPeriodOption } from "@/lib/dhis2/periods";
 import { formatNumber, formatPeriod, formatTick } from "@/lib/format";
-import { downloadCsv } from "@/lib/download";
+import { downloadCsv, downloadJson, stamped } from "@/lib/download";
 import { useAsyncData, usePersistentState } from "@/lib/hooks";
 import { panelStyle } from "@/lib/color";
 import { BackgroundPicker } from "./background-picker";
@@ -439,7 +440,37 @@ export function MapsWorkbench() {
               view={view}
               onViewChange={setView}
               style={frameStyle ?? undefined}
-              toolbar={<BackgroundPicker value={panelBackground} onChange={setPanelBackground} />}
+              toolbar={
+                <>
+                  <BackgroundPicker value={panelBackground} onChange={setPanelBackground} />
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() =>
+                      downloadJson(
+                        toMapGeoJson(model.all, model.values, {
+                          name: state.item!.displayName,
+                          dataType: state.dataType,
+                          dataTypeName:
+                            MAP_DATA_TYPES.find((type) => type.value === state.dataType)?.label ??
+                            state.dataType,
+                          dataItemId: state.item!.id,
+                          dataItem: state.item!.displayName,
+                          periods: state.periods,
+                          periodLabel: periodSummary,
+                          organisationUnitLevel: shownLevel,
+                          parentOrganisationUnit: parent?.name ?? null,
+                        }),
+                        `${stamped("dhis2-map")}.json`,
+                      )
+                    }
+                    disabled={!model.all.some((unit) => unit.geometry)}
+                    title="Export boundaries and map values together as GeoJSON"
+                  >
+                    JSON
+                  </Button>
+                </>
+              }
               onDownload={() =>
                 downloadCsv(
                   rowsToCsv(
