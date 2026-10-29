@@ -45,9 +45,24 @@ test("allows only the upload and run POSTs", () => {
   assert.equal(isGeoEpiPathAllowed("POST", "index.html"), false);
 });
 
+test("deletes a single run, and nothing else", () => {
+  assert.equal(isGeoEpiPathAllowed("DELETE", "api/jobs/abc123"), true);
+  for (const path of [
+    "api/jobs",
+    "api/jobs/abc123/log",
+    "api/jobs/../datasets",
+    "api/datasets",
+    "api/datasets/ds1",
+    "results/abc123/report.html",
+  ]) {
+    assert.equal(isGeoEpiPathAllowed("DELETE", path), false, path);
+  }
+});
+
 test("refuses other methods outright", () => {
-  for (const method of ["PUT", "PATCH", "DELETE"]) {
+  for (const method of ["PUT", "PATCH"]) {
     assert.equal(isGeoEpiPathAllowed(method, "api/jobs"), false, method);
+    assert.equal(isGeoEpiPathAllowed(method, "api/jobs/abc123"), false, method);
     assert.equal(isGeoEpiPathAllowed(method, "api/datasets"), false, method);
   }
 });

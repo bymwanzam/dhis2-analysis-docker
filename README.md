@@ -68,6 +68,7 @@ Copy `.env.example` to `.env.local` for local development. Never commit a real t
 | **Pivot** | Cross-tabulate any two dimensions of the same query, with a heat scale and totals |
 | **Maps** | Shade regions, districts or sub-districts (Levels 1–4) by a count, coverage or indicator; click to drill down, with areas lacking boundaries listed under the map |
 | **GeoEpi** | Run spatial epidemiology notebooks, view generated map layers, and download CSV, GeoJSON and GeoPackage outputs — inside the app, in the same theme |
+| **Measles** | The Group 3 measles capstone (synthetic data): the Director's brief, then GeoEpi's measles data-preparation and modelling modules, ending in a ranked Northern Region decision table and 14-day microplan |
 | **Compare** | Check two data elements against each other and report the organisation units where the relationship breaks down |
 | **Metadata** | Search indicators, data elements, data sets, programs and organisation units; copy ids into a query |
 
@@ -88,6 +89,13 @@ map value together.
 This handoff is a map-level export, not a replacement for the source data required by
 GeoEpi Modules 1–5. Those modules continue to require their own documented supporting
 tables, rasters and prepared panel datasets.
+
+GeoEpi keeps data preparation and modelling in separate modules:
+- **Module 2** builds the district-month panel.
+- **Module 2B** turns the panel into the model inputs.
+- **Modules 3–5** analyse and model the result.
+
+See [geoepi/README.md](geoepi/README.md).
 
 The `geoepi/` directory contains the GeoEpi source snapshot from
 [bymwanzam/geoepi](https://github.com/bymwanzam/geoepi) at commit

@@ -43,6 +43,9 @@ a chart that hides that is worse than no chart.
   on the Compose network. Its viewer, `geoepi/app/static/index.html`, is framed by the
   `/geoepi` page. It copies the colour roles from `src/app/globals.css` and follows the
   shell's `data-theme`, so change both if you change a surface or ink colour.
+- `/measles` frames the same viewer with `track=measles` (`src/lib/geoepi/launch.ts`), so it
+  lists only the measles modules (`geoepi/notebooks/measles_*`, built by
+  `geoepi/tools/prepare_measles.py`); `/geoepi` lists the modules with no track.
 - The Maps page hands a map to GeoEpi (`POST /geoepi/api/datasets/dhis2-map`), then links
   to `/geoepi?notebook=dhis2_map_explorer&dataset=…`; the page passes those two
   parameters on to the viewer.

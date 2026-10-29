@@ -53,6 +53,12 @@ def notebooks() -> list[dict]:
         out.append({"id": p.stem, "title": meta.get("title", title), "module": meta.get("module"),
                     "about": meta.get("about", ""), "requires": meta.get("requires", []),
                     "default_dataset": meta.get("default_dataset"), "handoff": meta.get("handoff", False),
+                    # preparation | analysis | dhis2: the group the viewer lists it under
+                    "stage": meta.get("stage", "analysis"),
+                    # the modules a finished run's hand-off folder is meant for
+                    "next": meta.get("next", []),
+                    # a separate course (e.g. "measles"): the viewer opened with ?track=measles lists only it
+                    "track": meta.get("track"),
                     "kernel": nb.metadata.get("kernelspec", {}).get("display_name", "?")})
     return out
 
@@ -434,6 +440,16 @@ def dataset_from_job(body: FromJob):
         raise HTTPException(409, "A dataset with that name already exists")
     shutil.copytree(src, dest)
     return {"id": body.name}
+
+
+@app.delete("/api/jobs/{job_id}")
+def delete_job(job_id: str):
+    """Remove a finished run and its outputs. Datasets made from it are copies, so they stay."""
+    p = _job_path(job_id)
+    if _read(p)["status"] in ("queued", "running"):
+        raise HTTPException(409, "This run has not finished yet. Delete it once it is done or has failed.")
+    shutil.rmtree(p)
+    return {"deleted": job_id}
 
 
 @app.get("/api/jobs/{job_id}/log")

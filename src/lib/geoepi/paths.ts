@@ -3,8 +3,9 @@
  *
  * GeoEpi runs notebooks on the server, so the proxy only forwards the routes
  * its own viewer uses: the viewer's static files, reading notebooks, datasets,
- * jobs and results, and the handful of POSTs that upload a dataset or start a
- * run. Everything else on the service stays unreachable from the browser.
+ * jobs and results, the handful of POSTs that upload a dataset or start a run,
+ * and deleting a run. Everything else on the service stays unreachable from
+ * the browser.
  */
 
 const READ = [
@@ -26,10 +27,14 @@ const WRITE = new Set([
   "api/jobs",
 ]);
 
+/** Deleting a finished run and its outputs; GeoEpi refuses runs still queued or running. */
+const DELETE = /^api\/jobs\/[A-Za-z0-9_-]+$/;
+
 /** `path` is relative to /geoepi/, with no leading slash. */
 export function isGeoEpiPathAllowed(method: string, path: string): boolean {
   if (path.split("/").some((part) => part === ".." || part === ".")) return false;
   if (method === "GET") return READ.some((pattern) => pattern.test(path));
+  if (method === "DELETE") return DELETE.test(path);
   return method === "POST" && WRITE.has(path);
 }
 

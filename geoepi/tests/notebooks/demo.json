@@ -1,1 +1,1 @@
-{"id": "demo", "title": "Demo", "requires": ["pts.csv"], "handoff": true, "about": "t"}
+{"id": "demo", "title": "Demo", "requires": ["pts.csv"], "handoff": true, "about": "t", "stage": "preparation", "next": ["broken"]}

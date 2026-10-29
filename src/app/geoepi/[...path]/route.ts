@@ -73,7 +73,8 @@ async function proxy(request: Request, context: RouteContext): Promise<Response>
     return NextResponse.json({ error: "GeoEpi route not allowed." }, { status: 404 });
   }
 
-  if (request.method === "POST") {
+  // Anything that changes GeoEpi's data (uploads, runs, deleting a run) must come from this app.
+  if (request.method !== "GET") {
     if (!hasSameOrigin(request)) {
       return NextResponse.json({ error: "Cross-origin GeoEpi requests are not allowed." }, {
         status: 403,
@@ -138,3 +139,4 @@ async function proxy(request: Request, context: RouteContext): Promise<Response>
 
 export const GET = proxy;
 export const POST = proxy;
+export const DELETE = proxy;

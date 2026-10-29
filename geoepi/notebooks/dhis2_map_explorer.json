@@ -1,13 +1,15 @@
 {
-  "id": "dhis2_map_explorer",
-  "title": "DHIS2 Map Data Explorer",
-  "module": 6,
-  "about": "Explore a map and values sent from DHIS2 Analysis. Saves the boundary data as GeoPackage and CSV for download or further GIS work.",
-  "requires": [
-    "dhis2-map.geojson",
-    "dhis2-map.csv",
-    "metadata.json"
-  ],
-  "default_dataset": null,
-  "handoff": false
+ "id": "dhis2_map_explorer",
+ "title": "DHIS2 Map Data Explorer",
+ "module": 6,
+ "about": "Explore a map and values sent from DHIS2 Analysis. Saves the boundary data as GeoPackage and CSV for download or further GIS work.",
+ "requires": [
+  "dhis2-map.geojson",
+  "dhis2-map.csv",
+  "metadata.json"
+ ],
+ "default_dataset": null,
+ "handoff": false,
+ "stage": "dhis2",
+ "next": []
 }

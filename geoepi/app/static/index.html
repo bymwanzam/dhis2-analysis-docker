@@ -48,6 +48,9 @@ details summary{cursor:pointer;color:var(--accent);font-size:13px}
 @keyframes pulse{50%{opacity:.25}}
 @media (prefers-reduced-motion:reduce){.running .dot{animation:none}}
 .job b{font-weight:600}.job span{color:var(--muted);font-size:12px}
+.jobrow{position:relative}.jobrow .job{grid-template-columns:auto 1fr 58px}   /* room for Delete under the status */
+.del{position:absolute;right:6px;bottom:7px;width:auto;margin:0;padding:2px 8px;font-size:12px;font-weight:400;background:none;border:1px solid transparent;color:var(--muted)}
+.del:hover,.del:focus-visible{color:var(--hot);border-color:var(--hot);background:var(--surface)}
 .links a{color:var(--accent);margin-right:12px;font-size:13px}
 main{position:relative;min-height:0}
 #map{position:absolute;inset:0;background:var(--line)}
@@ -112,6 +115,9 @@ main{position:relative;min-height:0}
 const $ = s => document.querySelector(s), esc = GeoLib.esc;
 const launch = new URLSearchParams(location.search);
 const requestedDataset = launch.get('dataset'), requestedNotebook = launch.get('notebook');
+// A track is a separate course with its own page (the Measles page opens ?track=measles): only its modules
+// and their runs are listed. Without one, the modules that belong to no track are listed.
+const track = launch.get('track') || null;
 async function api(url, opts) {
   const r = await fetch('/geoepi' + url, opts);
   if (!r.ok) { let d = r.statusText; try { d = (await r.json()).detail || d } catch {} throw new Error(d) }
@@ -123,22 +129,40 @@ if (window.L) {
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, crossOrigin: true, attribution: '&copy; OpenStreetMap contributors'}).addTo(map);
 } else $('#map').innerHTML = '<p style="padding:20px">Map library missing. Run <code>scripts/fetch_vendor.sh</code>.</p>';
 
-async function loadDatasets() {
+// Preparation modules build the datasets the analysis and modelling modules run on (notebook "stage" and "next").
+const STAGES = [['preparation', 'Data preparation'], ['analysis', 'Analysis and modelling'], ['dhis2', 'From DHIS2 Analysis']];
+const shortTitle = t => t.replace(/^Module \d+[A-Z]?\s*[–-]\s*/, '');
+const nbLabel = n => (n.module ? 'Module ' + n.module + ': ' : '') + shortTitle(n.title);
+const nbName = n => n.module ? 'Module ' + n.module : shortTitle(n.title);
+function listModules(ns) {                     // "Module 2B", "Modules 3, 4 and 5"
+  if (ns.length === 1) return nbName(ns[0]);
+  const names = ns.map(n => n.module ? String(n.module) : shortTitle(n.title));
+  return (ns.every(n => n.module) ? 'Modules ' : '') + names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+}
+const nextOf = n => (n.next || []).map(id => NBS.find(x => x.id === id)).filter(Boolean);
+const sourcesOf = n => NBS.filter(m => (m.next || []).includes(n.id));
+
+async function loadDatasets(prefer) {
   const nb = $('#nb').value, keep = $('#ds').value;
   const dss = await api('/api/datasets' + (nb ? '?notebook=' + encodeURIComponent(nb) : ''));
-  const n = NBS.find(x => x.id === nb);
-  $('#about').textContent = n ? n.about : '';
+  const n = NBS.find(x => x.id === nb), from = n ? sourcesOf(n) : [];
+  $('#about').textContent = n ? n.about + (from.length ? ` Runs on the outputs of ${from.map(nbName).join(' or ')}.` : '') : '';
   $('#ds').innerHTML = dss.length ? dss.map(d => `<option value="${esc(d.id)}" ${d.missing && d.missing.length ? 'disabled' : ''}>${esc(d.id)} (${d.files} files)${d.missing && d.missing.length ? ' - missing ' + esc(d.missing.join(', ')) : ''}</option>`).join('')
     : '<option value="">No datasets yet: upload one</option>';
   const ok = dss.filter(d => !(d.missing && d.missing.length));
-  const pick = [requestedDataset, keep, n && n.default_dataset].find(v => v && ok.some(d => d.id === v)) || (ok[0] && ok[0].id);
+  const pick = [prefer, requestedDataset, keep, n && n.default_dataset].find(v => v && ok.some(d => d.id === v)) || (ok[0] && ok[0].id);
   if (pick) $('#ds').value = pick;
   $('#dsmsg').textContent = dss.length && !ok.length ? 'No uploaded dataset has the files this module needs: ' + (n ? n.requires.join(', ') : '') : '';
   $('#run').disabled = !pick;
 }
 async function init() {
-  NBS = await api('/api/notebooks');
-  $('#nb').innerHTML = NBS.map(n => `<option value="${esc(n.id)}">${n.module ? 'Module ' + n.module + ': ' : ''}${esc(n.title.replace(/^Module \d+\s*[–-]\s*/, ''))}</option>`).join('');
+  NBS = (await api('/api/notebooks')).filter(n => (n.track || null) === track);
+  const option = n => `<option value="${esc(n.id)}">${esc(nbLabel(n))}</option>`;
+  const known = STAGES.map(([stage]) => stage);
+  $('#nb').innerHTML = STAGES.map(([stage, label]) => {
+    const group = NBS.filter(n => n.stage === stage);
+    return group.length ? `<optgroup label="${label}">${group.map(option).join('')}</optgroup>` : '';
+  }).join('') + NBS.filter(n => !known.includes(n.stage)).map(option).join('');
   if (NBS.some(n => n.id === requestedNotebook)) $('#nb').value = requestedNotebook;
   await loadDatasets(); renderRequiredFiles(); await refreshJobs();
 }
@@ -160,18 +184,35 @@ $('#nb').onchange = async () => { await loadDatasets(); renderRequiredFiles() };
 
 const fmt = t => t ? new Date(t * 1000).toLocaleString([], {dateStyle: 'short', timeStyle: 'short'}) : '';
 async function refreshJobs() {
-  const jobs = await api('/api/jobs');
+  const jobs = (await api('/api/jobs')).filter(j => NBS.some(n => n.id === j.notebook));
   const prog = await Promise.all(jobs.map(j => j.status === 'running' ? api('/api/jobs/' + j.id).then(x => x.progress) : null));
-  $('#jobs').innerHTML = jobs.length ? jobs.map((j, i) => `<button class="job ${j.status} ${job && job.id === j.id ? 'sel' : ''}" data-id="${j.id}">
+  const finished = j => j.status === 'done' || j.status === 'failed';
+  $('#jobs').innerHTML = jobs.length ? jobs.map((j, i) => `<div class="jobrow"><button class="job ${j.status} ${job && job.id === j.id ? 'sel' : ''}" data-id="${j.id}">
     <i class="dot"></i><b>${esc(j.notebook.replace(/_/g, ' '))}</b><span>${j.status}</span><span></span><span>${esc(j.dataset)} &middot; ${fmt(j.created)}</span><span></span>
-    ${prog[i] ? `<div class="prog"><i style="width:${Math.round(100 * prog[i].done / prog[i].total)}%"></i></div>` : ''}</button>`).join('') : '<div class="empty">No runs yet.</div>';
+    ${prog[i] ? `<div class="prog"><i style="width:${Math.round(100 * prog[i].done / prog[i].total)}%"></i></div>` : ''}</button>${finished(j)
+      ? `<button class="del" type="button" data-del="${j.id}" title="Delete this run and its outputs" aria-label="Delete the ${esc(j.notebook.replace(/_/g, ' '))} run of ${fmt(j.created)}">Delete</button>` : ''}</div>`).join('')
+    : '<div class="empty">No runs yet.</div>';
   clearTimeout(pollTimer);
   if (jobs.some(j => j.status === 'queued' || j.status === 'running')) pollTimer = setTimeout(async () => {
     await refreshJobs();
     if (job) { const j = await api('/api/jobs/' + job.id); if (j.status !== job.status) openJob(job.id) }
   }, 4000);
 }
-$('#jobs').addEventListener('click', e => { const b = e.target.closest('.job'); if (b) openJob(b.dataset.id) });
+$('#jobs').addEventListener('click', async e => {
+  const del = e.target.closest('.del');
+  if (del) return deleteJob(del.dataset.del);
+  const b = e.target.closest('.job'); if (b) openJob(b.dataset.id);
+});
+async function deleteJob(id) {
+  const row = document.querySelector(`.job[data-id="${id}"]`), name = row ? row.querySelector('b').textContent : 'this';
+  if (!confirm(`Delete the ${name} run and all its outputs (report, maps, files)?\n\nThis cannot be undone. Datasets already made from it are kept.`)) return;
+  $('#runmsg').textContent = '';
+  try {
+    await api('/api/jobs/' + id, {method: 'DELETE'});
+    if (job && job.id === id) { job = null; $('#detail').hidden = true; clearLayers() }
+    await refreshJobs();
+  } catch (e) { $('#runmsg').textContent = e.message }
+}
 $('#run').onclick = async () => {
   $('#runmsg').textContent = '';
   try {
@@ -228,13 +269,21 @@ async function openJob(id) {
     job.files.length && `<a href="/geoepi/api/jobs/${id}/download.zip">Download all</a>`].filter(Boolean).join('');
   $('#files').innerHTML = job.files.filter(f => !/^(handoff|project)\//.test(f.name) && !/^(report\.html|layers\.json)$/.test(f.name))
     .map(f => `<a href="/geoepi/results/${id}/${encodeURI(f.name)}" target="_blank" rel="noopener">${esc(f.name)} <span>${(f.bytes / 1024).toFixed(0)} KB</span></a>`).join('');
+  const targets = nbm ? nextOf(nbm) : [];
   $('#handoff').innerHTML = job.status === 'done' && nbm && nbm.handoff && job.files.some(f => f.name.startsWith('handoff/'))
-    ? '<button class="ghost" id="hand">Use outputs as a dataset for Modules 3-5</button>' : '';
+    ? `<button class="ghost" id="hand">Use outputs as a dataset${targets.length ? ' for ' + esc(listModules(targets)) : ''}</button>` : '';
   if ($('#hand')) $('#hand').onclick = async () => {
-    const name = prompt('Name for the new dataset', 'panel_' + id);
+    const name = prompt('Name for the new dataset', 'from_' + nbm.id.split('_')[0] + '_' + id);
     if (!name) return;
-    try { await api('/api/datasets/from-job', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({job_id: id, name})}); await loadDatasets(); $('#joberr').style.color = 'var(--ok)'; $('#joberr').textContent = 'Dataset "' + name + '" created. Choose Module 3, 4 or 5.' }
-    catch (e) { $('#joberr').style.color = 'var(--hot)'; $('#joberr').textContent = e.message }
+    try {
+      await api('/api/datasets/from-job', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({job_id: id, name})});
+      if (targets.length) $('#nb').value = targets[0].id;    // the next step, with the new dataset already chosen
+      await loadDatasets(name); renderRequiredFiles();
+      $('#joberr').style.color = 'var(--ok)';
+      $('#joberr').textContent = targets.length
+        ? `Dataset "${name}" created and selected for ${nbName(targets[0])}.${targets.length > 1 ? ' It also runs ' + listModules(targets.slice(1)) + '.' : ''}`
+        : `Dataset "${name}" created.`;
+    } catch (e) { $('#joberr').style.color = 'var(--hot)'; $('#joberr').textContent = e.message }
   };
   $('#joberr').style.color = 'var(--hot)'; $('#joberr').textContent = job.error || '';
   clearLayers();
@@ -270,7 +319,7 @@ function toolbar(id) {
   const opts = () => ({scale: +$('#xscale').value, format: $('#xfmt').value, basemap: $('#xbase').checked});
   const nb = (NBS.find(n => n.id === job.notebook) || {}).title || job.notebook, sub = `Run ${id} \u00b7 ${job.dataset} \u00b7 ${new Date().toLocaleDateString()}`;
   const draw = async (specs, o) => {                        // retry without basemap if the tiles taint the canvas
-    try { return await GeoExport.render({map, specs, title: nb.replace(/^Module \d+\s*[\u2013-]\s*/, ''), subtitle: sub, ...o}) }
+    try { return await GeoExport.render({map, specs, title: shortTitle(nb), subtitle: sub, ...o}) }
     catch (e) { if (!o.basemap) throw e; st('Basemap tiles blocked the export; saving without the basemap.'); return GeoExport.render({map, specs, title: nb, subtitle: sub, ...o, basemap: false}) }
   };
   const ext = () => $('#xfmt').value === 'jpeg' ? 'jpg' : 'png';

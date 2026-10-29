@@ -104,6 +104,10 @@ with TestClient(app) as c:
     assert (T / "data/next/panel.rds").exists()
     assert c.post("/api/datasets/from-job", json={"job_id": j["id"], "name": "next"}).status_code == 409
     nbs = {n["id"]: n for n in c.get("/api/notebooks").json()}; assert nbs["demo"]["handoff"] and nbs["demo"]["requires"] == ["pts.csv"]
+    # preparation and modelling are listed apart; a module without a stage counts as analysis
+    assert nbs["demo"]["stage"] == "preparation" and nbs["demo"]["next"] == ["broken"], nbs["demo"]
+    assert nbs["broken"]["stage"] == "analysis" and nbs["broken"]["next"] == [], nbs["broken"]
+    assert nbs["demo"]["track"] is None                              # no track: listed on the GeoEpi page
     # traversal / unknown
     assert c.get(f"/results/{j['id']}/../job.json").status_code in (400, 404)
     assert c.get(f"/results/{j['id']}/%2e%2e/job.json").status_code == 404
@@ -111,5 +115,16 @@ with TestClient(app) as c:
     # failing notebook still yields a report and a clear status
     jb = wait(c, c.post("/api/jobs", json={"notebook": "broken", "dataset": "ds1"}).json()["id"])
     assert jb["status"] == "failed" and any(f["name"] == "report.html" for f in jb["files"]), jb
+    # deleting a run removes it and its outputs; a dataset made from it stays
+    assert c.delete(f"/api/jobs/{j['id']}").status_code == 200
+    assert c.get(f"/api/jobs/{j['id']}").status_code == 404 and not (T / "jobs" / j["id"]).exists()
+    assert j["id"] not in {x["id"] for x in c.get("/api/jobs").json()}
+    assert (T / "data/next/panel.rds").exists()
+    assert c.delete(f"/api/jobs/{j['id']}").status_code == 404
+    assert c.delete("/api/jobs/..").status_code in (400, 404, 405)
+    # a run that has not finished cannot be deleted
+    q = T / "jobs" / "queued1"; q.mkdir()
+    (q / "job.json").write_text(json.dumps({"id": "queued1", "notebook": "demo", "dataset": "ds1", "status": "running", "created": 0, "error": None}))
+    assert c.delete("/api/jobs/queued1").status_code == 409 and q.exists()
     assert c.get("/").status_code == 200
 print("ALL TESTS PASSED")

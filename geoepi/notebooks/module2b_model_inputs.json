@@ -1,0 +1,18 @@
+{
+ "id": "module2b_model_inputs",
+ "title": "Module 2B – Preparing Model Inputs",
+ "module": "2B",
+ "about": "Turn the Module 2 panel into the inputs Modules 4 and 5 model: the 2024 district table (observed, expected, SIR, covariates) and the leakage-checked forecasting features with the train/test split.",
+ "requires": [
+  "panel.rds",
+  "ghana_districts.gpkg"
+ ],
+ "default_dataset": null,
+ "handoff": true,
+ "stage": "preparation",
+ "next": [
+  "module3_esda",
+  "module4_spatial_regression",
+  "module5_predictive_modelling"
+ ]
+}

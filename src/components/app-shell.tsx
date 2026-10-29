@@ -17,6 +17,7 @@ import {
   Microscope,
   Plug,
   Sun,
+  Syringe,
   TriangleAlert,
 } from "lucide-react";
 import { useConnection } from "@/components/connection-provider";
@@ -42,6 +43,7 @@ const NAV = [
   { href: "/pivot", label: "Pivot", icon: Grid3x3 },
   { href: "/maps", label: "Maps", icon: MapIcon },
   { href: "/geoepi", label: "GeoEpi", icon: Microscope },
+  { href: "/measles", label: "Measles", icon: Syringe },
   { href: "/compare", label: "Compare", icon: Scale },
   { href: "/metadata", label: "Metadata", icon: Library },
 ] as const;

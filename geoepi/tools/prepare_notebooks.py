@@ -11,6 +11,8 @@ Per notebook it
   * guards the one step that cannot run unattended (Module 2: hand-written R/*.R scripts)
   * appends an export cell (tools/exports/*.R) that writes GeoJSON / heat JSON / GeoTIFF + layers.json
   * writes a sidecar <id>.json with title, required data files and metadata for the web app
+then runs tools/split_model_inputs.py, which moves the data preparation that opens Modules 4 and 5
+into Module 2B, so those two modules contain modelling only.
 """
 import glob, json, re, sys
 from pathlib import Path
@@ -192,3 +194,7 @@ if __name__ == "__main__":
     src_dir, dst = sys.argv[1], sys.argv[2]
     for mid, cfg in MODULES.items():
         convert(mid, cfg, src_dir, dst)
+    # The Colab originals open Modules 4 and 5 with their own data preparation; move it into
+    # Module 2B so the modelling modules model only (and set every module's stage and hand-off).
+    from split_model_inputs import split
+    split(dst)
