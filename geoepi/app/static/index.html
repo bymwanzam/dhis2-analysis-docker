@@ -63,6 +63,13 @@ details summary{cursor:pointer;color:var(--accent);font-size:13px}
     <div class="msg" id="runmsg" role="status"></div>
   </section>
   <details>
+    <summary>Upload module files</summary>
+    <label for="filesname">Dataset name</label><input type="text" id="filesname" placeholder="e.g. module2_data">
+    <div id="requiredFiles"></div>
+    <button class="ghost" id="uploadFiles">Upload files</button>
+    <div class="msg" id="filesmsg" role="status"></div>
+  </details>
+  <details>
     <summary>Upload a dataset (.zip)</summary>
     <label for="dsname">Dataset name</label><input type="text" id="dsname" placeholder="e.g. module3_data">
     <label for="dsfile">Zip file</label><input type="file" id="dsfile" accept=".zip">
@@ -115,9 +122,23 @@ async function init() {
   NBS = await api('/api/notebooks');
   $('#nb').innerHTML = NBS.map(n => `<option value="${esc(n.id)}">${n.module ? 'Module ' + n.module + ': ' : ''}${esc(n.title.replace(/^Module \d+\s*[–-]\s*/, ''))}</option>`).join('');
   if (NBS.some(n => n.id === requestedNotebook)) $('#nb').value = requestedNotebook;
-  await loadDatasets(); await refreshJobs();
+  await loadDatasets(); renderRequiredFiles(); await refreshJobs();
 }
-$('#nb').onchange = loadDatasets;
+function renderRequiredFiles() {
+  const notebook = NBS.find(n => n.id === $('#nb').value), required = notebook ? notebook.requires : [];
+  $('#requiredFiles').innerHTML = required.length ? required.map((path, i) => {
+    const multiple = path.includes('*');
+    return `<label for="required-${i}">${esc(path)}${multiple ? ' (select all matching files)' : ''}</label>
+      <input type="file" id="required-${i}" data-required="${esc(path)}" ${multiple ? 'multiple' : 'required'}>
+      <div class="about" id="required-status-${i}">Required</div>`;
+  }).join('') : '<div class="about">Select a module to see its required files.</div>';
+  $('#filesmsg').textContent = '';
+  $('#requiredFiles').querySelectorAll('input[type=file]').forEach(input => input.addEventListener('change', () => {
+    const status = input.nextElementSibling;
+    status.textContent = input.files.length ? `${input.files.length} file(s) selected` : 'Required';
+  }));
+}
+$('#nb').onchange = async () => { await loadDatasets(); renderRequiredFiles() };
 
 const fmt = t => t ? new Date(t * 1000).toLocaleString([], {dateStyle: 'short', timeStyle: 'short'}) : '';
 async function refreshJobs() {
@@ -147,6 +168,36 @@ $('#up').onclick = async () => {
   $('#upmsg').style.color = 'var(--muted)'; $('#upmsg').textContent = 'Uploading...';
   try { await api('/api/datasets', {method: 'POST', body: fd}); await loadDatasets(); $('#upmsg').textContent = 'Uploaded.' }
   catch (e) { $('#upmsg').style.color = 'var(--hot)'; $('#upmsg').textContent = e.message }
+};
+$('#uploadFiles').onclick = async () => {
+  const name = $('#filesname').value.trim(), inputs = [...$('#requiredFiles').querySelectorAll('input[type=file]')];
+  if (!name) { $('#filesmsg').textContent = 'Give the dataset a name.'; return }
+  if (!inputs.length || inputs.some(input => !input.files.length)) {
+    $('#filesmsg').textContent = 'Choose a file for every required input before uploading.';
+    return;
+  }
+  const fd = new FormData();
+  fd.append('name', name);
+  fd.append('notebook', $('#nb').value);
+  for (const input of inputs) {
+    const required = input.dataset.required, prefix = required.includes('/')
+      ? required.slice(0, required.lastIndexOf('/') + 1) : '';
+    for (const file of input.files) {
+      fd.append('paths', required.includes('*') ? prefix + file.name : required);
+      fd.append('files', file);
+    }
+  }
+  $('#filesmsg').style.color = 'var(--muted)';
+  $('#filesmsg').textContent = 'Uploading and checking required files...';
+  try {
+    await api('/api/datasets/files', {method: 'POST', body: fd});
+    await loadDatasets();
+    $('#filesmsg').style.color = 'var(--ok)';
+    $('#filesmsg').textContent = 'Dataset uploaded and ready to run.';
+  } catch (e) {
+    $('#filesmsg').style.color = 'var(--hot)';
+    $('#filesmsg').textContent = e.message;
+  }
 };
 
 async function openJob(id) {

@@ -30,6 +30,7 @@ function isAllowed(method: string, path: string): boolean {
     method === "POST" &&
     [
       "api/datasets",
+      "api/datasets/files",
       "api/datasets/from-job",
       "api/datasets/dhis2-map",
       "api/jobs",

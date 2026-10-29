@@ -2,7 +2,7 @@
 serve the geospatial results (GeoJSON, heat-point JSON, GeoTIFF, HTML report) to a map viewer."""
 import csv, json, os, re, shutil, subprocess, sys, tempfile, threading, time, uuid, zipfile
 from concurrent.futures import ThreadPoolExecutor
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Literal
 
 import nbformat
@@ -308,6 +308,68 @@ async def upload_dataset(name: str = Form(...), file: UploadFile = File(...)):
         os.unlink(tmp.name)
         if stage:
             shutil.rmtree(stage, ignore_errors=True)
+    return {"id": name}
+
+
+@app.post("/api/datasets/files")
+async def upload_dataset_files(
+    name: str = Form(...),
+    notebook: str = Form(...),
+    paths: list[str] = Form(...),
+    files: list[UploadFile] = File(...),
+):
+    _check(name, "dataset")
+    _check(notebook, "notebook")
+    metadata = next((item for item in notebooks() if item["id"] == notebook), None)
+    if metadata is None:
+        raise HTTPException(404, "Unknown notebook")
+    if not files or len(files) != len(paths):
+        raise HTTPException(400, "Each uploaded file must have a matching dataset path.")
+
+    dest = DATA_DIR / name
+    if dest.exists():
+        raise HTTPException(409, "A dataset with that name already exists")
+
+    stage = Path(tempfile.mkdtemp(dir=DATA_DIR, prefix=".incoming-"))
+    total_size = 0
+    written: set[str] = set()
+    try:
+        for relative_path, upload in zip(paths, files):
+            normalized = relative_path.replace("\\", "/")
+            relative = PurePosixPath(normalized)
+            if (
+                relative.is_absolute()
+                or not relative.parts
+                or any(part in {"", ".", ".."} for part in relative.parts)
+                or ":" in relative.parts[0]
+            ):
+                raise HTTPException(400, "Unsafe dataset file path")
+            path_key = relative.as_posix()
+            if path_key in written:
+                raise HTTPException(400, f"Duplicate dataset file path: {path_key}")
+            written.add(path_key)
+
+            target = stage.joinpath(*relative.parts).resolve()
+            if stage.resolve() not in target.parents:
+                raise HTTPException(400, "Unsafe dataset file path")
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with target.open("wb") as output:
+                while chunk := await upload.read(1 << 20):
+                    total_size += len(chunk)
+                    if total_size > MAX_UPLOAD_MB << 20:
+                        raise HTTPException(413, f"Larger than {MAX_UPLOAD_MB} MB")
+                    output.write(chunk)
+
+        missing = missing_files(stage, metadata["requires"])
+        if missing:
+            raise HTTPException(422, "Dataset is missing: " + ", ".join(missing))
+
+        stage.rename(dest)
+        stage = None
+    finally:
+        if stage:
+            shutil.rmtree(stage, ignore_errors=True)
+
     return {"id": name}
 
 

@@ -13,6 +13,10 @@ persist in named volumes.
 
 ## Using it
 Pick a module and a compatible dataset (incompatible ones are greyed out with the missing files listed), press Run.
+Datasets can be uploaded either as a ZIP or as individual files: **Upload module files**
+shows every required input for the selected module, including multi-file raster inputs.
+Module 2 outputs include a prepared district-month panel; use **Use outputs as a dataset**
+on its completed run to create the dataset expected by Modules 3–5.
 Progress shows in the run list. When done: map layers (switchable fields, time slider for monthly/forecast layers),
 the executed report with all infographics, output files, and "Download all".
 **Export:** the layer panel has *Export this view* (PNG or JPEG, 1x/2x/3x, optional OpenStreetMap basemap) and *All maps (ZIP)*,

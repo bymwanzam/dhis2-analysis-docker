@@ -33,6 +33,25 @@ with TestClient(app) as c:
     assert c.post("/api/datasets", data={"name": "ds1"}, files={"file": ("a.zip", zbytes({"a": "b"}), "application/zip")}).status_code == 409
     assert c.post("/api/datasets", data={"name": "n"}, files={"file": ("a.txt", b"x", "text/plain")}).status_code == 400
     assert [d["id"] for d in c.get("/api/datasets").json()] == ["ds1"]   # no leftover staging dirs
+    # Upload individual module inputs and preserve their requested dataset paths.
+    uploaded = c.post(
+        "/api/datasets/files",
+        data={"name": "files_ds", "notebook": "demo", "paths": "pts.csv"},
+        files={"files": ("points.csv", "x,y,v\n-1,10,3\n", "text/csv")},
+    )
+    assert uploaded.status_code == 200, uploaded.text
+    assert (T / "data/files_ds/pts.csv").exists()
+    assert c.post(
+        "/api/datasets/files",
+        data={"name": "missing_ds", "notebook": "demo", "paths": "other.csv"},
+        files={"files": ("other.csv", "x\n1\n", "text/csv")},
+    ).status_code == 422
+    assert c.post(
+        "/api/datasets/files",
+        data={"name": "unsafe_ds", "notebook": "demo", "paths": "../escape.csv"},
+        files={"files": ("escape.csv", "x\n1\n", "text/csv")},
+    ).status_code == 400
+    assert not (T / "escape.csv").exists()
     # DHIS2 map hand-off preserves the shapes, metadata and tabular values
     dhis2_map = {
         "type": "FeatureCollection",
