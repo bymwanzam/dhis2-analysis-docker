@@ -6,4 +6,4 @@ const c = L.categoryScale(['a', 'b', null, 'Not significant'], {a: '#111111'}); 
 assert.strictEqual(L.esc('<b>"x"</b>'), '&lt;b&gt;&quot;x&quot;&lt;/b&gt;'); console.log('lib tests passed');
 const items = L.numericScale(v).items; assert.strictEqual(items.length, 5); assert.ok(items[0].label.includes('\u2013'));
 const z = L.zip([{name: 'a.png', data: new Uint8Array([1, 2, 3])}, {name: 'maps/b é.jpg', data: new Uint8Array(1000).fill(7)}]);
-require('fs').writeFileSync(process.argv[2] || '/tmp/t.zip', z); console.log('zip written');
+require('fs').writeFileSync(process.argv[2] || require('path').join(require('os').tmpdir(), 't.zip'), z); console.log('zip written');

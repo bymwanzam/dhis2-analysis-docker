@@ -14,6 +14,11 @@ nothing else, and every path is checked against the allowlist in
 `src/lib/dhis2/paths.ts` before the credential is attached. Adding a write endpoint to
 that list would turn a viewer's session into a write credential — don't.
 
+**GeoEpi is reached only through its proxy.** `src/app/geoepi/[...path]/route.ts`
+verifies the DHIS2 connection, then forwards only what `src/lib/geoepi/paths.ts` allows.
+The DHIS2 token is never sent to GeoEpi. GeoEpi runs notebooks, so a route added to that
+list is reachable by every connected viewer; add the test with it.
+
 **Charts follow `docs/DESIGN.md`.** Colour is assigned by entity in a fixed, validated
 order and never cycled; there is never a second y-axis; every chart has a table view.
 Re-run the palette validator if you change a colour.
@@ -34,6 +39,13 @@ a chart that hides that is worse than no chart.
 - `src/components/query/` — the three pickers and the shared query state.
 - `src/lib/hooks.ts` — `useAsyncData` is the only place a fetch effect sets state; use it
   rather than writing another one.
+- `geoepi/` — the GeoEpi service (FastAPI + papermill + R notebooks), its own container
+  on the Compose network. Its viewer, `geoepi/app/static/index.html`, is framed by the
+  `/geoepi` page. It copies the colour roles from `src/app/globals.css` and follows the
+  shell's `data-theme`, so change both if you change a surface or ink colour.
+- The Maps page hands a map to GeoEpi (`POST /geoepi/api/datasets/dhis2-map`), then links
+  to `/geoepi?notebook=dhis2_map_explorer&dataset=…`; the page passes those two
+  parameters on to the viewer.
 
 ## Checks
 
@@ -43,6 +55,13 @@ npm run lint
 npm run build
 ```
 
-`npm test` covers the shaping functions, the pairwise quality checks and the proxy
-allowlist. It is fast and has no dependencies — keep it that way, and add to it when you
-touch `analytics.ts`, `quality.ts` or `paths.ts`.
+`npm test` covers the shaping functions, the pairwise quality checks and both proxy
+allowlists. It is fast and has no dependencies — keep it that way, and add to it when you
+touch `analytics.ts`, `quality.ts`, `dhis2/paths.ts` or `geoepi/paths.ts`.
+
+GeoEpi has its own checks (they need `pip install -r geoepi/requirements.txt`):
+
+```bash
+python geoepi/tests/test_api.py
+node geoepi/tests/test_lib.js
+```

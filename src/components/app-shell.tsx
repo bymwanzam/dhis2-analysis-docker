@@ -41,6 +41,7 @@ const NAV = [
   { href: "/explore", label: "Explore", icon: Activity },
   { href: "/pivot", label: "Pivot", icon: Grid3x3 },
   { href: "/maps", label: "Maps", icon: MapIcon },
+  { href: "/geoepi", label: "GeoEpi", icon: Microscope },
   { href: "/compare", label: "Compare", icon: Scale },
   { href: "/metadata", label: "Metadata", icon: Library },
 ] as const;
@@ -86,21 +87,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </Link>
               );
             })}
-            {/* GeoEpi is a separate full-page app served by the authenticated proxy route. */}
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-            <a
-              href="/geoepi/"
-              aria-current={pathname.startsWith("/geoepi") ? "page" : undefined}
-              className={cn(
-                "inline-flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium transition-colors",
-                pathname.startsWith("/geoepi")
-                  ? "bg-surface-2 text-ink"
-                  : "text-ink-2 hover:bg-surface-2 hover:text-ink",
-              )}
-            >
-              <Microscope className="size-4" aria-hidden />
-              GeoEpi
-            </a>
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">

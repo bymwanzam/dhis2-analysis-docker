@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import { readConnection } from "@/lib/dhis2/connection";
 import { Dhis2Error, dhis2Json } from "@/lib/dhis2/server";
+import { GEOEPI_VIEWER_PATH, isGeoEpiPathAllowed } from "@/lib/geoepi/paths";
 import { hasSameOrigin } from "@/lib/same-origin";
 
 export const dynamic = "force-dynamic";
@@ -11,32 +12,20 @@ const VERIFIED_FOR_MS = 60_000;
 const verifiedConnections = new Map<string, number>();
 const UPSTREAM = process.env.GEOEPI_UPSTREAM_URL ?? "http://localhost:8000";
 
-type RouteContext = { params: Promise<{ path?: string[] }> };
+/*
+ * /geoepi itself is the GeoEpi page in the app shell (../page.tsx), which
+ * frames the viewer from /geoepi/index.html. Everything under /geoepi/ is the
+ * service, reached through here.
+ */
+type RouteContext = { params: Promise<{ path: string[] }> };
 
-function isAllowed(method: string, path: string): boolean {
-  if (method === "GET") {
-    return (
-      path === "" ||
-      path === "lib.js" ||
-      path === "export.js" ||
-      /^vendor\/[A-Za-z0-9._-]+$/.test(path) ||
-      /^api\/(notebooks|datasets|jobs)$/.test(path) ||
-      /^api\/jobs\/[A-Za-z0-9_-]+(?:\/(?:log|download\.zip))?$/.test(path) ||
-      /^results\/[A-Za-z0-9_-]+\/.+$/.test(path)
-    );
-  }
-
-  return (
-    method === "POST" &&
-    [
-      "api/datasets",
-      "api/datasets/files",
-      "api/datasets/from-job",
-      "api/datasets/dhis2-map",
-      "api/jobs",
-    ].includes(path)
-  );
-}
+/**
+ * Shown inside the frame when the session lapses mid-visit. Redirecting to
+ * /connect would draw the whole app a second time inside the frame, so the
+ * link breaks out of it instead.
+ */
+const RECONNECT_PAGE = `<!doctype html><meta charset="utf-8"><body style="font:14px system-ui,sans-serif;padding:24px">
+<p>The DHIS2 connection has ended. <a href="/connect" target="_top">Connect again</a> to keep using GeoEpi.</p>`;
 
 async function connectionFailure(): Promise<NextResponse | null> {
   const connection = await readConnection();
@@ -79,8 +68,8 @@ async function connectionFailure(): Promise<NextResponse | null> {
 }
 
 async function proxy(request: Request, context: RouteContext): Promise<Response> {
-  const path = ((await context.params).path ?? []).join("/");
-  if (path.split("/").includes("..") || !isAllowed(request.method, path)) {
+  const path = (await context.params).path.join("/");
+  if (!isGeoEpiPathAllowed(request.method, path)) {
     return NextResponse.json({ error: "GeoEpi route not allowed." }, { status: 404 });
   }
 
@@ -94,12 +83,11 @@ async function proxy(request: Request, context: RouteContext): Promise<Response>
 
   const failed = await connectionFailure();
   if (failed) {
-    if (
-      request.method === "GET" &&
-      path === "" &&
-      request.headers.get("accept")?.includes("text/html")
-    ) {
-      return NextResponse.redirect(new URL("/connect", request.url));
+    if (request.method === "GET" && path === GEOEPI_VIEWER_PATH) {
+      return new Response(RECONNECT_PAGE, {
+        status: failed.status,
+        headers: { "content-type": "text/html; charset=utf-8" },
+      });
     }
     return failed;
   }

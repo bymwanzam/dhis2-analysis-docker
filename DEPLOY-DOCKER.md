@@ -2,7 +2,7 @@
 
 This project runs as a Docker Compose stack. DHIS2 Analysis and GeoEpi run in separate
 containers suited to their runtimes; only the Next.js app is published to the host. GeoEpi
-is available through the authenticated `/geoepi/` route, and its datasets and job outputs
+is available as the **GeoEpi** page of the app (`/geoepi`), and its datasets and job outputs
 persist in named volumes.
 
 ## What you need
@@ -26,8 +26,8 @@ The DHIS2 Analysis image runs the test suite before it is built. GeoEpi's first 
 build installs R spatial packages and can take 10–20 minutes.
 
 Stop it with `docker compose down`. GeoEpi datasets and run history are kept in named
-volumes. The GeoEpi service is not published as a separate host port; access it through
-the authenticated `/geoepi/` route after connecting to DHIS2.
+volumes. The GeoEpi service is not published as a separate host port; open the **GeoEpi**
+page after connecting to DHIS2.
 
 ## Settings
 

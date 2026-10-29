@@ -21,8 +21,15 @@ npm install
 npm run dev
 ```
 
-`npm run dev` starts the DHIS2 Analysis frontend only. Use `docker compose up -d --build`
-to run the complete integrated deployment, including the private GeoEpi service.
+`npm run dev` starts DHIS2 Analysis only. Use `docker compose up -d --build` to run the
+complete integrated deployment, including the private GeoEpi service. To work on both
+with `npm run dev`, start GeoEpi on port 8000 beside it — the app looks there unless
+`GEOEPI_UPSTREAM_URL` says otherwise:
+
+```bash
+docker compose build geoepi
+docker compose run --rm -p 127.0.0.1:8000:8000 geoepi
+```
 
 Open http://localhost:3000 and go to **Connection**. Enter:
 
@@ -60,7 +67,7 @@ Copy `.env.example` to `.env.local` for local development. Never commit a real t
 | **Explore** | Build a query (data × period × organisation unit) and read it as a trend, ranking, share, map, figures or table |
 | **Pivot** | Cross-tabulate any two dimensions of the same query, with a heat scale and totals |
 | **Maps** | Shade regions, districts or sub-districts (Levels 1–4) by a count, coverage or indicator; click to drill down, with areas lacking boundaries listed under the map |
-| **GeoEpi** | Run spatial epidemiology notebooks, view generated map layers, and download CSV, GeoJSON and GeoPackage outputs |
+| **GeoEpi** | Run spatial epidemiology notebooks, view generated map layers, and download CSV, GeoJSON and GeoPackage outputs — inside the app, in the same theme |
 | **Compare** | Check two data elements against each other and report the organisation units where the relationship breaks down |
 | **Metadata** | Search indicators, data elements, data sets, programs and organisation units; copy ids into a query |
 
@@ -73,7 +80,8 @@ map value together.
 1. Connect to DHIS2, then open **Maps** and choose a data item, period and organisation-unit scope.
 2. Select **Send to GeoEpi**. The selected values, organisation-unit hierarchy and available
    DHIS2 geometries are saved together as a GeoEpi dataset.
-3. Open it in GeoEpi and run **Module 6: DHIS2 Map Data Explorer**. The run makes the map
+3. Select **Open in GeoEpi**: the GeoEpi page opens with Module 6 and the new dataset
+   already chosen. Run **Module 6: DHIS2 Map Data Explorer**. The run makes the map
    available in the GeoEpi viewer and produces downloadable CSV, GeoJSON and GeoPackage
    files for GIS work.
 
@@ -94,8 +102,10 @@ integration for this project.
 4. Forwarded by `/api/dhis2/[...path]` under two rules: `GET` only, and only endpoints on
    the allowlist in `src/lib/dhis2/paths.ts`. Data writes, metadata imports, user
    management and maintenance endpoints are refused before the token is attached.
-5. GeoEpi runs on the private Compose network. Its `/geoepi/` route verifies the DHIS2
-   connection before proxying requests; the DHIS2 token is never forwarded to GeoEpi.
+5. GeoEpi runs on the private Compose network. The `/geoepi` page frames GeoEpi's viewer,
+   and everything under `/geoepi/` goes through a proxy that verifies the DHIS2
+   connection first and forwards only the routes in `src/lib/geoepi/paths.ts`. The DHIS2
+   token is never forwarded to GeoEpi.
 
 A DHIS2 redirect to a login page is treated as a rejected credential rather than as a
 successful response, which is how an invalid token usually presents itself.
@@ -163,6 +173,8 @@ npm test        # data-layer test suite (Node's built-in runner, no extra depend
 npm run lint    # ESLint
 ```
 
+GeoEpi has its own tests (Python and Node); see [geoepi/README.md](geoepi/README.md).
+
 ## Project layout
 
 ```
@@ -170,6 +182,8 @@ src/
   app/
     api/connection/        connection lifecycle: verify, store, clear
     api/dhis2/[...path]/   the read-only DHIS2 proxy
+    geoepi/page.tsx        the GeoEpi page, framing GeoEpi's viewer in the app shell
+    geoepi/[...path]/      the authenticated GeoEpi proxy
     connect|explore|pivot|maps|compare|metadata/
   components/
     charts/                chart primitives built on the palette in docs/DESIGN.md
@@ -177,8 +191,10 @@ src/
     ui/primitives.tsx      buttons, cards, inputs, segmented controls
   lib/
     dhis2/                 connection, server client, allowlist, analytics + quality
+    geoepi/paths.ts        the GeoEpi proxy allowlist
 tests/                     data-layer tests
 docs/DESIGN.md             palette, chart rules and why they are what they are
+geoepi/                    the GeoEpi service: FastAPI runner, viewer, R notebooks
 ```
 
 ## Stack

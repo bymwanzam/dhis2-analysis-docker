@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowUp, ChevronRight, Map as MapIcon, MapPinOff } from "lucide-react";
 import { ChartFrame, type ChartView } from "@/components/charts/chart-frame";
 import { ChoroplethMap, MapLegend } from "@/components/charts/choropleth-map";
@@ -78,6 +79,7 @@ const DEFAULT_STATE: MapsState = {
 export function MapsWorkbench() {
   const { status, loading: checking } = useConnection();
   const connected = status?.connected === true;
+  const router = useRouter();
   const [geoEpiDataset, setGeoEpiDataset] = React.useState<string | null>(null);
   const [sendingToGeoEpi, setSendingToGeoEpi] = React.useState(false);
   const [geoEpiError, setGeoEpiError] = React.useState<string | null>(null);
@@ -226,6 +228,22 @@ export function MapsWorkbench() {
   const format = (value: number) => formatMapValue(state.dataType, value);
   const nextLevel = scope && scope.level < MAX_MAP_LEVEL ? levelName(scope.level + 1) : null;
 
+  /** The map as GeoJSON: what the JSON download saves and what GeoEpi receives. */
+  function mapGeoJson(item: MapDataItem) {
+    return toMapGeoJson(model.all, model.values, {
+      name: item.displayName,
+      dataType: state.dataType,
+      dataTypeName:
+        MAP_DATA_TYPES.find((type) => type.value === state.dataType)?.label ?? state.dataType,
+      dataItemId: item.id,
+      dataItem: item.displayName,
+      periods: state.periods,
+      periodLabel: periodSummary,
+      organisationUnitLevel: shownLevel,
+      parentOrganisationUnit: parent?.name ?? null,
+    });
+  }
+
   async function sendToGeoEpi() {
     if (!state.item) return;
     setSendingToGeoEpi(true);
@@ -236,21 +254,7 @@ export function MapsWorkbench() {
       const response = await fetch("/geoepi/api/datasets/dhis2-map", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          toMapGeoJson(model.all, model.values, {
-            name: state.item.displayName,
-            dataType: state.dataType,
-            dataTypeName:
-              MAP_DATA_TYPES.find((type) => type.value === state.dataType)?.label ??
-              state.dataType,
-            dataItemId: state.item.id,
-            dataItem: state.item.displayName,
-            periods: state.periods,
-            periodLabel: periodSummary,
-            organisationUnitLevel: shownLevel,
-            parentOrganisationUnit: parent?.name ?? null,
-          }),
-        ),
+        body: JSON.stringify(mapGeoJson(state.item)),
       });
       const result = (await response.json()) as { id?: string; detail?: string; error?: string };
       if (!response.ok || !result.id) {
@@ -505,13 +509,11 @@ export function MapsWorkbench() {
                     <Button
                       size="sm"
                       variant="secondary"
-                      onClick={() => {
-                        // GeoEpi is a full-page app served by the proxy route, not a Next page.
-                        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-                        window.location.assign(
-                          `/geoepi/?notebook=dhis2_map_explorer&dataset=${encodeURIComponent(geoEpiDataset)}`,
-                        );
-                      }}
+                      onClick={() =>
+                        router.push(
+                          `/geoepi?notebook=dhis2_map_explorer&dataset=${encodeURIComponent(geoEpiDataset)}`,
+                        )
+                      }
                     >
                       Open in GeoEpi
                     </Button>
@@ -520,22 +522,7 @@ export function MapsWorkbench() {
                     size="sm"
                     variant="secondary"
                     onClick={() =>
-                      downloadJson(
-                        toMapGeoJson(model.all, model.values, {
-                          name: state.item!.displayName,
-                          dataType: state.dataType,
-                          dataTypeName:
-                            MAP_DATA_TYPES.find((type) => type.value === state.dataType)?.label ??
-                            state.dataType,
-                          dataItemId: state.item!.id,
-                          dataItem: state.item!.displayName,
-                          periods: state.periods,
-                          periodLabel: periodSummary,
-                          organisationUnitLevel: shownLevel,
-                          parentOrganisationUnit: parent?.name ?? null,
-                        }),
-                        `${stamped("dhis2-map")}.json`,
-                      )
+                      downloadJson(mapGeoJson(state.item!), `${stamped("dhis2-map")}.json`)
                     }
                     disabled={!model.all.some((unit) => unit.geometry)}
                     title="Export boundaries and map values together as GeoJSON"
