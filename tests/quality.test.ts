@@ -12,10 +12,12 @@ import { describe, it } from "node:test";
 import { parseAnalytics } from "@/lib/dhis2/analytics";
 import {
   compareItems,
+  compareMany,
   comparisonToCsv,
   differenceOverTime,
   hierarchyCell,
   hierarchyColumns,
+  multiComparisonToCsv,
   type ComparisonRow,
 } from "@/lib/dhis2/quality";
 import type { AnalyticsResponse } from "@/lib/dhis2/types";
@@ -364,6 +366,59 @@ describe("hierarchyColumns", () => {
     );
   });
 
+  describe("starts at the level of the query's root, not at level 1", () => {
+    // Analytics starts each path at the unit that was asked for.
+    const LEVELS: Record<string, number> = {
+      GH: 1,
+      UPPER_EAST: 2,
+      BAWKU: 3,
+      URBAN_WEST: 4,
+    };
+    const levelOf = (id: string): number | undefined => LEVELS[id];
+    const names = (id: string) => id.toLowerCase();
+    const cells = (r: ComparisonRow, levelOfFn = levelOf) =>
+      hierarchyColumns([r], levelName, levelOfFn).map((column) =>
+        hierarchyCell(r, column, names, levelOfFn),
+      );
+
+    it("my units = a region, by facility", () => {
+      const r = row("QUALITY_MC", ["UPPER_EAST", "BAWKU", "URBAN_WEST"]);
+      assert.deepEqual(
+        hierarchyColumns([r], levelName, levelOf).map((column) => column.label),
+        ["Region", "District", "Subdistrict", "Facility"],
+      );
+      assert.deepEqual(cells(r), ["upper_east", "bawku", "urban_west", "QUALITY_MC"]);
+    });
+
+    it("Ghana, by facility", () => {
+      const r = row("QUALITY_MC", ["GH", "UPPER_EAST", "BAWKU", "URBAN_WEST"]);
+      assert.deepEqual(
+        hierarchyColumns([r], levelName, levelOf).map((column) => column.label),
+        ["National", "Region", "District", "Subdistrict", "Facility"],
+      );
+      assert.deepEqual(cells(r), ["gh", "upper_east", "bawku", "urban_west", "QUALITY_MC"]);
+    });
+
+    it("a district, by facility", () => {
+      const r = row("QUALITY_MC", ["BAWKU", "URBAN_WEST"]);
+      assert.deepEqual(
+        hierarchyColumns([r], levelName, levelOf).map((column) => column.label),
+        ["District", "Subdistrict", "Facility"],
+      );
+      assert.deepEqual(cells(r), ["bawku", "urban_west", "QUALITY_MC"]);
+    });
+
+    it("places a level by the root's level when the rest are not yet known", () => {
+      const r = row("QUALITY_MC", ["UPPER_EAST", "BAWKU", "URBAN_WEST"]);
+      const rootOnly = (id: string) => (id === "UPPER_EAST" ? 2 : undefined);
+      assert.deepEqual(
+        hierarchyColumns([r], levelName, rootOnly).map((column) => column.label),
+        ["Region", "District", "Subdistrict", "Facility"],
+      );
+      assert.deepEqual(cells(r, rootOnly), ["upper_east", "bawku", "urban_west", "QUALITY_MC"]);
+    });
+  });
+
   it("keeps a level even when every row shares it", () => {
     // Facilities under one region. National and region read the same all the
     // way down, and are still shown: a row lifted out of this table has to
@@ -459,5 +514,141 @@ describe("hierarchyCell", () => {
     assert.equal(hierarchyCell(r, { level: 3, label: "District" }, upper), "bawku");
     assert.equal(hierarchyCell(r, { level: 9, label: "Level 9" }, upper), "");
     assert.equal(hierarchyCell(r, { level: 0, label: "Unit" }, upper), "F1");
+  });
+});
+
+describe("pair rules", () => {
+  const flags = (rule: Parameters<typeof compareItems>[1]["rule"]) =>
+    Object.fromEntries(
+      compareItems(parsed, { aId: SUSPECTED, bId: TESTED, rule }).rows.map((row) => [
+        row.id,
+        row.flag,
+      ]),
+    );
+
+  it("defaults to exact equality, exactly as before", () => {
+    assert.deepEqual(
+      compareItems(parsed, { aId: SUSPECTED, bId: TESTED, rule: { op: "eq" } }),
+      compareItems(parsed, { aId: SUSPECTED, bId: TESTED }),
+    );
+  });
+
+  it("passes A at least B, and fails A below B", () => {
+    assert.deepEqual(flags({ op: "gte" }), {
+      F_AGREE: "match",
+      F_OVER: "match",
+      F_UNDER: "mismatch",
+      F_HALF: "missing",
+    });
+  });
+
+  it("passes A at most B, and fails A above B", () => {
+    assert.equal(flags({ op: "lte" }).F_OVER, "mismatch");
+    assert.equal(flags({ op: "lte" }).F_UNDER, "match");
+  });
+
+  it("measures within-X% against the larger of the two", () => {
+    // 300 vs 260 is a 13.3% gap; 50 vs 58 is 13.8%.
+    assert.equal(flags({ op: "within", tolerance: 13.5 }).F_OVER, "match");
+    assert.equal(flags({ op: "within", tolerance: 13.5 }).F_UNDER, "mismatch");
+    assert.equal(flags({ op: "within", tolerance: 15 }).F_UNDER, "match");
+  });
+
+  it("treats a missing or negative tolerance as zero", () => {
+    assert.equal(flags({ op: "within" }).F_OVER, "mismatch");
+    assert.equal(flags({ op: "within", tolerance: -5 }).F_AGREE, "match");
+  });
+});
+
+describe("compareMany", () => {
+  const CONFIRMED = "CONF";
+  const three = parseAnalytics(
+    payload([
+      [SUSPECTED, "202401", "F_AGREE", "120"],
+      [TESTED, "202401", "F_AGREE", "120"],
+      [CONFIRMED, "202401", "F_AGREE", "120"],
+      [SUSPECTED, "202401", "F_OVER", "300"],
+      [TESTED, "202401", "F_OVER", "300"],
+      [CONFIRMED, "202401", "F_OVER", "350"],
+      [SUSPECTED, "202401", "F_UNDER", "50"],
+      [TESTED, "202401", "F_UNDER", "58"],
+      [CONFIRMED, "202401", "F_UNDER", "70"],
+      [SUSPECTED, "202401", "F_HALF", "75"],
+      [TESTED, "202401", "F_HALF", "75"],
+    ]),
+  );
+
+  it("says exactly what compareItems says for a single pair", () => {
+    const one = compareMany(parsed, {
+      referenceId: SUSPECTED,
+      pairs: [{ id: TESTED, rule: { op: "eq" } }],
+    });
+    const two = compareItems(parsed, { aId: SUSPECTED, bId: TESTED });
+    assert.deepEqual(one.pairs[0].result, two);
+    assert.deepEqual(
+      one.rows.map((row) => [row.id, row.flag, row.reference, row.pairs[0].value]),
+      two.rows.map((row) => [row.id, row.flag, row.a, row.b]),
+    );
+  });
+
+  it("flags a unit when any pair breaks, and records which", () => {
+    const result = compareMany(three, {
+      referenceId: SUSPECTED,
+      pairs: [
+        { id: TESTED, rule: { op: "eq" } },
+        { id: CONFIRMED, rule: { op: "eq" } },
+      ],
+    });
+    const byId = Object.fromEntries(result.rows.map((row) => [row.id, row]));
+
+    assert.equal(byId.F_AGREE.flag, "match");
+    assert.deepEqual(byId.F_OVER.failed, [1], "tested agrees, confirmed does not");
+    assert.equal(byId.F_OVER.flag, "mismatch");
+    assert.deepEqual(byId.F_UNDER.failed, [0, 1]);
+    assert.equal(byId.F_HALF.flag, "missing", "confirmed was never reported");
+    assert.deepEqual(result.summary.failuresByPair, [1, 2]);
+    assert.equal(result.summary.flagged, 2);
+    assert.equal(result.rows[0].id, "F_UNDER", "the unit with most broken pairs comes first");
+  });
+
+  it("judges each pair under its own rule", () => {
+    const result = compareMany(three, {
+      referenceId: SUSPECTED,
+      pairs: [
+        { id: TESTED, rule: { op: "eq" } },
+        { id: CONFIRMED, rule: { op: "lte" } },
+      ],
+    });
+    const byId = Object.fromEntries(result.rows.map((row) => [row.id, row]));
+    assert.deepEqual(byId.F_OVER.failed, [], "300 ≤ 350 passes");
+    assert.deepEqual(byId.F_UNDER.failed, [0]);
+  });
+
+  it("writes one value, difference and result per pair to CSV", () => {
+    const result = compareMany(three, {
+      referenceId: SUSPECTED,
+      pairs: [
+        { id: TESTED, rule: { op: "eq" } },
+        { id: CONFIRMED, rule: { op: "gte" } },
+      ],
+    });
+    const csv = multiComparisonToCsv(
+      result,
+      {
+        reference: "Suspected",
+        others: ["Tested", "Confirmed"],
+        levels: [{ level: 0, label: "Facility" }],
+      },
+      (id) => id,
+    ).split("\r\n");
+
+    assert.equal(
+      csv[0],
+      "Facility,Suspected,Tested,Difference (Suspected minus Tested),Result vs Tested (=),Confirmed,Difference (Suspected minus Confirmed),Result vs Confirmed (≥),Failed pairs,Finding",
+    );
+    assert.equal(
+      csv[1],
+      "Binduri CHPS,50,58,'-8,Breaks the rule,70,'-20,Breaks the rule,Tested; Confirmed,Breaks the rule",
+    );
   });
 });

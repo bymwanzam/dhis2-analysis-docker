@@ -45,7 +45,7 @@ const NAV = [
   { href: "/geoepi", label: "GeoEpi", icon: Microscope },
   { href: "/measles", label: "Measles", icon: Syringe },
   { href: "/compare", label: "Compare", icon: Scale },
-  { href: "/metadata", label: "Metadata", icon: Library },
+  // { href: "/metadata", label: "Metadata", icon: Library },
 ] as const;
 
 export function AppShell({ children }: { children: React.ReactNode }) {

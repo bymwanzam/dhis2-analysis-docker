@@ -12,7 +12,7 @@ import { DATA_SOURCES, findDataSource, toDimensionItem } from "./data-sources";
 /**
  * Picks exactly one data item.
  *
- * A comparison has two named sides rather than a list, so each side gets its
+ * A comparison has named sides rather than a list, so each side gets its
  * own slot, its own colour key and its own metadata type — comparing a raw
  * data element against the indicator calculated from it is a routine check.
  */
@@ -22,14 +22,17 @@ export function DataItemSlot({
   value,
   onChange,
   exclude,
+  action,
 }: {
   label: string;
   /** The colour this side wears in every chart on the page. */
   keyColor: string;
   value: DimensionItem | null;
   onChange: (item: DimensionItem | null) => void;
-  /** The other side, which cannot be picked twice. */
-  exclude?: string | null;
+  /** Items already chosen in other slots, which cannot be picked twice. */
+  exclude?: string | readonly string[] | null;
+  /** A control shown at the end of the label row, such as removing the slot. */
+  action?: React.ReactNode;
 }) {
   const [source, setSource] = React.useState<MetadataResource>("dataElements");
   const [term, setTerm] = React.useState("");
@@ -46,6 +49,7 @@ export function DataItemSlot({
   );
 
   const results = data?.items ?? [];
+  const excluded = exclude == null ? [] : typeof exclude === "string" ? [exclude] : exclude;
 
   return (
     <div>
@@ -55,7 +59,8 @@ export function DataItemSlot({
           className="size-2.5 shrink-0 rounded-full"
           style={{ background: keyColor }}
         />
-        {label}
+        <span className="min-w-0 flex-1">{label}</span>
+        {action}
       </p>
 
       {value ? (
@@ -119,14 +124,14 @@ export function DataItemSlot({
               <ul>
                 {results.map((item) => {
                   const entry = toDimensionItem(option, item);
-                  const taken = exclude === entry.id;
+                  const taken = excluded.includes(entry.id);
                   return (
                     <li key={item.id}>
                       <button
                         type="button"
                         disabled={taken}
                         onClick={() => onChange(entry)}
-                        title={taken ? "Already chosen on the other side" : entry.displayName}
+                        title={taken ? "Already chosen in another slot" : entry.displayName}
                         className={cn(
                           "w-full truncate px-3 py-1.5 text-left text-sm transition-colors",
                           taken
