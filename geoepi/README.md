@@ -5,10 +5,10 @@ DHIS2 Analysis. The original Modules 1–5 remain available, and Module 6 explor
 data sent directly from the DHIS2 Analysis Maps page.
 
 ## Start
-Run from the parent project root: `docker compose up -d --build`. Connect to DHIS2
+Run from the parent project root: `docker compose up -d --build`. Open DHIS2
 Analysis, then open **GeoEpi** in its navigation (`http://SERVER:3000/geoepi`). The viewer
 opens inside the app, in the same theme. The GeoEpi service is private to the Compose
-network and is reached through the authenticated parent app, which forwards only the
+network and is reached through the parent app, which forwards only the
 routes listed in `src/lib/geoepi/paths.ts`.
 The first Docker build installs the R packages (10–20 min). GeoEpi dataset and run data
 persist in named volumes.

@@ -111,8 +111,8 @@ integration for this project.
    the allowlist in `src/lib/dhis2/paths.ts`. Data writes, metadata imports, user
    management and maintenance endpoints are refused before the token is attached.
 5. GeoEpi runs on the private Compose network. The `/geoepi` page frames GeoEpi's viewer,
-   and everything under `/geoepi/` goes through a proxy that verifies the DHIS2
-   connection first and forwards only the routes in `src/lib/geoepi/paths.ts`. The DHIS2
+   and everything under `/geoepi/` goes through a proxy that forwards only the routes in
+   `src/lib/geoepi/paths.ts`. GeoEpi and Measles open without a DHIS2 connection. The DHIS2
    token is never forwarded to GeoEpi.
 
 A DHIS2 redirect to a login page is treated as a rejected credential rather than as a

@@ -15,9 +15,10 @@ nothing else, and every path is checked against the allowlist in
 that list would turn a viewer's session into a write credential — don't.
 
 **GeoEpi is reached only through its proxy.** `src/app/geoepi/[...path]/route.ts`
-verifies the DHIS2 connection, then forwards only what `src/lib/geoepi/paths.ts` allows.
-The DHIS2 token is never sent to GeoEpi. GeoEpi runs notebooks, so a route added to that
-list is reachable by every connected viewer; add the test with it.
+forwards only what `src/lib/geoepi/paths.ts` allows. It does not require a DHIS2
+connection, so `/geoepi` and `/measles` open for anyone who can reach the app. The DHIS2
+token is never sent to GeoEpi. GeoEpi runs notebooks, so a route added to that list is
+reachable by every visitor; add the test with it.
 
 **Charts follow `docs/DESIGN.md`.** Colour is assigned by entity in a fixed, validated
 order and never cycled; there is never a second y-axis; every chart has a table view.
