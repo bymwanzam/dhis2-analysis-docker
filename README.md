@@ -70,6 +70,7 @@ Copy `.env.example` to `.env.local` for local development. Never commit a real t
 | **GeoEpi** | Run spatial epidemiology notebooks, view generated map layers, and download CSV, GeoJSON and GeoPackage outputs — inside the app, in the same theme |
 | **Measles** | The Group 3 measles capstone (synthetic data): the Director's brief, then GeoEpi's measles data-preparation and modelling modules, ending in a ranked Northern Region decision table and 14-day microplan |
 | **Compare** | Check two data elements against each other and report the organisation units where the relationship breaks down |
+| **Holistic** | The GHS Holistic Assessment: score regional and district performance, peer review, and reports. Signs in with this app's DHIS2 connection; see [modules/holistic_assessment/README.md](modules/holistic_assessment/README.md) |
 | **Metadata** | Search indicators, data elements, data sets, programs and organisation units; copy ids into a query |
 
 Every chart can be read as a table. Metadata can be exported as CSV or JSON, and
@@ -114,6 +115,13 @@ integration for this project.
    and everything under `/geoepi/` goes through a proxy that forwards only the routes in
    `src/lib/geoepi/paths.ts`. GeoEpi and Measles open without a DHIS2 connection. The DHIS2
    token is never forwarded to GeoEpi.
+6. Holistic Assessment runs on the private Compose network with its own Postgres. The
+   `/holistic` page frames it, and `/holistic/` goes through a proxy that forwards only
+   the routes in `src/lib/holistic/paths.ts` and only the module's own session cookie.
+   To sign in, `POST /holistic/auth/connect` reads this app's connection on the server
+   and hands it to the module, server to server; the browser cannot reach the module's
+   own sign-in. The module holds the token in memory for its session and, like this app,
+   only reads from DHIS2. It is never given `DHIS2_TOKEN` through its environment.
 
 A DHIS2 redirect to a login page is treated as a rejected credential rather than as a
 successful response, which is how an invalid token usually presents itself.
@@ -182,6 +190,7 @@ npm run lint    # ESLint
 ```
 
 GeoEpi has its own tests (Python and Node); see [geoepi/README.md](geoepi/README.md).
+Holistic Assessment has its own (`cd modules/holistic_assessment && npm ci && npm test`).
 
 ## Project layout
 
@@ -192,6 +201,8 @@ src/
     api/dhis2/[...path]/   the read-only DHIS2 proxy
     geoepi/page.tsx        the GeoEpi page, framing GeoEpi's viewer in the app shell
     geoepi/[...path]/      the authenticated GeoEpi proxy
+    holistic/page.tsx      the Holistic Assessment page, framing the module
+    holistic/[...path]/    the Holistic Assessment proxy and connection handover
     connect|explore|pivot|maps|compare|metadata/
   components/
     charts/                chart primitives built on the palette in docs/DESIGN.md
@@ -200,9 +211,11 @@ src/
   lib/
     dhis2/                 connection, server client, allowlist, analytics + quality
     geoepi/paths.ts        the GeoEpi proxy allowlist
+    holistic/paths.ts      the Holistic Assessment proxy allowlist
 tests/                     data-layer tests
 docs/DESIGN.md             palette, chart rules and why they are what they are
 geoepi/                    the GeoEpi service: FastAPI runner, viewer, R notebooks
+modules/holistic_assessment/  the Holistic Assessment service: Express, React, Postgres
 ```
 
 ## Stack

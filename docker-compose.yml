@@ -14,9 +14,59 @@ services:
         required: false
     environment:
       GEOEPI_UPSTREAM_URL: http://geoepi:8000
+      HOLISTIC_UPSTREAM_URL: http://holistic:3000
     depends_on:
       geoepi:
         condition: service_healthy
+      holistic:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Holistic Assessment (modules/holistic_assessment): its own Node server and
+  # Postgres, reached only through the /holistic/ proxy in the app above. It
+  # signs in with the app's DHIS2 connection, so it is given DHIS2_BASE_URL and
+  # nothing else from .env — never DHIS2_TOKEN.
+  holistic:
+    build:
+      context: ./modules/holistic_assessment
+    image: dhis2-analysis-holistic:latest
+    container_name: dhis2-analysis-holistic
+    expose:
+      - "3000"
+    environment:
+      DATABASE_URL: postgres://ghsha:${HOLISTIC_DB_PASSWORD:-holistic}@holistic-db:5432/ghsha
+      DHIS2_BASE_URL: ${DHIS2_BASE_URL:-}
+      DHIS2_API_VERSION: ${HOLISTIC_DHIS2_API_VERSION:-41}
+      DHIS2_INSECURE: ${HOLISTIC_DHIS2_INSECURE:-false}
+      SESSION_TTL_HOURS: ${HOLISTIC_SESSION_TTL_HOURS:-8}
+      SECURE_COOKIES: ${COOKIE_SECURE:-false}
+      # Requests arrive from the app above, which passes the client address on.
+      TRUST_PROXY: "true"
+      EDIT_GROUPS: ${HOLISTIC_EDIT_GROUPS:-GHS HA Editors}
+      REVIEW_GROUPS: ${HOLISTIC_REVIEW_GROUPS:-GHS HA Reviewers}
+      ADMIN_GROUPS: ${HOLISTIC_ADMIN_GROUPS:-GHS HA Admins}
+      REQUIRE_APP_PERMISSION: ${HOLISTIC_REQUIRE_APP_PERMISSION:-false}
+    depends_on:
+      holistic-db:
+        condition: service_healthy
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  holistic-db:
+    image: postgres:17-alpine
+    container_name: dhis2-analysis-holistic-db
+    environment:
+      POSTGRES_DB: ghsha
+      POSTGRES_USER: ghsha
+      POSTGRES_PASSWORD: ${HOLISTIC_DB_PASSWORD:-holistic}
+    volumes:
+      - holistic-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ghsha -d ghsha"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
     restart: unless-stopped
 
   geoepi:
@@ -48,3 +98,4 @@ services:
 volumes:
   geoepi-data:
   geoepi-jobs:
+  holistic-pgdata:

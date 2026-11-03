@@ -1,0 +1,424 @@
+.header {
+    margin-block-end: var(--spacers-dp16);
+}
+
+.title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ghs-brand-ink);
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--colors-grey600);
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--spacers-dp48);
+}
+
+/*
+ * The headline card takes its colour from `data-performance`. The category is
+ * spelled out inside it, so the colour ranks the card at a glance without ever
+ * being the only thing that says how the region is doing.
+ */
+.card {
+    padding: var(--spacers-dp16);
+    border-radius: var(--ghs-radius-card);
+    background: var(--colors-white);
+    border: 1px solid var(--ghs-line);
+    border-block-start: 4px solid var(--ghs-perf);
+    margin-block-end: var(--spacers-dp16);
+    box-shadow: var(--ghs-shadow-card);
+}
+
+/*
+ * The one panel on the page filled by a single band, so it takes the deeper
+ * `-surface` fill rather than the near-white tint the chips use. Its own ink
+ * clears 6.2:1 on it, and the category is written out inside the panel.
+ */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacers-dp16);
+    flex-wrap: wrap;
+    padding: var(--spacers-dp16);
+    border-radius: 6px;
+    background: var(--ghs-perf-surface);
+}
+
+.heroName {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ghs-perf-ink);
+}
+
+.heroMeta {
+    margin-block-start: 4px;
+    font-size: 13px;
+    color: var(--ghs-perf-ink);
+    opacity: 0.85;
+}
+
+.heroScore {
+    text-align: end;
+}
+
+/* The one number the page leads with. Proportional figures: it stands alone. */
+.heroValue {
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ghs-perf-ink);
+}
+
+.heroCategory {
+    margin-block-start: 2px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ghs-perf-ink);
+}
+
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--spacers-dp8);
+    margin-block-start: var(--spacers-dp16);
+}
+
+.tile {
+    text-align: center;
+    padding: var(--spacers-dp12) var(--spacers-dp8);
+    border-radius: 6px;
+    background: var(--colors-grey050);
+    border: 1px solid var(--colors-grey200);
+}
+
+.tileValue {
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--colors-grey900);
+}
+
+/* A comparison against the national average is a direction, so it is signed. */
+.tileValue[data-tone='up'] {
+    color: var(--ghs-perf-high-ink);
+}
+
+.tileValue[data-tone='down'] {
+    color: var(--ghs-perf-under-ink);
+}
+
+.tileLabel {
+    margin-block-start: 2px;
+    font-size: 12px;
+    color: var(--colors-grey600);
+}
+
+.panel {
+    padding: var(--spacers-dp16);
+    border-radius: var(--ghs-radius-card);
+    background: var(--colors-white);
+    border: 1px solid var(--ghs-line);
+    margin-block-end: var(--spacers-dp16);
+    box-shadow: var(--ghs-shadow-card);
+}
+
+.panelTitle {
+    margin: 0 0 var(--spacers-dp12);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--colors-grey900);
+}
+
+.objectives {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacers-dp12);
+}
+
+/*
+ * Two encodings, deliberately: the top rule is the objective's own identity
+ * hue, the number is the performance category. One says which objective, the
+ * other says how it is doing.
+ */
+.objective {
+    padding: var(--spacers-dp12);
+    border-radius: 6px;
+    background: var(--colors-grey050);
+    border: 1px solid var(--colors-grey200);
+    border-block-start: 3px solid var(--ghs-accent);
+}
+
+.objectiveValue {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ghs-perf-ink);
+}
+
+.objectiveTitle {
+    margin-block-start: 4px;
+    font-size: 13px;
+    color: var(--colors-grey800);
+    line-height: 1.4;
+}
+
+.objectiveMeta {
+    margin-block-start: 6px;
+    font-size: 12px;
+    color: var(--colors-grey600);
+}
+
+/* Where the tier below stands, one row each: regions for a national user,
+   districts for a regional one. */
+.tableWrapper {
+    inline-size: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--colors-grey300);
+    border-radius: 6px;
+}
+
+.table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.table th {
+    background: var(--ghs-brand);
+    text-align: start;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--colors-white);
+    padding: var(--spacers-dp8) var(--spacers-dp12);
+    white-space: nowrap;
+}
+
+.table td,
+.table tbody th {
+    padding: var(--spacers-dp8) var(--spacers-dp12);
+    border-block-start: 1px solid var(--colors-grey200);
+    color: var(--colors-grey900);
+}
+
+/* The unit name is the row's heading, so it is a th, but reads as a cell. */
+.table tbody th {
+    background: none;
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--colors-grey900);
+    white-space: normal;
+}
+
+.table tbody tr:hover {
+    background: var(--colors-grey050);
+}
+
+.numeric {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+}
+
+/*
+ * The score cell is filled with its band and carries that band's ink. The
+ * column beside it spells the band out, so the fill is a second reading of
+ * something already written down rather than the only place it is said.
+ */
+.score {
+    text-align: end;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    background: var(--ghs-perf-bg);
+    color: var(--ghs-perf-ink);
+    box-shadow: inset 3px 0 0 var(--ghs-perf);
+}
+
+.table tbody tr:hover .score {
+    background: var(--ghs-perf-surface);
+}
+
+/* ------------------------------------------------------------------ finish
+ * Presentation only, layered over the rules above. The band colours and the
+ * written-out categories are unchanged; this is depth, shape and motion.
+ */
+
+.card {
+    padding: 20px;
+    border-block-start-width: 0;
+    border-radius: var(--ghs-radius-card);
+    overflow: hidden;
+    position: relative;
+}
+
+/* The band's colour, as a slim bar across the top of the card. */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    block-size: 5px;
+    background: var(--ghs-perf);
+}
+
+/*
+ * The hero keeps the band's own `-surface` fill (its ink clears 6.2:1 on
+ * it). A white sheen and two faint rings sit on top; both only lighten the
+ * fill, so the ink's contrast can only go up.
+ */
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 26px 28px;
+    border-radius: 12px;
+    isolation: isolate;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(420px 220px at 0% 0%, rgba(255, 255, 255, 0.55), transparent 70%),
+        linear-gradient(120deg, rgba(255, 255, 255, 0.25), transparent 60%);
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inline-size: 260px;
+    block-size: 260px;
+    inset-block-start: -90px;
+    inset-inline-end: -60px;
+    border-radius: 50%;
+    border: 28px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 0 0 46px rgba(255, 255, 255, 0.12);
+}
+
+.heroName {
+    font-size: 30px;
+    letter-spacing: -0.02em;
+}
+
+.heroValue {
+    font-size: 64px;
+    letter-spacing: -0.03em;
+    animation: ghs-rise 0.6s var(--ghs-ease) both;
+}
+
+.heroCategory {
+    display: inline-block;
+    margin-block-start: 6px;
+    padding: 3px 12px;
+    border-radius: var(--ghs-radius-pill);
+    background: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+}
+
+.tiles {
+    gap: 12px;
+    margin-block-start: 18px;
+}
+
+.tile {
+    padding: 16px 12px;
+    border-radius: 12px;
+    background: var(--colors-white);
+    border: 1px solid var(--ghs-line);
+    box-shadow: 0 1px 2px rgba(16, 40, 26, 0.04);
+    transition:
+        transform 0.2s var(--ghs-ease),
+        box-shadow 0.2s var(--ghs-ease);
+}
+
+.tile:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ghs-shadow-raised);
+}
+
+.tileValue {
+    font-size: 26px;
+    letter-spacing: -0.02em;
+}
+
+.panel {
+    padding: 20px;
+}
+
+.panelTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ghs-brand-ink);
+}
+
+.objectives {
+    gap: 14px;
+}
+
+.objective {
+    position: relative;
+    padding: 18px 18px 16px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--ghs-accent-tint), var(--colors-white) 70%);
+    border: 1px solid var(--ghs-line);
+    border-block-start: 4px solid var(--ghs-accent);
+    transition:
+        transform 0.2s var(--ghs-ease),
+        box-shadow 0.2s var(--ghs-ease);
+}
+
+.objective:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ghs-shadow-raised);
+}
+
+.objectiveValue {
+    font-size: 36px;
+    letter-spacing: -0.02em;
+}
+
+.tableWrapper {
+    border-color: var(--ghs-line);
+    border-radius: 12px;
+}
+
+.table th {
+    background: var(--ghs-brand-gradient);
+    padding-block: 11px;
+}
+
+.table td,
+.table tbody th {
+    padding-block: 11px;
+}
+
+.table tbody tr {
+    transition: background-color 0.15s var(--ghs-ease);
+}
+
+@media (max-width: 600px) {
+    .hero {
+        padding: 20px;
+    }
+
+    .heroValue {
+        font-size: 48px;
+    }
+
+    .heroScore {
+        text-align: start;
+    }
+}

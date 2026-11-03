@@ -1,0 +1,288 @@
+/* Sign-in: a branded panel beside the form; stacked on a phone. */
+.page {
+    min-block-size: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    background: var(--ghs-canvas);
+}
+
+/* ------------------------------------------------------------ showcase */
+
+.showcase {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 48px clamp(32px, 6vw, 88px);
+    background: var(--ghs-brand-gradient);
+    color: #fff;
+    isolation: isolate;
+}
+
+/* Large soft rings echoing the brand mark. Decorative only. */
+.showcase::before,
+.showcase::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.showcase::before {
+    inline-size: 560px;
+    block-size: 560px;
+    inset-block-end: -240px;
+    inset-inline-end: -200px;
+    border: 70px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 0 90px rgba(255, 255, 255, 0.025);
+}
+.showcase::after {
+    inline-size: 260px;
+    block-size: 260px;
+    inset-block-start: -110px;
+    inset-inline-start: -90px;
+    border: 40px solid rgba(127, 211, 155, 0.12);
+}
+
+.showcaseInner {
+    max-inline-size: 520px;
+    animation: ghs-rise 0.6s var(--ghs-ease) both;
+}
+
+.showcaseBrand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.showcaseTitle {
+    margin: 28px 0 12px;
+    font-size: clamp(34px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+}
+
+.showcaseLead {
+    margin: 0 0 36px;
+    font-size: 17px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+}
+
+.feature {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    line-height: 1.5;
+    backdrop-filter: blur(2px);
+}
+
+.feature strong {
+    display: block;
+    font-weight: 600;
+    color: #fff;
+}
+
+.featureBody {
+    color: rgba(255, 255, 255, 0.84);
+}
+
+.featureDot {
+    flex: 0 0 auto;
+    inline-size: 12px;
+    block-size: 12px;
+    margin-block-start: 5px;
+    border-radius: 50%;
+    background: #7fd39b;
+    box-shadow: 0 0 0 4px rgba(127, 211, 155, 0.2);
+}
+.featureDot[data-dot='2'] {
+    background: #8ab8f0;
+    box-shadow: 0 0 0 4px rgba(138, 184, 240, 0.2);
+}
+.featureDot[data-dot='3'] {
+    background: #f6a961;
+    box-shadow: 0 0 0 4px rgba(246, 169, 97, 0.2);
+}
+
+/* ---------------------------------------------------------------- form */
+
+.formSide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+}
+
+.card {
+    inline-size: 100%;
+    max-inline-size: 400px;
+    padding: 36px 32px 28px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid var(--ghs-line);
+    box-shadow: var(--ghs-shadow-raised);
+    animation: ghs-rise 0.5s 0.1s var(--ghs-ease) both;
+}
+
+.mobileBrand {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    margin-block-end: 24px;
+}
+
+.mobileTitle {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ghs-brand-ink);
+}
+
+.mobileSubtitle {
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--colors-grey700);
+}
+
+.formTitle {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ghs-brand-ink);
+}
+
+.lead {
+    margin: 6px 0 24px;
+    font-size: 14px;
+    color: var(--colors-grey700);
+}
+
+.notice {
+    margin-block-end: 16px;
+}
+
+.field {
+    margin-block-start: 14px;
+}
+
+.submit {
+    margin-block-start: 24px;
+    inline-size: 100%;
+}
+
+
+/* -------------------------------------------------------------- narrow */
+
+@media (max-width: 900px) {
+    .page {
+        grid-template-columns: 1fr;
+        background:
+            radial-gradient(600px 260px at 50% -80px, rgba(11, 107, 53, 0.14), transparent 70%),
+            var(--ghs-canvas);
+    }
+
+    .showcase {
+        display: none;
+    }
+
+    .mobileBrand {
+        display: flex;
+    }
+
+    .formSide {
+        min-block-size: 100vh;
+        padding: 24px 16px;
+        box-sizing: border-box;
+    }
+
+    .card {
+        padding: 28px 22px 22px;
+    }
+}
+
+/* ---------------------------------------------------- token and how-to */
+
+.tokenRow {
+    position: relative;
+}
+
+/* Sits over the token input's right edge, level with the field. */
+.reveal {
+    position: absolute;
+    inset-inline-end: 6px;
+    inset-block-end: 6px;
+    padding: 5px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--ghs-brand-tint);
+    color: var(--ghs-brand-ink);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.reveal:hover {
+    background: var(--ghs-brand-border);
+}
+
+.reveal:focus-visible {
+    outline: 2px solid var(--ghs-brand);
+    outline-offset: 1px;
+}
+
+.howTo {
+    margin-block-start: 20px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--ghs-canvas);
+    border: 1px solid var(--ghs-line);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--colors-grey800);
+}
+
+.howTo summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--ghs-brand-ink);
+}
+
+.howTo ol {
+    margin: 10px 0 8px;
+    padding-inline-start: 20px;
+}
+
+.howTo li + li {
+    margin-block-start: 4px;
+}
+
+.howTo p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--colors-grey700);
+}
+
+/* Long tokens must not run under the Show button. */
+.tokenRow :global(input) {
+    padding-inline-end: 64px;
+}

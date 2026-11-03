@@ -10,6 +10,8 @@ const eslintConfig = defineConfig([
     // Default ignores of eslint-config-next:
     ".next/**",
     "geoepi/**",
+    // Its own app with its own ESLint config: cd modules/holistic_assessment && npm run lint
+    "modules/**",
     "out/**",
     "build/**",
     "next-env.d.ts",

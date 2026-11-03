@@ -20,6 +20,14 @@ connection, so `/geoepi` and `/measles` open for anyone who can reach the app. T
 token is never sent to GeoEpi. GeoEpi runs notebooks, so a route added to that list is
 reachable by every visitor; add the test with it.
 
+**Holistic Assessment signs in only with this app's connection.**
+`src/app/holistic/[...path]/route.ts` forwards only what `src/lib/holistic/paths.ts`
+allows, and only the module's `ghsha_sid` cookie, never `dhis2_conn`. The one way in is
+`POST /holistic/auth/connect`, which reads `readConnection()` on the server and posts it to
+the module's `/auth/login`; keep `auth/login` off the allowlist. The module
+(`modules/holistic_assessment/`) gets `DHIS2_BASE_URL` from Compose, never `DHIS2_TOKEN`.
+It writes to its own Postgres, not to DHIS2; its DHIS2 pass-through stays GET-only.
+
 **Charts follow `docs/DESIGN.md`.** Colour is assigned by entity in a fixed, validated
 order and never cycled; there is never a second y-axis; every chart has a table view.
 Re-run the palette validator if you change a colour.
@@ -61,7 +69,14 @@ npm run build
 
 `npm test` covers the shaping functions, the pairwise quality checks and both proxy
 allowlists. It is fast and has no dependencies — keep it that way, and add to it when you
-touch `analytics.ts`, `quality.ts`, `dhis2/paths.ts` or `geoepi/paths.ts`.
+touch `analytics.ts`, `quality.ts`, `dhis2/paths.ts`, `geoepi/paths.ts` or
+`holistic/paths.ts`.
+
+Holistic Assessment has its own checks:
+
+```bash
+cd modules/holistic_assessment && npm ci && npm test && npm run lint
+```
 
 GeoEpi has its own checks (they need `pip install -r geoepi/requirements.txt`):
 

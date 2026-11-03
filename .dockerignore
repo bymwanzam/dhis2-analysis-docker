@@ -8,3 +8,4 @@ node_modules
 Dockerfile
 docker-compose.yml
 DEPLOY-DOCKER.md
+/modules

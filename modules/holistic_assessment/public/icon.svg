@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="GHS Holistic Assessment">
+    <title>GHS Holistic Assessment</title>
+    <defs>
+        <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#173a5e"/>
+            <stop offset="1" stop-color="#0c2034"/>
+        </linearGradient>
+    </defs>
+    <rect width="192" height="192" rx="42" fill="url(#ground)"/>
+    <path d="M 102.081 18.739 A 77.5 77.5 0 0 1 165.950 129.365 L 142.483 118.171 A 51.5 51.5 0 0 0 100.041 44.659 Z" fill="#5aa2f0"/>
+    <path d="M 159.870 139.896 A 77.5 77.5 0 0 1 32.130 139.896 L 53.558 125.170 A 51.5 51.5 0 0 0 138.442 125.170 Z" fill="#9b8ce8"/>
+    <path d="M 26.050 129.365 A 77.5 77.5 0 0 1 89.919 18.739 L 91.959 44.659 A 51.5 51.5 0 0 0 49.517 118.171 Z" fill="#f0709d"/>
+    <circle cx="96" cy="96" r="16.5" fill="#ffffff"/>
+</svg>

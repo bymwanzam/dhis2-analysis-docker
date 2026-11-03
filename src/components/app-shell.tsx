@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   Activity,
   Check,
+  ClipboardCheck,
   Grid3x3,
   LayoutDashboard,
   Library,
@@ -45,6 +46,7 @@ const NAV = [
   { href: "/geoepi", label: "GeoEpi", icon: Microscope },
   { href: "/measles", label: "Measles", icon: Syringe },
   { href: "/compare", label: "Compare", icon: Scale },
+  { href: "/holistic", label: "Holistic", icon: ClipboardCheck },
   // { href: "/metadata", label: "Metadata", icon: Library },
 ] as const;
 

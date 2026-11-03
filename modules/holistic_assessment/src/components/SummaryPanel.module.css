@@ -1,0 +1,164 @@
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp16);
+}
+
+/*
+ * The headline takes its colour from `data-performance`, so the score reads as
+ * its category at a glance - always next to that category's own words, never as
+ * colour alone.
+ */
+.headline {
+    padding: var(--spacers-dp16);
+    border-radius: 6px;
+    background: var(--ghs-perf-bg);
+    border: 1px solid var(--ghs-perf);
+    border-inline-start-width: 4px;
+}
+
+.indexRow {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacers-dp8);
+    flex-wrap: wrap;
+}
+
+.indexValue {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ghs-perf-ink);
+}
+
+.bandChip {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ghs-perf-ink);
+    background: var(--colors-white);
+    border: 1px solid var(--ghs-perf);
+    border-radius: 10px;
+    padding: 1px 8px;
+    white-space: nowrap;
+}
+
+.indexLabel {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ghs-perf-ink);
+    margin-block-end: 4px;
+}
+
+.indexTrack {
+    position: relative;
+    block-size: 6px;
+    border-radius: 3px;
+    background: var(--colors-white);
+    border: 1px solid var(--ghs-perf);
+    margin-block-start: var(--spacers-dp8);
+    overflow: hidden;
+}
+
+.indexFill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    border-start-end-radius: 3px;
+    border-end-end-radius: 3px;
+    background: var(--ghs-perf);
+    transition: inline-size 200ms ease;
+}
+
+.raw {
+    margin-block-start: 6px;
+    font-size: 13px;
+    color: var(--ghs-perf-ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.objective {
+    padding-block: var(--spacers-dp8);
+    border-block-end: 1px solid var(--colors-grey200);
+}
+
+.objective:last-child {
+    border-block-end: none;
+}
+
+.objectiveHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--spacers-dp8);
+}
+
+.objectiveTitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--colors-grey900);
+}
+
+/* The objective's own hue, so its bar below is never identified by colour alone. */
+.dot {
+    inline-size: 8px;
+    block-size: 8px;
+    border-radius: 50%;
+    background: var(--ghs-accent);
+    flex: none;
+}
+
+.objectiveScore {
+    font-size: 13px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.meta {
+    margin-block-start: 2px;
+    font-size: 12px;
+    color: var(--colors-grey600);
+    font-variant-numeric: tabular-nums;
+}
+
+.bar {
+    position: relative;
+    block-size: 6px;
+    border-radius: 3px;
+    background: var(--ghs-track);
+    margin-block-start: 6px;
+    overflow: hidden;
+}
+
+.barFill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    border-radius: 3px;
+    background: var(--ghs-accent);
+    transition: inline-size 200ms ease;
+}
+
+.midpoint {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 50%;
+    inline-size: 1px;
+    background: var(--colors-white);
+    z-index: 1;
+}
+
+.sectionTitle {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--colors-grey700);
+    margin-block-end: var(--spacers-dp4);
+}

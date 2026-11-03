@@ -1,0 +1,287 @@
+/*
+ * GHS Holistic Assessment palette.
+ *
+ * DHIS2's own palette (`CssVariables colors`) ships only blue, teal, green,
+ * yellow, red and grey, and the app needs a few colours it does not have — the
+ * three objectives need identities of their own, the chrome needs the service's
+ * green, and peer-review annotation needs a hue that is neither an objective nor
+ * a score. Everything the app colours is defined here so those systems never
+ * quietly disagree; earlier components referenced `--colors-purple*`, which
+ * DHIS2 does not define, so those rules rendered with no colour at all.
+ *
+ * Every value below was checked rather than chosen by eye, with WCAG contrast
+ * and CIEDE2000 under Viénot–Brettel–Mollon dichromat simulation: the three
+ * objective accents are a categorical triple whose worst all-pairs separation
+ * is ΔE 21.0 (protanopia, green against orange) and ΔE 45.7 in normal vision,
+ * each ≥3.4:1 on white; the outcome ramp is a diverging green↔red with a grey
+ * midpoint whose poles clear CVD separation because the arms differ in
+ * lightness as well as hue (ΔE 11.6); and every ink sits at ≥4.5:1 on its own
+ * tint and on its own filled surface.
+ *
+ * Green and orange are the classic protanopia confusion pair, so objective 1 is
+ * a deep green rather than a bright one: its separation from objective 3 is
+ * carried by lightness, which protanopia leaves intact, rather than by hue,
+ * which it does not.
+ *
+ * Two colours are deliberately below 3:1 on white — the light green +1 accent
+ * and the amber "watch" band. Both are the documented status case: they only
+ * ever appear beside their own printed label or number, so colour never has to
+ * carry the meaning on its own.
+ */
+
+:root {
+    /*
+     * The service's green, used for chrome only — the sidebar's current page,
+     * table headers, the brand mark. It never encodes a value, so it is free to
+     * sit near objective 1's green without anything having to tell the two
+     * apart. White clears 6.6:1 on it.
+     */
+    --ghs-brand: #0b6b35;
+    --ghs-brand-tint: #e9f4ed;
+    --ghs-brand-border: #b7ddc6;
+    --ghs-brand-ink: #08431f;
+
+    /*
+     * Objective identities. Categorical, so they are assigned in a fixed order
+     * and never cycled: objective 1 is always green, 2 always blue, 3 always
+     * orange, in the sidebar, the tabs, the tables, the summary and the
+     * dashboard alike.
+     */
+    --ghs-obj1: #14532d;
+    --ghs-obj1-tint: #e8f2ec;
+    --ghs-obj1-border: #b9d8c6;
+    --ghs-obj1-ink: #103f23;
+
+    --ghs-obj2: #2a78d6;
+    --ghs-obj2-tint: #eef4fd;
+    --ghs-obj2-border: #c3daf6;
+    --ghs-obj2-ink: #1d4f8f;
+
+    --ghs-obj3: #dc6803;
+    --ghs-obj3-tint: #fdf1e3;
+    --ghs-obj3-border: #f3d5ab;
+    --ghs-obj3-ink: #8a4408;
+
+    /*
+     * Where a row's value comes from. Teal for a row analytics fills in,
+     * amber for one somebody has to type — a distinction the data-entry user
+     * makes on every screen, so it is worth a colour.
+     */
+    --ghs-dhis2: #00796b;
+    --ghs-dhis2-tint: #e7f4f2;
+    --ghs-dhis2-border: #a8d5cf;
+    --ghs-dhis2-ink: #00504a;
+
+    --ghs-manual: #b45309;
+    --ghs-manual-tint: #fdf3e4;
+    --ghs-manual-border: #f0d8ac;
+    --ghs-manual-ink: #8a3f07;
+
+    /*
+     * Outcome ramp, -2..+2. Diverging: two hues meeting at a grey midpoint,
+     * never a rainbow. The positive arm is the lighter one and the negative arm
+     * the darker, so the two poles stay apart under red-green colour blindness
+     * where the hues themselves collapse.
+     */
+    --ghs-score-2: #43a047;
+    --ghs-score-2-tint: #e4f4e5;
+    --ghs-score-2-ink: #14471a;
+
+    --ghs-score-1: #8bcb8e;
+    --ghs-score-1-tint: #f2faf2;
+    --ghs-score-1-ink: #1f6626;
+
+    --ghs-score-0: #9aa5b4;
+    --ghs-score-0-tint: #f3f5f7;
+    --ghs-score-0-ink: #404b5a;
+
+    --ghs-score-neg1: #d76b6b;
+    --ghs-score-neg1-tint: #fdeded;
+    --ghs-score-neg1-ink: #a52121;
+
+    --ghs-score-neg2: #b71c1c;
+    --ghs-score-neg2-tint: #f7d9d9;
+    --ghs-score-neg2-ink: #7a1212;
+
+    /*
+     * The five performance categories, worst to best. An ordered scale, so it
+     * steps through the same red-amber-green the outcome ramp uses rather than
+     * inventing a sixth and seventh hue; every place it appears prints the
+     * category's name beside it.
+     *
+     * Each band carries two fills rather than one. `-tint` is the near-white
+     * wash behind a chip or a table cell, where bands sit next to each other and
+     * have to stay apart. `-surface` is a deeper fill for a single large panel
+     * showing one band — the dashboard hero — where near-white read as no
+     * colour at all; every ink clears 6.2:1 on its own surface. Adjacent
+     * surfaces are close (severe and under are ΔE 3.6 apart), which is why
+     * `-surface` is only ever used where one band fills the panel and its name
+     * is printed inside it.
+     */
+    --ghs-perf-severe: #b71c1c;
+    --ghs-perf-severe-tint: #f7d9d9;
+    --ghs-perf-severe-surface: #f0c4c4;
+    --ghs-perf-severe-ink: #7a1212;
+
+    --ghs-perf-under: #d76b6b;
+    --ghs-perf-under-tint: #fdeded;
+    --ghs-perf-under-surface: #f6d2d2;
+    --ghs-perf-under-ink: #a52121;
+
+    --ghs-perf-sustained: #f0a202;
+    --ghs-perf-sustained-tint: #fdf3e0;
+    --ghs-perf-sustained-surface: #fbe2b0;
+    --ghs-perf-sustained-ink: #7a4a04;
+
+    --ghs-perf-moderate: #8bcb8e;
+    --ghs-perf-moderate-tint: #f2faf2;
+    --ghs-perf-moderate-surface: #c3e5c5;
+    --ghs-perf-moderate-ink: #1f6626;
+
+    --ghs-perf-high: #43a047;
+    --ghs-perf-high-tint: #e4f4e5;
+    --ghs-perf-high-surface: #a5daa8;
+    --ghs-perf-high-ink: #14471a;
+
+    /*
+     * Peer review. Its own hue so a reviewer's annotation is never mistaken for
+     * an objective or a score — this is what the phantom `--colors-purple*`
+     * rules were reaching for.
+     */
+    --ghs-review: #7b3fa0;
+    --ghs-review-tint: #f6eefb;
+    --ghs-review-border: #e0cbee;
+    --ghs-review-ink: #54216f;
+
+    /* A row the reviewer flagged for correction. */
+    --ghs-flagged-tint: #fff8e6;
+    --ghs-flagged-border: #f3dfa8;
+
+    /* Unfilled meter track: a light step of the ramp its fill comes from. */
+    --ghs-track: #e6eaef;
+}
+
+/*
+ * Objective accents are addressed through `data-objective`, so a component only
+ * has to say which objective it is showing and every rule inside it picks up
+ * the right hue from `--ghs-accent`.
+ */
+[data-objective='1'] {
+    --ghs-accent: var(--ghs-obj1);
+    --ghs-accent-tint: var(--ghs-obj1-tint);
+    --ghs-accent-border: var(--ghs-obj1-border);
+    --ghs-accent-ink: var(--ghs-obj1-ink);
+}
+
+[data-objective='2'] {
+    --ghs-accent: var(--ghs-obj2);
+    --ghs-accent-tint: var(--ghs-obj2-tint);
+    --ghs-accent-border: var(--ghs-obj2-border);
+    --ghs-accent-ink: var(--ghs-obj2-ink);
+}
+
+[data-objective='3'] {
+    --ghs-accent: var(--ghs-obj3);
+    --ghs-accent-tint: var(--ghs-obj3-tint);
+    --ghs-accent-border: var(--ghs-obj3-border);
+    --ghs-accent-ink: var(--ghs-obj3-ink);
+}
+
+/* And the performance categories, from `data-performance`. */
+[data-performance='SEVERE'] {
+    --ghs-perf: var(--ghs-perf-severe);
+    --ghs-perf-bg: var(--ghs-perf-severe-tint);
+    --ghs-perf-surface: var(--ghs-perf-severe-surface);
+    --ghs-perf-ink: var(--ghs-perf-severe-ink);
+}
+
+[data-performance='UNDER'] {
+    --ghs-perf: var(--ghs-perf-under);
+    --ghs-perf-bg: var(--ghs-perf-under-tint);
+    --ghs-perf-surface: var(--ghs-perf-under-surface);
+    --ghs-perf-ink: var(--ghs-perf-under-ink);
+}
+
+[data-performance='SUSTAINED'] {
+    --ghs-perf: var(--ghs-perf-sustained);
+    --ghs-perf-bg: var(--ghs-perf-sustained-tint);
+    --ghs-perf-surface: var(--ghs-perf-sustained-surface);
+    --ghs-perf-ink: var(--ghs-perf-sustained-ink);
+}
+
+[data-performance='MODERATE'] {
+    --ghs-perf: var(--ghs-perf-moderate);
+    --ghs-perf-bg: var(--ghs-perf-moderate-tint);
+    --ghs-perf-surface: var(--ghs-perf-moderate-surface);
+    --ghs-perf-ink: var(--ghs-perf-moderate-ink);
+}
+
+[data-performance='HIGH'] {
+    --ghs-perf: var(--ghs-perf-high);
+    --ghs-perf-bg: var(--ghs-perf-high-tint);
+    --ghs-perf-surface: var(--ghs-perf-high-surface);
+    --ghs-perf-ink: var(--ghs-perf-high-ink);
+}
+
+/*
+ * Where hue fails — full-severity colour blindness, greyscale print, Windows
+ * high contrast — the accents have to stop carrying meaning. Every place they
+ * appear is already labelled in words, so here they simply step aside.
+ */
+@media (forced-colors: active) {
+    :root,
+    [data-objective],
+    [data-performance] {
+        --ghs-accent: CanvasText;
+        --ghs-perf: CanvasText;
+        --ghs-brand: CanvasText;
+        --ghs-track: Canvas;
+    }
+}
+
+/*
+ * Surface and depth. None of these carries a meaning; they are the finish the
+ * meaningful colours above sit on, so changing them never changes what a
+ * colour says.
+ */
+:root {
+    /* The sidebar and sign-in panel: the service green, deepened. White
+       clears 6.6:1 on the lightest stop and more on the rest. */
+    --ghs-brand-deep: #06401f;
+    --ghs-brand-gradient: linear-gradient(165deg, #0b6b35 0%, #08522a 55%, #06401f 100%);
+
+    --ghs-canvas: #f4f7f5;
+    --ghs-line: #e3e8e5;
+
+    --ghs-radius-sm: 8px;
+    --ghs-radius-card: 14px;
+    --ghs-radius-pill: 999px;
+
+    --ghs-shadow-card: 0 1px 2px rgba(16, 40, 26, 0.05), 0 4px 16px rgba(16, 40, 26, 0.06);
+    --ghs-shadow-raised: 0 2px 4px rgba(16, 40, 26, 0.06), 0 12px 32px rgba(16, 40, 26, 0.12);
+
+    --ghs-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Shared entrance for page content. Nothing moves for anyone who asked their
+   system for less motion. */
+@keyframes ghs-rise {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
