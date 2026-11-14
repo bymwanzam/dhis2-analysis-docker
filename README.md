@@ -55,9 +55,11 @@ Copy `.env.example` to `.env.local` for local development. Never commit a real t
 | **Overview** | Connection health, what the server holds, and whether analytics tables are fresh |
 | **Explore** | Build a query (data × period × organisation unit) and read it as a trend, ranking, share, map, figures or table |
 | **Pivot** | Cross-tabulate any two dimensions of the same query, with a heat scale and totals |
-| **Maps** | Shade regions, districts or sub-districts (Levels 1–4) by a count, coverage or indicator; click to drill down, with areas lacking boundaries listed under the map |
+| **Maps** | Shade regions, districts or sub-districts (Levels 1–4) by a count, coverage or indicator; click to drill down, with areas lacking boundaries listed under the map; six colour schemes |
 | **Compare** | Check two data elements against each other and report the organisation units where the relationship breaks down |
-| **Metadata** | Search indicators, data elements, data sets, programs and organisation units; copy ids into a query |
+| **DQ-AI Audit** | The DQ-AI Audit Trail event program: events per period and per organisation unit, any one item read on its own (events per value, totals), and a page-by-page list of what each entry recorded |
+| **RDQA** | The GHS Routine Data Quality Assessment event program, read the same way, plus the verification factors of its ten recount indicators (DHIS2 value against the source count) |
+| **Metadata** | Search indicators, data elements, data sets, programs, event data items and organisation units; copy ids into a query, export a page or the whole list as CSV or JSON |
 
 Every chart can be read as a table. Metadata can be exported as CSV or JSON, and
 map results can be exported as CSV or GeoJSON with each available boundary and its
@@ -140,6 +142,24 @@ npm run lint    # ESLint
 `npm run build:cpanel` runs the tests and the build, then assembles the upload bundle for
 cPanel in `dist/` (see [DEPLOY-CPANEL.md](DEPLOY-CPANEL.md)).
 
+### Linking an event data item
+
+Every event data item has an address: `/programs/<tab>?item=<item UID or code>`, for
+example `/programs/rdqa?item=GHSRDQAde71`. The **Tab → Open** link on the Metadata page's
+Event data items list goes there, the item finder on each tab takes a UID (with or
+without the program in front) or a code, and the chosen item's UIDs, code and link are
+copyable beside it.
+
+The tabs know their items from `src/lib/dhis2/program-items.ts`, generated from the
+Metadata page's Event data items export kept in `data/`:
+
+```bash
+node scripts/program-items-from-csv.mjs            # reads data/dhis2-event-data-items.csv
+node scripts/program-items-from-csv.mjs export.csv # or a fresh export
+```
+
+Re-run it after a program gains or loses an item.
+
 ## Project layout
 
 ```
@@ -148,12 +168,15 @@ src/
     api/connection/        connection lifecycle: verify, store, clear
     api/dhis2/[...path]/   the read-only DHIS2 proxy
     connect|explore|pivot|maps|compare|metadata/
+    programs/[slug]/       one event program per tab (DQ-AI Audit, RDQA)
   components/
     charts/                chart primitives built on the palette in docs/DESIGN.md
     query/                 the data / period / organisation unit pickers
     ui/primitives.tsx      buttons, cards, inputs, segmented controls
   lib/
     dhis2/                 connection, server client, allowlist, analytics + quality
+    dhis2/programs.ts      the event-program tabs: paths, parsing, counts, item readings
+    dhis2/program-items.ts the items of those programs, GENERATED from data/ by the script below
 tests/                     data-layer tests
 docs/DESIGN.md             palette, chart rules and why they are what they are
 deploy/cpanel/app.js       Passenger startup file for cPanel shared hosting

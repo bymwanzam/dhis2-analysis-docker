@@ -6,6 +6,7 @@ import { Check, Copy, Library, Search } from "lucide-react";
 import { useConnection } from "@/components/connection-provider";
 import { Alert, Button, Card, CardBody, EmptyState, Input, Segmented, Spinner } from "@/components/ui/primitives";
 import { fetchOrgUnitLevels, searchMetadata, type MetadataResource } from "@/lib/dhis2/client";
+import { PROGRAM_TABS } from "@/lib/dhis2/programs";
 import type { Pager } from "@/lib/dhis2/types";
 import { useAsyncData, useDebounced } from "@/lib/hooks";
 import { downloadCsv, downloadJson, stamped } from "@/lib/download";
@@ -33,6 +34,10 @@ interface ResourceConfig {
   value: MetadataResource;
   label: string;
   fields: string;
+  /** Filters always sent with the search, for a list that is a slice of a larger one. */
+  extraFilters?: string[];
+  /** The file stem, when the resource name would not describe the rows. */
+  slug?: string;
   /**
    * The columns in the order they are read. A function where the shape cannot
    * be known until the records are in hand — how deep a hierarchy runs is a
@@ -68,6 +73,19 @@ const nested = (row: MetadataRecord, key: string, inner = "displayName"): string
 const plain = (row: MetadataRecord, key: string): string => {
   const value = row[key];
   return value === undefined || value === null || value === "" ? "—" : String(value);
+};
+
+/** One half of a <program>.<item> id; the id itself when it has no dot. */
+const eventItemPart = (id: string, index: 0 | 1): string => {
+  const parts = id.split(".");
+  return parts.length === 2 ? parts[index] : index === 0 ? "—" : id;
+};
+
+/** The tab that reads an event data item's program, with the item selected, if it has one. */
+const eventItemLink = (row: MetadataRecord): string | null => {
+  const program = (row.programId as string | undefined) ?? eventItemPart(row.id, 0);
+  const tab = PROGRAM_TABS.find((candidate) => candidate.id === program);
+  return tab ? `/programs/${tab.slug}?item=${encodeURIComponent(eventItemPart(row.id, 1))}` : null;
 };
 
 const date = (row: MetadataRecord, key: string): string => {
@@ -145,6 +163,54 @@ const RESOURCES: ResourceConfig[] = [
       UID,
       { key: "programType", header: "Program type", get: (row) => plain(row, "programType") },
       { key: "lastUpdated", header: "Updated", get: (row) => date(row, "lastUpdated") },
+    ],
+  },
+  {
+    // Program data elements and attributes as the analytics API names them:
+    // <program>.<item>, the id a Data Visualizer event query is written with.
+    value: "dataItems",
+    label: "Event data items",
+    slug: "event-data-items",
+    fields: "id,displayName,dimensionItemType,valueType,programId,code",
+    extraFilters: ["dimensionItemType:in:[PROGRAM_DATA_ELEMENT,PROGRAM_ATTRIBUTE]"],
+    columns: [
+      NAME,
+      UID,
+      {
+        key: "kind",
+        header: "Kind",
+        get: (row) =>
+          row.dimensionItemType === "PROGRAM_ATTRIBUTE"
+            ? "Program attribute"
+            : "Program data element",
+      },
+      {
+        key: "program",
+        header: "Program UID",
+        get: (row) => (row.programId as string | undefined) ?? eventItemPart(row.id, 0),
+      },
+      {
+        key: "item",
+        header: "Item UID",
+        get: (row) => eventItemPart(row.id, 1),
+      },
+      { key: "valueType", header: "Value type", get: (row) => plain(row, "valueType") },
+      { key: "code", header: "Code", get: (row) => plain(row, "code") },
+      {
+        key: "tab",
+        header: "Tab",
+        get: (row) => eventItemLink(row) ?? "—",
+        render: (row) => {
+          const href = eventItemLink(row);
+          return href ? (
+            <Link href={href} className="font-medium text-accent underline underline-offset-2">
+              Open
+            </Link>
+          ) : (
+            "—"
+          );
+        },
+      },
     ],
   },
   {
@@ -246,6 +312,7 @@ export function MetadataBrowser() {
         ? searchMetadata<MetadataRecord>(resource, {
             query: debouncedTerm,
             fields: config.fields,
+            extraFilters: config.extraFilters,
             pageSize: PAGE_SIZE,
             page,
             signal,
@@ -297,7 +364,7 @@ export function MetadataBrowser() {
   const lastRow = firstRow ? firstRow + rows.length - 1 : 0;
 
   function exportPage() {
-    const stem = stamped(`dhis2-${resource}-${firstRow}-${lastRow}`);
+    const stem = stamped(`dhis2-${config.slug ?? resource}-${firstRow}-${lastRow}`);
     if (exportFormat === "json") {
       downloadJson(rows, `${stem}.json`);
     } else {
@@ -331,6 +398,7 @@ export function MetadataBrowser() {
         const batch = await searchMetadata<MetadataRecord>(resource, {
           query: debouncedTerm,
           fields: config.fields,
+          extraFilters: config.extraFilters,
           pageSize: EXPORT_BATCH,
           page: next,
           signal: controller.signal,
@@ -355,7 +423,7 @@ export function MetadataBrowser() {
           ? config.columns(all, levelName)
           : config.columns;
 
-      const stem = stamped(`dhis2-${resource}-all`);
+      const stem = stamped(`dhis2-${config.slug ?? resource}-all`);
       if (exportFormat === "json") {
         downloadJson(all, `${stem}.json`);
       } else {

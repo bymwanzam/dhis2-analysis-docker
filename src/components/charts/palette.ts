@@ -72,17 +72,60 @@ export function heatScaleStops(steps = 5): string[] {
 }
 
 /**
- * Fill for one class of a choropleth, on the same single-hue ramp as the heat
- * table.
- *
- * The ramp starts well off the surface rather than at it: a map has no number
- * printed in each shape, so the lowest class has to stay distinguishable from
- * the page and from the hatched "No data" fill. It also runs darker than the
- * heat table's cap, because no ink sits on top of it.
+ * Colour schemes for a choropleth: single-hue ordinal ramps of six steps,
+ * as CSS tokens (`--map-<scheme>-1` … `-6`, low to high) stepped separately
+ * for the light and dark surfaces in globals.css. Every ramp was generated in
+ * OKLCH and passed the dataviz ordinal validator against both surfaces:
+ * monotone lightness, at least 0.06 L between neighbours, and a pale end that
+ * still clears the surface at 2:1. The order here is the order in the picker.
  */
-export function mapClassFill(index: number, count: number): string {
-  const low = 16;
-  const high = 90;
-  const mix = count <= 1 ? high : Math.round(low + (index / (count - 1)) * (high - low));
-  return `color-mix(in oklab, var(--accent) ${mix}%, var(--surface))`;
+export const MAP_SCHEMES = [
+  { id: "blue", label: "Blue" },
+  { id: "teal", label: "Teal" },
+  { id: "green", label: "Green" },
+  { id: "purple", label: "Purple" },
+  { id: "orange", label: "Orange" },
+  { id: "red", label: "Red" },
+] as const;
+
+export type MapScheme = (typeof MAP_SCHEMES)[number]["id"];
+
+export const DEFAULT_MAP_SCHEME: MapScheme = "blue";
+
+export const MAP_RAMP_STEPS = 6;
+
+export function isMapScheme(value: unknown): value is MapScheme {
+  return MAP_SCHEMES.some((scheme) => scheme.id === value);
+}
+
+/**
+ * Which step of the ramp the nth of `count` classes takes, 1-based.
+ *
+ * Classes are spread over the whole ramp rather than taking its first few
+ * steps: two classes are the palest and the deepest step, and neighbouring
+ * classes sit as far apart as the ramp allows. There are never more classes
+ * than steps — equal-interval maps draw at most five and the fixed coverage
+ * scale has six.
+ */
+export function mapClassStep(index: number, count: number): number {
+  if (count <= 1) return MAP_RAMP_STEPS;
+  const clamped = Math.max(0, Math.min(count - 1, index));
+  return 1 + Math.round((clamped / (count - 1)) * (MAP_RAMP_STEPS - 1));
+}
+
+/** Fill for one class of a choropleth, from the chosen scheme's ramp. */
+export function mapClassFill(
+  index: number,
+  count: number,
+  scheme: MapScheme = DEFAULT_MAP_SCHEME,
+): string {
+  return `var(--map-${scheme}-${mapClassStep(index, count)})`;
+}
+
+/** A scheme's whole ramp, low to high, for a picker swatch. */
+export function mapRamp(scheme: MapScheme): string[] {
+  return Array.from(
+    { length: MAP_RAMP_STEPS },
+    (_, step) => `var(--map-${scheme}-${step + 1})`,
+  );
 }

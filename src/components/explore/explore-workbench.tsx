@@ -11,6 +11,7 @@ import {
   Map as MapIcon,
 } from "lucide-react";
 import { ChartFrame, ChartLegend, type ChartView } from "@/components/charts/chart-frame";
+import { MapSchemePicker, useMapScheme } from "@/components/charts/map-scheme-picker";
 import { CategoryBarChart } from "@/components/charts/category-bar-chart";
 import { Column, DataTable } from "@/components/charts/data-table";
 import { DonutChart, MAX_SLICES } from "@/components/charts/donut-chart";
@@ -135,6 +136,7 @@ export function ExploreWorkbench() {
 
   const isTimeChart = TIME_CHARTS.includes(effectiveChart);
   const isMap = effectiveChart === "map";
+  const [scheme, setScheme] = useMapScheme();
   const reductionLabel =
     PERIOD_REDUCTIONS.find((option) => option.value === reduction)?.describe ?? "";
 
@@ -288,6 +290,7 @@ export function ExploreWorkbench() {
                       ))}
                     </Select>
                   ) : null}
+                  {isMap ? <MapSchemePicker value={scheme} onChange={setScheme} /> : null}
                   {!isTimeChart && periodCount > 1 ? (
                     <Segmented
                       ariaLabel="How periods are combined"
@@ -317,6 +320,7 @@ export function ExploreWorkbench() {
                 <ResultTable parsed={result} />
               ) : isMap ? (
                 <MapBody
+                  scheme={scheme}
                   model={map}
                   valueCaption={mapValueCaption(reduction, result, periodCount)}
                 />

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowUp, ChevronRight, Map as MapIcon, MapPinOff } from "lucide-react";
 import { ChartFrame, type ChartView } from "@/components/charts/chart-frame";
 import { ChoroplethMap, MapLegend } from "@/components/charts/choropleth-map";
+import { MapSchemePicker, useMapScheme } from "@/components/charts/map-scheme-picker";
 import { Column, DataTable } from "@/components/charts/data-table";
 import { useConnection } from "@/components/connection-provider";
 import { PeriodPicker } from "@/components/query/period-picker";
@@ -197,6 +198,7 @@ export function MapsWorkbench() {
     null,
   );
   const frameStyle = panelStyle(panelBackground) as React.CSSProperties | null;
+  const [scheme, setScheme] = useMapScheme();
 
   /* --------------------------------------------------------------- render */
 
@@ -456,6 +458,7 @@ export function MapsWorkbench() {
               style={frameStyle ?? undefined}
               toolbar={
                 <>
+                  <MapSchemePicker value={scheme} onChange={setScheme} />
                   <BackgroundPicker value={panelBackground} onChange={setPanelBackground} />
                   <Button
                     size="sm"
@@ -506,6 +509,7 @@ export function MapsWorkbench() {
                   layout={model.layout}
                   values={model.values}
                   classes={model.classes}
+                  scheme={scheme}
                   names={model.names}
                   legend={
                     <div className="space-y-3">
@@ -513,6 +517,7 @@ export function MapsWorkbench() {
                         orientation="vertical"
                         title={legendTitle(state.dataType, state.item)}
                         classes={model.classes}
+                        scheme={scheme}
                         showNoData={model.noDataCount > 0}
                         formatRange={(range) => formatClass(state.dataType, range)}
                       />

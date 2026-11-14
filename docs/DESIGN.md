@@ -119,9 +119,9 @@ as every other chart, and the image export reads it like any other plot.
   Latest / Total / Average choice as the ranked view, and it is on screen. Anything
   else summed away (category options) is named in the footnote.
 - **Equal-interval classes, at most five**, never more than there are distinct values.
-  Equal steps keep colour honest about magnitude. The ramp is the heat-table hue, but it
-  runs from 16% to 90% accent rather than 4% to 55%: no number is printed on a shape, so
-  the lowest class must stand off the surface and the top can go darker.
+  Equal steps keep colour honest about magnitude. The classes take their fills from the
+  chosen map colour scheme (below), spread over the whole ramp so that neighbouring
+  classes sit as far apart as the ramp allows.
 - **No data is neutral grey, never filled as zero.** A unit that reported nothing and a
   unit that reported 0 are different findings. The grey carries a faint hatch so it stays
   apart from the palest class for a reader who cannot separate grey from light blue, and
@@ -143,6 +143,31 @@ as every other chart, and the image export reads it like any other plot.
   areas.
 - The footnote says when units from several hierarchy levels share one scale, when units
   with values have no coordinates (they stay in the table), and how many units are hatched.
+
+### Map colour schemes
+
+A choropleth's classes are drawn in one of six **single-hue ramps** — blue (the default),
+teal, green, purple, orange and red — chosen from the **Colours** picker in the chart
+toolbar on both the Explore map and the Maps page. The choice is a viewing preference,
+remembered in the browser and shared by the two pages. The legend is drawn from the same
+ramp as the shapes, so it always matches.
+
+- **Each ramp is six steps**, `--map-<scheme>-1` to `-6` in `globals.css`, low to high.
+  They were generated in OKLCH (lightness in equal steps of 0.08, chroma peaking at the
+  middle of the ramp) and **validated with the `dataviz` skill's ordinal validator**
+  against both surfaces: monotone lightness, at least 0.06 L between neighbours, a pale
+  end of at least 2:1 against the surface, and one hue. Re-run it if you change a step.
+- **Dark mode is selected, not flipped**: the same hue stepped for the dark surface, so
+  the lowest class recedes toward the dark surface and the highest is the brightest, the
+  way the light ramp recedes toward the light surface.
+- **Classes are spread over the whole ramp**, by `mapClassStep` in `palette.ts`: two
+  classes take the two ends, five take steps 1, 2, 4, 5 and 6, and the fixed coverage
+  scale takes all six. Never more classes than steps.
+- The ramps are root tokens, not mixes with the surface, so the Maps page's panel
+  background repaint cannot shift a fill, and "No data" stays the hatched neutral grey in
+  every scheme.
+- The pivot heat scale is unchanged: it stays the accent hue mixed with the surface,
+  because a number is printed in every cell there.
 
 ### The Maps page
 

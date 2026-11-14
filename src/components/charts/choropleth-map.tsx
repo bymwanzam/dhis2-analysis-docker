@@ -11,7 +11,7 @@ import {
 } from "@/lib/dhis2/geo";
 import { formatNumber, formatTick } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { mapClassFill } from "./palette";
+import { DEFAULT_MAP_SCHEME, mapClassFill, type MapScheme } from "./palette";
 
 const NO_DATA_PATTERN = "map-no-data";
 
@@ -54,6 +54,7 @@ export function ChoroplethMap({
   ariaLabel = "Map of organisation units coloured by value. The table view lists every value.",
   legend,
   showLabels = true,
+  scheme = DEFAULT_MAP_SCHEME,
 }: {
   layout: MapLayout;
   values: Map<string, number>;
@@ -72,6 +73,8 @@ export function ChoroplethMap({
   legend?: React.ReactNode;
   /** Names inside the areas; needs `names`. */
   showLabels?: boolean;
+  /** The ramp the classes are drawn in; the legend must be given the same. */
+  scheme?: MapScheme;
 }) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [hover, setHover] = React.useState<{
@@ -85,9 +88,9 @@ export function ChoroplethMap({
     (id: string) => {
       const value = values.get(id);
       if (value === undefined) return `url(#${NO_DATA_PATTERN})`;
-      return mapClassFill(classIndex(value, classes), classes.length);
+      return mapClassFill(classIndex(value, classes), classes.length, scheme);
     },
-    [values, classes],
+    [values, classes, scheme],
   );
 
   // Hovering must not re-render a few thousand paths, so the shapes are built
@@ -305,6 +308,7 @@ export function MapLegend({
   title,
   orientation = "horizontal",
   className,
+  scheme = DEFAULT_MAP_SCHEME,
 }: {
   classes: MapClass[];
   showNoData: boolean;
@@ -314,6 +318,8 @@ export function MapLegend({
   /** Vertical sits beside a map; horizontal above it. */
   orientation?: "horizontal" | "vertical";
   className?: string;
+  /** The ramp the map is drawn in. */
+  scheme?: MapScheme;
 }) {
   if (!classes.length && !showNoData) return null;
   const vertical = orientation === "vertical";
@@ -337,7 +343,7 @@ export function MapLegend({
             <span
               aria-hidden
               className="size-3 shrink-0 rounded-sm"
-              style={{ background: mapClassFill(index, classes.length) }}
+              style={{ background: mapClassFill(index, classes.length, scheme) }}
             />
             <span className="tabular-nums">{formatRange(range, index)}</span>
           </li>

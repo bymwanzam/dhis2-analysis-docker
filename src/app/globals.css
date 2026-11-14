@@ -44,6 +44,46 @@
   --seq-600: #184f95;
   --seq-700: #0d366b;
 
+  /* Map class ramps: six single-hue ordinal ramps, six steps each, low -> high.
+     Generated in OKLCH and validated with the dataviz ordinal validator for this
+     surface (monotone L, adjacent dL >= 0.06, pale end >= 2:1). See docs/DESIGN.md. */
+  --map-blue-1: #85b4f0;
+  --map-blue-2: #639be1;
+  --map-blue-3: #4081d2;
+  --map-blue-4: #2769b7;
+  --map-blue-5: #1c5293;
+  --map-blue-6: #113d70;
+  --map-teal-1: #56c4ca;
+  --map-teal-2: #0dadb4;
+  --map-teal-3: #009298;
+  --map-teal-4: #02787d;
+  --map-teal-5: #035e63;
+  --map-teal-6: #034649;
+  --map-green-1: #84c38d;
+  --map-green-2: #60ac6d;
+  --map-green-3: #38964d;
+  --map-green-4: #187e36;
+  --map-green-5: #0f6428;
+  --map-green-6: #064b1b;
+  --map-purple-1: #bba3e8;
+  --map-purple-2: #a486d7;
+  --map-purple-3: #8e6ac7;
+  --map-purple-4: #7652ac;
+  --map-purple-5: #5d408a;
+  --map-purple-6: #462e69;
+  --map-orange-1: #e0a26f;
+  --map-orange-2: #ce8545;
+  --map-orange-3: #bb6802;
+  --map-orange-4: #9a5500;
+  --map-orange-5: #7b4200;
+  --map-orange-6: #5c3001;
+  --map-red-1: #ea9891;
+  --map-red-2: #d87972;
+  --map-red-3: #c65954;
+  --map-red-4: #ab413e;
+  --map-red-5: #89312f;
+  --map-red-6: #682321;
+
   --good: #0ca30c;
   --warning: #fab219;
   --serious: #ec835a;
@@ -97,6 +137,46 @@
     --seq-600: #6da7ec;
     --seq-700: #9ec5f4;
 
+    /* Map class ramps: six single-hue ordinal ramps, six steps each, low -> high.
+       Generated in OKLCH and validated with the dataviz ordinal validator for this
+       surface (monotone L, adjacent dL >= 0.06, pale end >= 2:1). See docs/DESIGN.md. */
+    --map-blue-1: #2b568b;
+    --map-blue-2: #376daf;
+    --map-blue-3: #4384d5;
+    --map-blue-4: #5b9df0;
+    --map-blue-5: #80b7fe;
+    --map-blue-6: #aed1fe;
+    --map-teal-1: #026266;
+    --map-teal-2: #017b80;
+    --map-teal-3: #0b959b;
+    --map-teal-4: #0bb0b8;
+    --map-teal-5: #35cbd2;
+    --map-teal-6: #76e2e7;
+    --map-green-1: #276434;
+    --map-green-2: #317e42;
+    --map-green-3: #3c9950;
+    --map-green-4: #56b368;
+    --map-green-5: #7cc988;
+    --map-green-6: #a1e0a9;
+    --map-purple-1: #5e4784;
+    --map-purple-2: #775aa6;
+    --map-purple-3: #916dca;
+    --map-purple-4: #a986e5;
+    --map-purple-5: #c0a2f5;
+    --map-purple-6: #d6c2fe;
+    --map-orange-1: #7d460b;
+    --map-orange-2: #9d580c;
+    --map-orange-3: #be6b0b;
+    --map-orange-4: #d98432;
+    --map-orange-5: #eca161;
+    --map-orange-6: #ffbe8a;
+    --map-red-1: #843c38;
+    --map-red-2: #a64c47;
+    --map-red-3: #c95d57;
+    --map-red-4: #e5756e;
+    --map-red-5: #f7958d;
+    --map-red-6: #febab4;
+
     --success-text: #0ca30c;
   }
 }
@@ -135,6 +215,46 @@
   --seq-500: #3987e5;
   --seq-600: #6da7ec;
   --seq-700: #9ec5f4;
+
+  /* Map class ramps: six single-hue ordinal ramps, six steps each, low -> high.
+     Generated in OKLCH and validated with the dataviz ordinal validator for this
+     surface (monotone L, adjacent dL >= 0.06, pale end >= 2:1). See docs/DESIGN.md. */
+  --map-blue-1: #2b568b;
+  --map-blue-2: #376daf;
+  --map-blue-3: #4384d5;
+  --map-blue-4: #5b9df0;
+  --map-blue-5: #80b7fe;
+  --map-blue-6: #aed1fe;
+  --map-teal-1: #026266;
+  --map-teal-2: #017b80;
+  --map-teal-3: #0b959b;
+  --map-teal-4: #0bb0b8;
+  --map-teal-5: #35cbd2;
+  --map-teal-6: #76e2e7;
+  --map-green-1: #276434;
+  --map-green-2: #317e42;
+  --map-green-3: #3c9950;
+  --map-green-4: #56b368;
+  --map-green-5: #7cc988;
+  --map-green-6: #a1e0a9;
+  --map-purple-1: #5e4784;
+  --map-purple-2: #775aa6;
+  --map-purple-3: #916dca;
+  --map-purple-4: #a986e5;
+  --map-purple-5: #c0a2f5;
+  --map-purple-6: #d6c2fe;
+  --map-orange-1: #7d460b;
+  --map-orange-2: #9d580c;
+  --map-orange-3: #be6b0b;
+  --map-orange-4: #d98432;
+  --map-orange-5: #eca161;
+  --map-orange-6: #ffbe8a;
+  --map-red-1: #843c38;
+  --map-red-2: #a64c47;
+  --map-red-3: #c95d57;
+  --map-red-4: #e5756e;
+  --map-red-5: #f7958d;
+  --map-red-6: #febab4;
 
   --success-text: #0ca30c;
 }

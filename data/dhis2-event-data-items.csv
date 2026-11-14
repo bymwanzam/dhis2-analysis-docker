@@ -1,0 +1,87 @@
+Name,UID,Kind,Program UID,Item UID,Value type,Code
+DQ-AI Audit Trail DQAI AI Suggestion Accepted,DQAIauditP1.DQAIaudDE13,Program data element,DQAIauditP1,DQAIaudDE13,BOOLEAN,DQAI_AI_SUGG_ACCEPTED
+DQ-AI Audit Trail DQAI Approver ID,DQAIauditP1.DQAIaudDE12,Program data element,DQAIauditP1,DQAIaudDE12,TEXT,DQAI_APPROVER_ID
+DQ-AI Audit Trail DQAI Event Type,DQAIauditP1.DQAIaudDE01,Program data element,DQAIauditP1,DQAIaudDE01,TEXT,DQAI_EVENT_TYPE
+DQ-AI Audit Trail DQAI File Resource Ref,DQAIauditP1.DQAIaudDE09,Program data element,DQAIauditP1,DQAIaudDE09,TEXT,DQAI_FILE_RESOURCE_REF
+DQ-AI Audit Trail DQAI New Value,DQAIauditP1.DQAIaudDE11,Program data element,DQAIauditP1,DQAIaudDE11,TEXT,DQAI_NEW_VALUE
+DQ-AI Audit Trail DQAI Note,DQAIauditP1.DQAIaudDE08,Program data element,DQAIauditP1,DQAIaudDE08,LONG_TEXT,DQAI_NOTE
+DQ-AI Audit Trail DQAI Old Value,DQAIauditP1.DQAIaudDE10,Program data element,DQAIauditP1,DQAIaudDE10,TEXT,DQAI_OLD_VALUE
+DQ-AI Audit Trail DQAI Period,DQAIauditP1.DQAIaudDE14,Program data element,DQAIauditP1,DQAIaudDE14,TEXT,DQAI_PERIOD
+DQ-AI Audit Trail DQAI Reason Code,DQAIauditP1.DQAIaudDE07,Program data element,DQAIauditP1,DQAIaudDE07,TEXT,DQAI_REASON_CODE
+DQ-AI Audit Trail DQAI Rule ID,DQAIauditP1.DQAIaudDE03,Program data element,DQAIauditP1,DQAIaudDE03,TEXT,DQAI_RULE_ID
+DQ-AI Audit Trail DQAI Signal Type,DQAIauditP1.DQAIaudDE04,Program data element,DQAIauditP1,DQAIaudDE04,TEXT,DQAI_SIGNAL_TYPE
+DQ-AI Audit Trail DQAI User ID,DQAIauditP1.DQAIaudDE05,Program data element,DQAIauditP1,DQAIaudDE05,TEXT,DQAI_USER_ID
+DQ-AI Audit Trail DQAI User Role,DQAIauditP1.DQAIaudDE06,Program data element,DQAIauditP1,DQAIaudDE06,TEXT,DQAI_USER_ROLE
+DQ-AI Audit Trail DQAI Violation ID,DQAIauditP1.DQAIaudDE02,Program data element,DQAIauditP1,DQAIaudDE02,TEXT,DQAI_VIOLATION_ID
+GHS Routine Data Quality Assessment RDQA AI summary,GHSRDQAprog.GHSRDQAde72,Program data element,GHSRDQAprog,GHSRDQAde72,LONG_TEXT,GHSRDQA_AI_SUMMARY
+GHS Routine Data Quality Assessment RDQA Assessor name,GHSRDQAprog.GHSRDQAde04,Program data element,GHSRDQAprog,GHSRDQAde04,TEXT,GHSRDQA_ASSESSOR_NAME
+GHS Routine Data Quality Assessment RDQA Assessor role,GHSRDQAprog.GHSRDQAde05,Program data element,GHSRDQAprog,GHSRDQAde05,TEXT,GHSRDQA_ASSESSOR_ROLE
+GHS Routine Data Quality Assessment RDQA Dynamic verification (rule-driven),GHSRDQAprog.GHSRDQAde74,Program data element,GHSRDQAprog,GHSRDQAde74,LONG_TEXT,GHSRDQA_DYNAMIC_VERIFICATION
+GHS Routine Data Quality Assessment RDQA FC: Data collection,GHSRDQAprog.GHSRDQAde08,Program data element,GHSRDQAprog,GHSRDQAde08,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_FC_DATA_COLLECTION
+GHS Routine Data Quality Assessment RDQA FC: Data management,GHSRDQAprog.GHSRDQAde09,Program data element,GHSRDQAprog,GHSRDQAde09,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_FC_DATA_MGMT
+GHS Routine Data Quality Assessment RDQA FC: Indicators understood,GHSRDQAprog.GHSRDQAde07,Program data element,GHSRDQAprog,GHSRDQAde07,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_FC_INDICATORS
+GHS Routine Data Quality Assessment RDQA FC: M&E systems,GHSRDQAprog.GHSRDQAde06,Program data element,GHSRDQAprog,GHSRDQAde06,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_FC_M_AND_E
+GHS Routine Data Quality Assessment RDQA FC: National-link reporting,GHSRDQAprog.GHSRDQAde10,Program data element,GHSRDQAprog,GHSRDQAde10,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_FC_LINKS
+GHS Routine Data Quality Assessment RDQA FC: Use of data,GHSRDQAprog.GHSRDQAde11,Program data element,GHSRDQAprog,GHSRDQAde11,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_FC_USE_OF_DATA
+GHS Routine Data Quality Assessment RDQA Follow-up required,GHSRDQAprog.GHSRDQAde73,Program data element,GHSRDQAprog,GHSRDQAde73,BOOLEAN,GHSRDQA_FOLLOWUP_REQUIRED
+GHS Routine Data Quality Assessment RDQA Issues identified,GHSRDQAprog.GHSRDQAde65,Program data element,GHSRDQAprog,GHSRDQAde65,LONG_TEXT,GHSRDQA_ISSUES_IDENTIFIED
+GHS Routine Data Quality Assessment RDQA Linked DQ-AI violation IDs,GHSRDQAprog.GHSRDQAde70,Program data element,GHSRDQAprog,GHSRDQAde70,LONG_TEXT,GHSRDQA_LINKED_VIOLATIONS
+GHS Routine Data Quality Assessment RDQA Overall rating,GHSRDQAprog.GHSRDQAde71,Program data element,GHSRDQAprog,GHSRDQAde71,TEXT,GHSRDQA_OVERALL_RATING
+GHS Routine Data Quality Assessment RDQA Photo (file resource),GHSRDQAprog.GHSRDQAde69,Program data element,GHSRDQAprog,GHSRDQAde69,FILE_RESOURCE,GHSRDQA_PHOTO_FILE
+GHS Routine Data Quality Assessment RDQA Quarter,GHSRDQAprog.GHSRDQAde02,Program data element,GHSRDQAprog,GHSRDQAde02,TEXT,GHSRDQA_QUARTER
+GHS Routine Data Quality Assessment RDQA Recommended actions,GHSRDQAprog.GHSRDQAde66,Program data element,GHSRDQAprog,GHSRDQAde66,LONG_TEXT,GHSRDQA_RECOMMENDED_ACTIONS
+GHS Routine Data Quality Assessment RDQA Reg ANC available,GHSRDQAprog.GHSRDQAde15,Program data element,GHSRDQAprog,GHSRDQAde15,BOOLEAN,GHSRDQA_REG_ANC_AVAILABLE
+GHS Routine Data Quality Assessment RDQA Reg ANC complete,GHSRDQAprog.GHSRDQAde17,Program data element,GHSRDQAprog,GHSRDQAde17,BOOLEAN,GHSRDQA_REG_ANC_COMPLETE
+GHS Routine Data Quality Assessment RDQA Reg ANC up-to-date,GHSRDQAprog.GHSRDQAde16,Program data element,GHSRDQAprog,GHSRDQAde16,BOOLEAN,GHSRDQA_REG_ANC_UPTODATE
+GHS Routine Data Quality Assessment RDQA Reg Delivery available,GHSRDQAprog.GHSRDQAde18,Program data element,GHSRDQAprog,GHSRDQAde18,BOOLEAN,GHSRDQA_REG_DEL_AVAILABLE
+GHS Routine Data Quality Assessment RDQA Reg Delivery complete,GHSRDQAprog.GHSRDQAde20,Program data element,GHSRDQAprog,GHSRDQAde20,BOOLEAN,GHSRDQA_REG_DEL_COMPLETE
+GHS Routine Data Quality Assessment RDQA Reg Delivery up-to-date,GHSRDQAprog.GHSRDQAde19,Program data element,GHSRDQAprog,GHSRDQAde19,BOOLEAN,GHSRDQA_REG_DEL_UPTODATE
+GHS Routine Data Quality Assessment RDQA Reg HIV available,GHSRDQAprog.GHSRDQAde24,Program data element,GHSRDQAprog,GHSRDQAde24,BOOLEAN,GHSRDQA_REG_HIV_AVAILABLE
+GHS Routine Data Quality Assessment RDQA Reg HIV complete,GHSRDQAprog.GHSRDQAde26,Program data element,GHSRDQAprog,GHSRDQAde26,BOOLEAN,GHSRDQA_REG_HIV_COMPLETE
+GHS Routine Data Quality Assessment RDQA Reg HIV up-to-date,GHSRDQAprog.GHSRDQAde25,Program data element,GHSRDQAprog,GHSRDQAde25,BOOLEAN,GHSRDQA_REG_HIV_UPTODATE
+GHS Routine Data Quality Assessment RDQA Reg Immunisation available,GHSRDQAprog.GHSRDQAde21,Program data element,GHSRDQAprog,GHSRDQAde21,BOOLEAN,GHSRDQA_REG_IMM_AVAILABLE
+GHS Routine Data Quality Assessment RDQA Reg Immunisation complete,GHSRDQAprog.GHSRDQAde23,Program data element,GHSRDQAprog,GHSRDQAde23,BOOLEAN,GHSRDQA_REG_IMM_COMPLETE
+GHS Routine Data Quality Assessment RDQA Reg Immunisation up-to-date,GHSRDQAprog.GHSRDQAde22,Program data element,GHSRDQAprog,GHSRDQAde22,BOOLEAN,GHSRDQA_REG_IMM_UPTODATE
+GHS Routine Data Quality Assessment RDQA Reg Malaria available,GHSRDQAprog.GHSRDQAde30,Program data element,GHSRDQAprog,GHSRDQAde30,BOOLEAN,GHSRDQA_REG_MAL_AVAILABLE
+GHS Routine Data Quality Assessment RDQA Reg Malaria complete,GHSRDQAprog.GHSRDQAde32,Program data element,GHSRDQAprog,GHSRDQAde32,BOOLEAN,GHSRDQA_REG_MAL_COMPLETE
+GHS Routine Data Quality Assessment RDQA Reg Malaria up-to-date,GHSRDQAprog.GHSRDQAde31,Program data element,GHSRDQAprog,GHSRDQAde31,BOOLEAN,GHSRDQA_REG_MAL_UPTODATE
+GHS Routine Data Quality Assessment RDQA Reg OPD available,GHSRDQAprog.GHSRDQAde12,Program data element,GHSRDQAprog,GHSRDQAde12,BOOLEAN,GHSRDQA_REG_OPD_AVAILABLE
+GHS Routine Data Quality Assessment RDQA Reg OPD complete,GHSRDQAprog.GHSRDQAde14,Program data element,GHSRDQAprog,GHSRDQAde14,BOOLEAN,GHSRDQA_REG_OPD_COMPLETE
+GHS Routine Data Quality Assessment RDQA Reg OPD up-to-date,GHSRDQAprog.GHSRDQAde13,Program data element,GHSRDQAprog,GHSRDQAde13,BOOLEAN,GHSRDQA_REG_OPD_UPTODATE
+GHS Routine Data Quality Assessment RDQA Reg TB available,GHSRDQAprog.GHSRDQAde27,Program data element,GHSRDQAprog,GHSRDQAde27,BOOLEAN,GHSRDQA_REG_TB_AVAILABLE
+GHS Routine Data Quality Assessment RDQA Reg TB complete,GHSRDQAprog.GHSRDQAde29,Program data element,GHSRDQAprog,GHSRDQAde29,BOOLEAN,GHSRDQA_REG_TB_COMPLETE
+GHS Routine Data Quality Assessment RDQA Reg TB up-to-date,GHSRDQAprog.GHSRDQAde28,Program data element,GHSRDQAprog,GHSRDQAde28,BOOLEAN,GHSRDQA_REG_TB_UPTODATE
+GHS Routine Data Quality Assessment RDQA Reg notes,GHSRDQAprog.GHSRDQAde33,Program data element,GHSRDQAprog,GHSRDQAde33,LONG_TEXT,GHSRDQA_REG_NOTES
+GHS Routine Data Quality Assessment RDQA Responsible person,GHSRDQAprog.GHSRDQAde68,Program data element,GHSRDQAprog,GHSRDQAde68,TEXT,GHSRDQA_ACTION_RESPONSIBLE
+GHS Routine Data Quality Assessment RDQA VF ANC1 DHIS2 value,GHSRDQAprog.GHSRDQAde38,Program data element,GHSRDQAprog,GHSRDQAde38,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_ANC1_DHIS2
+GHS Routine Data Quality Assessment RDQA VF ANC1 discrepancy reason,GHSRDQAprog.GHSRDQAde39,Program data element,GHSRDQAprog,GHSRDQAde39,TEXT,GHSRDQA_VF_ANC1_REASON
+GHS Routine Data Quality Assessment RDQA VF ANC1 source count,GHSRDQAprog.GHSRDQAde37,Program data element,GHSRDQAprog,GHSRDQAde37,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_ANC1_SOURCE
+GHS Routine Data Quality Assessment RDQA VF ANC4 DHIS2 value,GHSRDQAprog.GHSRDQAde41,Program data element,GHSRDQAprog,GHSRDQAde41,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_ANC4_DHIS2
+GHS Routine Data Quality Assessment RDQA VF ANC4 discrepancy reason,GHSRDQAprog.GHSRDQAde42,Program data element,GHSRDQAprog,GHSRDQAde42,TEXT,GHSRDQA_VF_ANC4_REASON
+GHS Routine Data Quality Assessment RDQA VF ANC4 source count,GHSRDQAprog.GHSRDQAde40,Program data element,GHSRDQAprog,GHSRDQAde40,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_ANC4_SOURCE
+GHS Routine Data Quality Assessment RDQA VF FP new acceptors DHIS2,GHSRDQAprog.GHSRDQAde62,Program data element,GHSRDQAprog,GHSRDQAde62,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_FP_DHIS2
+GHS Routine Data Quality Assessment RDQA VF FP new acceptors reason,GHSRDQAprog.GHSRDQAde63,Program data element,GHSRDQAprog,GHSRDQAde63,TEXT,GHSRDQA_VF_FP_REASON
+GHS Routine Data Quality Assessment RDQA VF FP new acceptors source,GHSRDQAprog.GHSRDQAde61,Program data element,GHSRDQAprog,GHSRDQAde61,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_FP_SOURCE
+GHS Routine Data Quality Assessment RDQA VF HIV positive DHIS2,GHSRDQAprog.GHSRDQAde53,Program data element,GHSRDQAprog,GHSRDQAde53,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_HIVPOS_DHIS2
+GHS Routine Data Quality Assessment RDQA VF HIV positive reason,GHSRDQAprog.GHSRDQAde54,Program data element,GHSRDQAprog,GHSRDQAde54,TEXT,GHSRDQA_VF_HIVPOS_REASON
+GHS Routine Data Quality Assessment RDQA VF HIV positive source,GHSRDQAprog.GHSRDQAde52,Program data element,GHSRDQAprog,GHSRDQAde52,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_HIVPOS_SOURCE
+GHS Routine Data Quality Assessment RDQA VF HIV tested DHIS2 value,GHSRDQAprog.GHSRDQAde50,Program data element,GHSRDQAprog,GHSRDQAde50,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_HIVTEST_DHIS2
+GHS Routine Data Quality Assessment RDQA VF HIV tested reason,GHSRDQAprog.GHSRDQAde51,Program data element,GHSRDQAprog,GHSRDQAde51,TEXT,GHSRDQA_VF_HIVTEST_REASON
+GHS Routine Data Quality Assessment RDQA VF HIV tested source,GHSRDQAprog.GHSRDQAde49,Program data element,GHSRDQAprog,GHSRDQAde49,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_HIVTEST_SOURCE
+GHS Routine Data Quality Assessment RDQA VF Malaria confirmed DHIS2,GHSRDQAprog.GHSRDQAde59,Program data element,GHSRDQAprog,GHSRDQAde59,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_MAL_DHIS2
+GHS Routine Data Quality Assessment RDQA VF Malaria confirmed reason,GHSRDQAprog.GHSRDQAde60,Program data element,GHSRDQAprog,GHSRDQAde60,TEXT,GHSRDQA_VF_MAL_REASON
+GHS Routine Data Quality Assessment RDQA VF Malaria confirmed source,GHSRDQAprog.GHSRDQAde58,Program data element,GHSRDQAprog,GHSRDQAde58,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_MAL_SOURCE
+GHS Routine Data Quality Assessment RDQA VF OPD DHIS2 value,GHSRDQAprog.GHSRDQAde35,Program data element,GHSRDQAprog,GHSRDQAde35,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_OPD_DHIS2
+GHS Routine Data Quality Assessment RDQA VF OPD discrepancy reason,GHSRDQAprog.GHSRDQAde36,Program data element,GHSRDQAprog,GHSRDQAde36,TEXT,GHSRDQA_VF_OPD_REASON
+GHS Routine Data Quality Assessment RDQA VF OPD source count,GHSRDQAprog.GHSRDQAde34,Program data element,GHSRDQAprog,GHSRDQAde34,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_OPD_SOURCE
+GHS Routine Data Quality Assessment RDQA VF Penta-3 DHIS2 value,GHSRDQAprog.GHSRDQAde47,Program data element,GHSRDQAprog,GHSRDQAde47,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_PENTA3_DHIS2
+GHS Routine Data Quality Assessment RDQA VF Penta-3 reason,GHSRDQAprog.GHSRDQAde48,Program data element,GHSRDQAprog,GHSRDQAde48,TEXT,GHSRDQA_VF_PENTA3_REASON
+GHS Routine Data Quality Assessment RDQA VF Penta-3 source count,GHSRDQAprog.GHSRDQAde46,Program data element,GHSRDQAprog,GHSRDQAde46,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_PENTA3_SOURCE
+GHS Routine Data Quality Assessment RDQA VF Skilled deliveries DHIS2,GHSRDQAprog.GHSRDQAde44,Program data element,GHSRDQAprog,GHSRDQAde44,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_DEL_DHIS2
+GHS Routine Data Quality Assessment RDQA VF Skilled deliveries reason,GHSRDQAprog.GHSRDQAde45,Program data element,GHSRDQAprog,GHSRDQAde45,TEXT,GHSRDQA_VF_DEL_REASON
+GHS Routine Data Quality Assessment RDQA VF Skilled deliveries source,GHSRDQAprog.GHSRDQAde43,Program data element,GHSRDQAprog,GHSRDQAde43,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_DEL_SOURCE
+GHS Routine Data Quality Assessment RDQA VF TB notified DHIS2,GHSRDQAprog.GHSRDQAde56,Program data element,GHSRDQAprog,GHSRDQAde56,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_TBNOT_DHIS2
+GHS Routine Data Quality Assessment RDQA VF TB notified reason,GHSRDQAprog.GHSRDQAde57,Program data element,GHSRDQAprog,GHSRDQAde57,TEXT,GHSRDQA_VF_TBNOT_REASON
+GHS Routine Data Quality Assessment RDQA VF TB notified source,GHSRDQAprog.GHSRDQAde55,Program data element,GHSRDQAprog,GHSRDQAde55,INTEGER_ZERO_OR_POSITIVE,GHSRDQA_VF_TBNOT_SOURCE
+GHS Routine Data Quality Assessment RDQA VF general notes,GHSRDQAprog.GHSRDQAde64,Program data element,GHSRDQAprog,GHSRDQAde64,LONG_TEXT,GHSRDQA_VF_NOTES
+GHS Routine Data Quality Assessment RDQA Visit type,GHSRDQAprog.GHSRDQAde03,Program data element,GHSRDQAprog,GHSRDQAde03,TEXT,GHSRDQA_VISIT_TYPE

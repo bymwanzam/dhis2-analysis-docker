@@ -118,7 +118,7 @@ export function useAsyncData<T>(
         if (controller.signal.aborted) return;
         setState({
           data: null,
-          error: cause instanceof Error ? cause.message : "Something went wrong.",
+          error: describeError(cause),
           loading: false,
         });
       },
@@ -131,4 +131,20 @@ export function useAsyncData<T>(
   const reload = React.useCallback(() => setNonce((value) => value + 1), []);
 
   return { ...state, reload };
+}
+
+/**
+ * The text a failed request shows.
+ *
+ * The proxy forwards DHIS2's own reason as `detail` beside the app's summary of
+ * the status; a reader fixing a rejected analytics query needs the reason, not
+ * the status, so both are shown.
+ */
+function describeError(cause: unknown): string {
+  if (!(cause instanceof Error)) return "Something went wrong.";
+  const detail = (cause as { detail?: unknown }).detail;
+  if (typeof detail === "string" && detail && !cause.message.includes(detail)) {
+    return `${cause.message} DHIS2 said: ${detail}`;
+  }
+  return cause.message;
 }

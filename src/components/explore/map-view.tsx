@@ -4,6 +4,7 @@ import * as React from "react";
 import { MapPinOff } from "lucide-react";
 import { ChoroplethMap, MapLegend } from "@/components/charts/choropleth-map";
 import { Column, DataTable } from "@/components/charts/data-table";
+import { DEFAULT_MAP_SCHEME, type MapScheme } from "@/components/charts/palette";
 import { Alert, EmptyState, Spinner } from "@/components/ui/primitives";
 import { dimensionValues, labelFor, type ParsedAnalytics } from "@/lib/dhis2/analytics";
 import { fetchGeoFeatures } from "@/lib/dhis2/client";
@@ -139,9 +140,12 @@ export function useMapModel({
 export function MapBody({
   model,
   valueCaption,
+  scheme = DEFAULT_MAP_SCHEME,
 }: {
   model: MapModel;
   valueCaption: string;
+  /** The ramp the classes are drawn in. */
+  scheme?: MapScheme;
 }) {
   if (model.error) {
     return (
@@ -175,6 +179,7 @@ export function MapBody({
       layout={model.layout}
       values={model.values}
       classes={model.classes}
+      scheme={scheme}
       names={model.names}
       valueCaption={valueCaption}
       legend={
@@ -182,6 +187,7 @@ export function MapBody({
           orientation="vertical"
           title="Value"
           classes={model.classes}
+          scheme={scheme}
           showNoData={model.noDataCount > 0}
         />
       }
