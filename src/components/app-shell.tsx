@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import {
   Activity,
   Check,
-  ClipboardCheck,
   Grid3x3,
   LayoutDashboard,
   Library,
@@ -14,7 +13,7 @@ import {
   MessageCircle,
   Monitor,
   Scale,
-  ScrollText,
+  ShieldCheck,
   Moon,
   Plug,
   Sun,
@@ -43,9 +42,7 @@ const NAV = [
   { href: "/pivot", label: "Pivot", icon: Grid3x3 },
   { href: "/maps", label: "Maps", icon: MapIcon },
   { href: "/compare", label: "Compare", icon: Scale },
-  // Event programs with a tab each; the list is PROGRAM_TABS in src/lib/dhis2/programs.ts.
-  { href: "/programs/dq-ai-audit-trail", label: "DQ-AI Audit", icon: ScrollText },
-  { href: "/programs/rdqa", label: "RDQA", icon: ClipboardCheck },
+  { href: "/data-quality", label: "Data Quality", icon: ShieldCheck },
   { href: "/metadata", label: "Metadata", icon: Library },
 ] as const;
 

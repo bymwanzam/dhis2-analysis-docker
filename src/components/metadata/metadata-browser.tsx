@@ -6,7 +6,6 @@ import { Check, Copy, Library, Search } from "lucide-react";
 import { useConnection } from "@/components/connection-provider";
 import { Alert, Button, Card, CardBody, EmptyState, Input, Segmented, Spinner } from "@/components/ui/primitives";
 import { fetchOrgUnitLevels, searchMetadata, type MetadataResource } from "@/lib/dhis2/client";
-import { PROGRAM_TABS } from "@/lib/dhis2/programs";
 import type { Pager } from "@/lib/dhis2/types";
 import { useAsyncData, useDebounced } from "@/lib/hooks";
 import { downloadCsv, downloadJson, stamped } from "@/lib/download";
@@ -81,11 +80,19 @@ const eventItemPart = (id: string, index: 0 | 1): string => {
   return parts.length === 2 ? parts[index] : index === 0 ? "—" : id;
 };
 
-/** The tab that reads an event data item's program, with the item selected, if it has one. */
-const eventItemLink = (row: MetadataRecord): string | null => {
-  const program = (row.programId as string | undefined) ?? eventItemPart(row.id, 0);
-  const tab = PROGRAM_TABS.find((candidate) => candidate.id === program);
-  return tab ? `/programs/${tab.slug}?item=${encodeURIComponent(eventItemPart(row.id, 1))}` : null;
+/** Several names in one cell, sorted, separated so a CSV cell stays one cell. */
+const listOf = (names: (string | undefined)[]): string => {
+  const kept = [...new Set(names.filter((name): name is string => Boolean(name)))].sort((a, b) =>
+    a.localeCompare(b),
+  );
+  return kept.length ? kept.join("; ") : "—";
+};
+
+/** NUMBER as Number, INTEGER_ZERO_OR_POSITIVE as Integer zero or positive. */
+const words = (value: unknown): string => {
+  if (typeof value !== "string" || !value) return "—";
+  const text = value.toLowerCase().replace(/_/g, " ");
+  return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
 const date = (row: MetadataRecord, key: string): string => {
@@ -128,12 +135,70 @@ const RESOURCES: ResourceConfig[] = [
   {
     value: "dataElements",
     label: "Data elements",
-    fields: "id,displayName,code,shortName,description",
+    // Everything DHIS2's own data element details panel shows, so the export
+    // can stand in for it: where the element is collected, how it adds up,
+    // and which disaggregations it carries.
+    fields: [
+      "id",
+      "displayName",
+      "code",
+      "shortName",
+      "description",
+      "valueType",
+      "aggregationType",
+      "zeroIsSignificant",
+      "dataSetElements[dataSet[id,displayName]]",
+      "categoryCombo[id,displayName,categoryOptionCombos[id,displayName]]",
+      "dataElementGroups[id,displayName]",
+    ].join(","),
     columns: [
       NAME,
       UID,
       { key: "code", header: "Code", get: (row) => plain(row, "code") },
-      { key: "shortName", header: "shortName", get: (row) => plain(row, "shortName") },
+      { key: "shortName", header: "Short name", get: (row) => plain(row, "shortName") },
+      {
+        key: "dataSets",
+        header: "Data set(s)",
+        get: (row) =>
+          listOf(
+            ((row.dataSetElements as { dataSet?: { displayName?: string } }[] | undefined) ?? []).map(
+              (entry) => entry.dataSet?.displayName,
+            ),
+          ),
+        wrap: true,
+      },
+      {
+        key: "zeroIsSignificant",
+        header: "Zero is significant",
+        get: (row) =>
+          row.zeroIsSignificant === undefined ? "—" : row.zeroIsSignificant ? "True" : "False",
+      },
+      { key: "valueType", header: "Value type", get: (row) => words(row.valueType) },
+      { key: "aggregationType", header: "Aggregation type", get: (row) => plain(row, "aggregationType") },
+      { key: "categoryCombo", header: "Category combo", get: (row) => nested(row, "categoryCombo") },
+      {
+        key: "categoryOptionCombos",
+        header: "Category option combos",
+        get: (row) =>
+          listOf(
+            (
+              (row.categoryCombo as { categoryOptionCombos?: { displayName?: string }[] } | undefined)
+                ?.categoryOptionCombos ?? []
+            ).map((combo) => combo.displayName),
+          ),
+        wrap: true,
+      },
+      {
+        key: "groups",
+        header: "Group membership",
+        get: (row) =>
+          listOf(
+            ((row.dataElementGroups as { displayName?: string }[] | undefined) ?? []).map(
+              (group) => group.displayName,
+            ),
+          ),
+        wrap: true,
+      },
       {
         key: "description",
         header: "Description",
@@ -196,21 +261,6 @@ const RESOURCES: ResourceConfig[] = [
       },
       { key: "valueType", header: "Value type", get: (row) => plain(row, "valueType") },
       { key: "code", header: "Code", get: (row) => plain(row, "code") },
-      {
-        key: "tab",
-        header: "Tab",
-        get: (row) => eventItemLink(row) ?? "—",
-        render: (row) => {
-          const href = eventItemLink(row);
-          return href ? (
-            <Link href={href} className="font-medium text-accent underline underline-offset-2">
-              Open
-            </Link>
-          ) : (
-            "—"
-          );
-        },
-      },
     ],
   },
   {
