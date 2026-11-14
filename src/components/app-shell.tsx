@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import {
   Activity,
   Check,
-  ClipboardCheck,
   Grid3x3,
   LayoutDashboard,
   Library,
@@ -15,10 +14,8 @@ import {
   Monitor,
   Scale,
   Moon,
-  Microscope,
   Plug,
   Sun,
-  Syringe,
   TriangleAlert,
 } from "lucide-react";
 import { useConnection } from "@/components/connection-provider";
@@ -43,10 +40,7 @@ const NAV = [
   { href: "/explore", label: "Explore", icon: Activity },
   { href: "/pivot", label: "Pivot", icon: Grid3x3 },
   { href: "/maps", label: "Maps", icon: MapIcon },
-  { href: "/geoepi", label: "GeoEpi", icon: Microscope },
-  { href: "/measles", label: "Measles", icon: Syringe },
   { href: "/compare", label: "Compare", icon: Scale },
-  { href: "/holistic", label: "Holistic", icon: ClipboardCheck },
   // { href: "/metadata", label: "Metadata", icon: Library },
 ] as const;
 

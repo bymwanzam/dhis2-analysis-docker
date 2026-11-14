@@ -40,8 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-__pycache__/
-*.py[cod]
 
-# local build artefacts
-*.zip
+# cPanel upload bundle (npm run build:cpanel)
+/dist

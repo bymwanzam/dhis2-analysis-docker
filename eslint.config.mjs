@@ -9,9 +9,8 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
-    "geoepi/**",
-    // Its own app with its own ESLint config: cd modules/holistic_assessment && npm run lint
-    "modules/**",
+    // The cPanel upload bundle (npm run build:cpanel)
+    "dist/**",
     "out/**",
     "build/**",
     "next-env.d.ts",

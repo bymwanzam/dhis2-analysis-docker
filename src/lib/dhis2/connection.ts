@@ -83,10 +83,10 @@ export async function readConnection(): Promise<Connection | null> {
 /**
  * Secure in production unless told otherwise.
  *
- * COOKIE_SECURE=false exists for one case: a container on a trusted internal
+ * COOKIE_SECURE=false exists for one case: a server on a trusted internal
  * network that people reach over plain http, where a Secure cookie is dropped
  * by the browser and every connection vanishes on the next request. HTTPS in
- * front of the container is the better answer wherever it is possible.
+ * front of the server is the better answer wherever it is possible.
  */
 function cookieSecure(): boolean {
   const flag = process.env.COOKIE_SECURE?.trim().toLowerCase();

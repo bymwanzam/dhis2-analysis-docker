@@ -2,10 +2,14 @@
   "name": "dhis2-analytics",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "build:cpanel": "npm test && next build && node scripts/bundle-cpanel.mjs",
     "lint": "eslint .",
     "test": "node --import ./tests/register.mjs --test \"tests/**/*.test.ts\""
   },
