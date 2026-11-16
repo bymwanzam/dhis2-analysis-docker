@@ -17,6 +17,7 @@ import {
   readConnection,
 } from "@/lib/dhis2/connection";
 import { Dhis2Error, dhis2Json } from "@/lib/dhis2/server";
+import { currentSession, sameOrigin } from "@/lib/auth/server";
 import type { Connection, ConnectionStatus, MeResponse, SystemInfo } from "@/lib/dhis2/types";
 
 export const dynamic = "force-dynamic";
@@ -67,7 +68,23 @@ function describe(error: unknown): string {
   return "Could not reach the DHIS2 server.";
 }
 
+/** Every handler here needs a signed-in person; the proxy checks too. */
+async function requireSession() {
+  const session = await currentSession();
+  if (session === null) {
+    return {
+      denied: NextResponse.json(
+        { connected: false, error: "Sign in first." } satisfies ConnectionStatus,
+        { status: 401, headers: NO_STORE },
+      ),
+    } as const;
+  }
+  return { session } as const;
+}
+
 export async function GET() {
+  const gate = await requireSession();
+  if ("denied" in gate) return gate.denied;
   const connection = await readConnection();
 
   if (!connection) {
@@ -94,6 +111,14 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const gate = await requireSession();
+  if ("denied" in gate) return gate.denied;
+  if (!sameOrigin(request)) {
+    return NextResponse.json(
+      { connected: false, error: "Refused: the request did not come from this site." } satisfies ConnectionStatus,
+      { status: 403, headers: NO_STORE },
+    );
+  }
   if (isEnvManaged()) {
     return NextResponse.json(
       {
@@ -135,10 +160,13 @@ export async function POST(request: Request) {
     );
   }
 
+  const session = gate.session;
   const connection: Connection = {
     baseUrl,
     token,
     tokenType: normalizeTokenType(body.tokenType),
+    // The token is saved for the person who entered it, and works only for them.
+    ...(session !== "off" ? { owner: session.sub } : {}),
   };
 
   let status: ConnectionStatus;
@@ -156,12 +184,31 @@ export async function POST(request: Request) {
     );
   }
 
+  // Someone signed in with their DHIS2 account must connect with their own
+  // token, not a colleague's: the token's user has to be the signed-in user.
+  if (session !== "off" && session.via === "dhis2") {
+    const tokenUser = status.user?.username ?? "";
+    if (tokenUser.toLowerCase() !== session.sub.toLowerCase()) {
+      return NextResponse.json(
+        {
+          connected: false,
+          baseUrl,
+          tokenType: connection.tokenType,
+          error: `This token belongs to the DHIS2 user "${tokenUser || "unknown"}", but you signed in as "${session.sub}". Use a personal access token from your own DHIS2 account.`,
+        } satisfies ConnectionStatus,
+        { status: 403, headers: NO_STORE },
+      );
+    }
+  }
+
   const response = NextResponse.json(status, { headers: NO_STORE });
   response.cookies.set(CONNECTION_COOKIE, encodeConnection(connection), connectionCookieOptions());
   return response;
 }
 
 export async function DELETE() {
+  const gate = await requireSession();
+  if ("denied" in gate) return gate.denied;
   const response = NextResponse.json(
     { connected: false, managedByEnv: isEnvManaged() } satisfies ConnectionStatus,
     { headers: NO_STORE },

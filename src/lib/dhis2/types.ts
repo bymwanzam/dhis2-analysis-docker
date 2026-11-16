@@ -6,6 +6,11 @@ export interface Connection {
   baseUrl: string;
   token: string;
   tokenType: TokenType;
+  /**
+   * Who entered the token: the signed-in account it belongs to on this site.
+   * A token only ever works for the person who saved it.
+   */
+  owner?: string;
 }
 
 /** Everything about a connection that is safe to send to the browser. */

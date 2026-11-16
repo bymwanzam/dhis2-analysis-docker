@@ -122,20 +122,51 @@ export async function searchMetadata<T = IdName>(
   };
 }
 
-/** Root org units the token's user can see. */
-export async function fetchOrgUnitRoots(signal?: AbortSignal): Promise<OrgUnit[]> {
-  const payload = await proxyGet<{ organisationUnits: OrgUnit[] }>(
-    "organisationUnits.json?fields=id,displayName,level,path,children::isNotEmpty&filter=level:eq:1&paging=false",
-    signal,
-  );
-  if (payload.organisationUnits?.length) return payload.organisationUnits;
+const ROOT_FIELDS = "id,displayName,level,path,children::isNotEmpty";
 
-  // A restricted token may not see level 1; fall back to the user's own units.
-  const me = await proxyGet<{ organisationUnits?: OrgUnit[] }>(
-    "me.json?fields=organisationUnits[id,displayName,level,path]",
+/**
+ * Where the organisation unit tree starts: the units the account may read
+ * data for.
+ *
+ * DHIS2 lets an account *see* far more of the hierarchy than it may *analyse*.
+ * Analytics answers only for the data view (analysis) units, falling back to
+ * the data capture units when none are set; anything above them is refused
+ * with "not allowed to view org unit". Starting the tree at level 1 offered
+ * the national unit to every district officer, and every query on it failed.
+ * Level 1 is the last resort, for an account with no units assigned at all
+ * (a superuser), which DHIS2 lets read everything.
+ */
+export function chooseOrgUnitRoots(
+  dataView: OrgUnit[] | undefined,
+  capture: OrgUnit[] | undefined,
+): OrgUnit[] | null {
+  const pick = dataView?.length ? dataView : capture?.length ? capture : null;
+  if (!pick) return null;
+  // A unit inside another chosen unit is reached through it; listing both
+  // would offer the same facilities twice.
+  const paths = pick.map((unit) => unit.path ?? `/${unit.id}`);
+  return pick
+    .filter((unit, index) => {
+      const own = paths[index];
+      return !paths.some((other, j) => j !== index && own.startsWith(`${other}/`));
+    })
+    .sort((a, b) => (a.level ?? 0) - (b.level ?? 0) || a.displayName.localeCompare(b.displayName));
+}
+
+/** Root org units the token's user may read data for. */
+export async function fetchOrgUnitRoots(signal?: AbortSignal): Promise<OrgUnit[]> {
+  const me = await proxyGet<{ organisationUnits?: OrgUnit[]; dataViewOrganisationUnits?: OrgUnit[] }>(
+    `me.json?fields=organisationUnits[${ROOT_FIELDS}],dataViewOrganisationUnits[${ROOT_FIELDS}]`,
     signal,
   );
-  return me.organisationUnits ?? [];
+  const roots = chooseOrgUnitRoots(me.dataViewOrganisationUnits, me.organisationUnits);
+  if (roots) return roots;
+
+  const payload = await proxyGet<{ organisationUnits: OrgUnit[] }>(
+    `organisationUnits.json?fields=${ROOT_FIELDS}&filter=level:eq:1&paging=false`,
+    signal,
+  );
+  return payload.organisationUnits ?? [];
 }
 
 export async function fetchOrgUnitChildren(

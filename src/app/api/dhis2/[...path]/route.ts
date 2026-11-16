@@ -10,6 +10,7 @@ import { NextResponse } from "next/server";
 import { readConnection } from "@/lib/dhis2/connection";
 import { isAllowedPath } from "@/lib/dhis2/paths";
 import { Dhis2Error, dhis2Json } from "@/lib/dhis2/server";
+import { isSignedIn } from "@/lib/auth/server";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +22,12 @@ export async function GET(
   request: Request,
   context: { params: Promise<{ path: string[] }> },
 ) {
+  // The proxy turns away anyone not signed in; this route checks again, so
+  // data is never served on the proxy's word alone.
+  if (!(await isSignedIn())) {
+    return NextResponse.json({ error: "Sign in first.", code: "NOT_SIGNED_IN" }, { status: 401, headers: NO_STORE });
+  }
+
   const { path } = await context.params;
   const endpoint = (path ?? []).join("/");
 

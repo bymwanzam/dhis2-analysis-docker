@@ -64,6 +64,31 @@ Every chart can be read as a table. Metadata can be exported as CSV or JSON, and
 map results can be exported as CSV or GeoJSON with each available boundary and its
 map value together.
 
+## Sign-in
+
+The whole site sits behind a sign-in page: every page and API route is checked by
+`src/proxy.ts`, and the data and connection routes check again themselves. People sign
+in with their DHIS2 username and password (checked once against `AUTH_DHIS2_URL`, never
+stored) or with a site account from `AUTH_USERS` (a scrypt hash, never the password).
+The session is a cookie signed with `AUTH_SECRET`; it cannot be forged or extended
+without it. Failed attempts are throttled per address and per account. The site stays
+locked until sign-in is set up. See [DEPLOY-CPANEL.md](DEPLOY-CPANEL.md) for the settings,
+and `node scripts/hash-password.mjs` for the secret and site accounts. For local
+development, `AUTH_DISABLED=true` in `.env.local` switches it off.
+
+Administrators manage site accounts in the app (**Manage users**): add people, reset
+passwords, set roles, disable or delete. Everyone changes their own password under **My
+account**, and a password set by an administrator must be replaced at first sign-in.
+Accounts are kept in `~/dhis2-analysis-data/users.json` (or `AUTH_STORE`), outside the
+app folder, as scrypt hashes; `AUTH_USERS` seeds the first administrator. A session is
+checked against its account on every request, so a changed password, a disabled account
+or a role change applies at once.
+
+Signing in decides who may use the site; it does not read data. Each person then
+connects with **their own** DHIS2 token, which is saved for them alone: signing out
+forgets it, another account in the same browser cannot use it, and a DHIS2 sign-in cannot
+save a token belonging to a different DHIS2 user.
+
 ## How the token is handled
 
 1. Posted once to `/api/connection`, which verifies it against DHIS2 before storing it.

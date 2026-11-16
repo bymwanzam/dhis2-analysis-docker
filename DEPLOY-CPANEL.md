@@ -65,19 +65,68 @@ The folder should now contain `app.js`, `server.js`, `package.json`, `node_modul
 `.htaccess` alone: it is how Passenger finds the app. Turn on **Settings → Show Hidden
 Files** in File Manager if you cannot see it.
 
-## 4. Settings (optional)
+## 4. Sign-in settings (required)
 
-Back in **Setup Node.js App**, edit the application and add environment variables as
-needed. All are optional; without them each viewer connects with their own token.
+The whole site is behind a sign-in page. Until these are set, the site stays locked and
+the sign-in page says what is missing. Set them in **Setup Node.js App** → edit the
+application → **Environment variables**, never in a file inside the upload.
 
-| Variable | Purpose |
+On your own computer, from the project folder, make a secret:
+
+```bash
+node scripts/hash-password.mjs --secret
+```
+
+| Variable | What to put |
 |---|---|
-| `DHIS2_BASE_URL` | Pin one DHIS2 server for every viewer; the Connection page becomes read-only… |
-| `DHIS2_TOKEN` | …with this token. Set it here only, never in a file inside the upload. |
-| `DHIS2_TOKEN_TYPE` | `ApiToken` (default) or `Bearer`. |
+| `AUTH_SECRET` | **Required.** The secret printed above (43 characters). Changing it signs everyone out. |
+| `AUTH_DHIS2_URL` | Your DHIS2 server, e.g. `https://dhims2.ghsmail.org`. People then sign in with their own DHIS2 username and password. |
+| `AUTH_USERS` | Optional site accounts that are not DHIS2 accounts (see below). |
+| `AUTH_ALLOWED_USERS` | Optional: only these DHIS2 usernames may sign in, comma-separated. Leave empty to let any account on the server in. |
+| `AUTH_SESSION_HOURS` | Optional: how long a sign-in lasts. Default `12`. |
+| `AUTH_ADMINS` | Optional: DHIS2 usernames that may manage site accounts, comma-separated. |
+| `AUTH_STORE` | Optional: where the account file lives. Default `~/dhis2-analysis-data/users.json`, in your hosting home, outside the app folder. |
+
+Set at least one of `AUTH_DHIS2_URL` or `AUTH_USERS`.
+
+A site account is made on your computer; the password never leaves it:
+
+```bash
+node scripts/hash-password.mjs admin "a long password"
+# prints: admin:scrypt$16384$…   (several accounts: join the lines with commas)
+```
+
+Paste the printed line as the value of `AUTH_USERS`.
+
+### Managing accounts in the site
+
+`AUTH_USERS` only seeds the first administrator. After that, an administrator manages
+everyone in the site: the account menu (top right) → **Manage users** adds people (with
+a typed or generated password, shown once), resets passwords, makes people
+administrators, and disables or deletes accounts. Everyone can change their own password
+under **My account and password**; anyone given a password by an administrator must
+replace it at first sign-in. A changed password, a disabled account or a removed
+administrator role takes effect on the next click, including in other browsers.
+
+These accounts are saved in `~/dhis2-analysis-data/users.json` (or `AUTH_STORE`),
+outside the app folder, so deleting the app's files to update it keeps them. The file
+holds only scrypt hashes, never passwords. Once an `AUTH_USERS` account is changed in
+the site (e.g. the administrator changes their own password), the file's copy is the one
+that counts.
+
+If every administrator is locked out, open the file in File Manager and delete it (the
+`AUTH_USERS` administrator works again), or remove just one account's entry.
+
+**Every person uses their own DHIS2 token.** After signing in, each person opens
+**Connection** and enters their own personal access token, so the site shows only what
+their own DHIS2 account may see. Do **not** set `DHIS2_TOKEN` here: that would give every
+signed-in person the same account. The saved token belongs to the person who entered it:
+signing out forgets it, the next person to sign in on the same browser cannot use it, and
+someone who signed in with a DHIS2 account cannot save a token that belongs to a different
+DHIS2 user.
 
 Do not set `COOKIE_SECURE=false`: cPanel serves the app over HTTPS with AutoSSL, and the
-login cookie needs that.
+sign-in and token cookies need that.
 
 ## 5. Start it
 
@@ -100,6 +149,10 @@ File Manager when something does not start.
 |---|---|
 | 503 or "Web application could not be started" | Open `stderr.log`. Usually a wrong startup file name, or a bundle extracted into a sub-folder rather than the root. |
 | Starts, then the first page takes long | Passenger starts the process on the first request and stops it when idle. Normal on shared hosting. |
+| The sign-in page says "Sign-in is not set up yet" | `AUTH_SECRET` is missing or too short, or neither `AUTH_DHIS2_URL` nor `AUTH_USERS` is set. Add them and **Restart** the app. |
+| "Wrong username or password" for a correct DHIS2 login | `AUTH_DHIS2_URL` points at the wrong server, or the account is not on `AUTH_ALLOWED_USERS`. |
+| "Too many failed attempts" | Eight wrong passwords in 15 minutes from one address or for one account. Wait 15 minutes, or restart the app. |
+| "This token belongs to the DHIS2 user …" | The token was made in a different DHIS2 account from the one signed in with. Create a token in your own account. |
 | Connect succeeds, then "not connected" on the next click | The app was opened over plain `http://`. Use the `https://` address; AutoSSL issues the certificate within an hour of creating the subdomain. |
 | `EADDRNOTAVAIL` or a bind error in `stderr.log` | `app.js` was not used as the startup file. It pins the host name the shell leaks into the process. |
 | Cannot reach DHIS2 | The host blocks the outbound connection or the DHIS2 URL is wrong. Namecheap support can confirm outbound HTTPS from the Node process. |

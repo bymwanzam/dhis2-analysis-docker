@@ -9,6 +9,17 @@ See README.md for what it does and how to run it.
 environment variable, and is attached to requests only in `src/lib/dhis2/server.ts`.
 Client code talks to `/api/dhis2/...`, never to DHIS2 directly.
 
+**The site is behind sign-in, and each person reads with their own token.**
+`src/proxy.ts` turns away any request without a valid signed session; the data and
+connection routes check again (`src/lib/auth/server.ts`). A saved DHIS2 token carries the
+account that saved it and `readConnection()` ignores it for anyone else; a DHIS2 sign-in
+may only save a token of the same DHIS2 user. Never pin `DHIS2_TOKEN` for a multi-user
+deployment, never store a password (sign-in checks it once and forgets it), and keep
+`src/lib/auth/` tested (`tests/auth.test.ts`, `tests/users.test.ts`). Site accounts live in the account
+file (`src/lib/auth/store.ts`, outside the app folder); the rules in `users.ts`
+(`changeProblem`) keep one working administrator — change them carefully. Sessions are
+re-checked against the live account (`state.ts`), never trusted on signature alone.
+
 **The proxy is read-only.** `src/app/api/dhis2/[...path]/route.ts` exports `GET` and
 nothing else, and every path is checked against the allowlist in
 `src/lib/dhis2/paths.ts` before the credential is attached. Adding a write endpoint to

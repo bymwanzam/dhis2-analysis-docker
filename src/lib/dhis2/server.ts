@@ -72,7 +72,8 @@ export async function dhis2Json<T>(
   const body = await response.text();
 
   if (!response.ok) {
-    throw new Dhis2Error(describeStatus(response.status), response.status, extractMessage(body));
+    const detail = extractMessage(body);
+    throw new Dhis2Error(describeRejection(response.status, detail), response.status, detail);
   }
 
   if (!body) return {} as T;
@@ -101,6 +102,27 @@ function describeStatus(status: number): string {
     default:
       return `DHIS2 responded with status ${status}.`;
   }
+}
+
+/**
+ * The status in words, or — for the refusals a reader can act on — what to do.
+ *
+ * DHIS2 answers 409 both for a query it cannot run and for one that asks for
+ * an organisation unit outside the account's data view. The second is not a
+ * problem with the selection's size, and saying so sends the reader to the
+ * right fix: pick a unit inside their own area, or ask for access.
+ */
+export function describeRejection(status: number, detail: string | undefined): string {
+  const outside = detail?.match(/not allowed to view org(?:anisation)? ?unit:?\s*`?([A-Za-z0-9]{11})?/i);
+  if (outside) {
+    return (
+      "Your DHIS2 account can only read data for the organisation units it is assigned to view, " +
+      `and this request included one outside them${outside[1] ? ` (${outside[1]})` : ""}. ` +
+      "Choose a unit inside your own area — the organisation unit picker starts there — " +
+      "or ask a DHIS2 administrator to add the unit to your account's data view (analysis) organisation units."
+    );
+  }
+  return describeStatus(status);
 }
 
 function extractMessage(body: string): string | undefined {

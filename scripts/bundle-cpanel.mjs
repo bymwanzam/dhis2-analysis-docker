@@ -38,6 +38,14 @@ cpSync(staticDir, join(out, ".next", "static"), { recursive: true });
 if (existsSync(publicDir)) cpSync(publicDir, join(out, "public"), { recursive: true });
 cpSync(join(root, "deploy", "cpanel", "app.js"), join(out, "app.js"));
 
+// Next.js copies in sharp, its image optimiser, built for the machine that ran
+// the build: on Windows a Windows binary that cannot load on the Linux host.
+// The app uses no next/image, so the optimiser is never called; leaving it out
+// makes the upload smaller and removes a binary that could only fail.
+for (const name of ["sharp", "@img"]) {
+  rmSync(join(out, "node_modules", name), { recursive: true, force: true });
+}
+
 // A secrets file must never travel with the bundle; settings go in cPanel's
 // environment-variable table instead.
 for (const name of [".env", ".env.local", ".env.production", ".env.production.local"]) {

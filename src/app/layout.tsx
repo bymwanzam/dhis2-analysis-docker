@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { AppShell } from "@/components/app-shell";
 import { ConnectionProvider } from "@/components/connection-provider";
 import { readConnection } from "@/lib/dhis2/connection";
+import { currentSession } from "@/lib/auth/server";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -24,6 +25,8 @@ const THEME_SCRIPT = `try{var t=localStorage.getItem("dhis2-theme");if(t==="ligh
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   // Cheap presence check only — the full probe happens client-side once.
   const hasCredentials = Boolean(await readConnection());
+  const session = await currentSession();
+  const user = session && session !== "off" ? { name: session.name, account: session.sub, role: session.role } : null;
 
   return (
     <html
@@ -36,7 +39,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full">
         <ConnectionProvider hasCredentials={hasCredentials}>
-          <AppShell>{children}</AppShell>
+          <AppShell user={user}>{children}</AppShell>
         </ConnectionProvider>
       </body>
     </html>

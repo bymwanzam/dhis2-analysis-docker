@@ -6,6 +6,7 @@
  * server components can read; every call to DHIS2 is made from the server.
  */
 import { cookies } from "next/headers";
+import { currentSession } from "../auth/server";
 import type { Connection, TokenType } from "./types";
 
 export const CONNECTION_COOKIE = "dhis2_conn";
@@ -65,19 +66,35 @@ export function decodeConnection(value: string): Connection | null {
       baseUrl: normalizeBaseUrl(parsed.baseUrl),
       token: parsed.token,
       tokenType: normalizeTokenType(parsed.tokenType),
+      ...(typeof parsed.owner === "string" && parsed.owner ? { owner: parsed.owner } : {}),
     };
   } catch {
     return null;
   }
 }
 
-/** Environment credentials win; otherwise the session cookie. */
+/**
+ * Environment credentials win; otherwise the token this browser saved — but
+ * only for the person who saved it. With sign-in on, a token saved under
+ * another account (a shared computer, a session that changed hands) is
+ * ignored rather than lent out.
+ */
 export async function readConnection(): Promise<Connection | null> {
   const fromEnv = envConnection();
   if (fromEnv) return fromEnv;
   const store = await cookies();
   const raw = store.get(CONNECTION_COOKIE)?.value;
-  return raw ? decodeConnection(raw) : null;
+  const connection = raw ? decodeConnection(raw) : null;
+  if (!connection) return null;
+  const session = await currentSession();
+  if (session === "off") return connection;
+  if (!session || !ownsConnection(connection, session.sub)) return null;
+  return connection;
+}
+
+/** Whether a saved token belongs to the signed-in account. */
+export function ownsConnection(connection: Connection, account: string): boolean {
+  return Boolean(connection.owner) && connection.owner!.toLowerCase() === account.toLowerCase();
 }
 
 /**
@@ -88,7 +105,7 @@ export async function readConnection(): Promise<Connection | null> {
  * by the browser and every connection vanishes on the next request. HTTPS in
  * front of the server is the better answer wherever it is possible.
  */
-function cookieSecure(): boolean {
+export function cookieSecure(): boolean {
   const flag = process.env.COOKIE_SECURE?.trim().toLowerCase();
   if (flag === "false") return false;
   if (flag === "true") return true;
