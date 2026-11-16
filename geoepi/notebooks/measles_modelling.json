@@ -1,0 +1,15 @@
+{
+ "id": "measles_modelling",
+ "title": "Measles Modelling and Prediction (Northern Region)",
+ "module": "M2",
+ "track": "measles",
+ "stage": "analysis",
+ "next": [],
+ "handoff": false,
+ "default_dataset": null,
+ "requires": [
+  "measles_panel.rds",
+  "ghana_districts.gpkg"
+ ],
+ "about": "Age-standardised SIR, count regression, spatial relative risk, next-month forecast and alerts, then the ranked Northern Region decision table and the 14-day outreach microplan."
+}

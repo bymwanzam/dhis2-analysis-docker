@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.env*
+!.env.example
+*.zip
+/geoepi
+Dockerfile
+docker-compose.yml
+DEPLOY-DOCKER.md
+/modules

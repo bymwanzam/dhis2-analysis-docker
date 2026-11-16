@@ -1,0 +1,27 @@
+{
+ "id": "measles_data_preparation",
+ "title": "Measles Data Preparation (Northern Region)",
+ "module": "M1",
+ "track": "measles",
+ "stage": "preparation",
+ "next": [
+  "measles_modelling"
+ ],
+ "handoff": true,
+ "default_dataset": "measles_data",
+ "requires": [
+  "dhims2_measles_export.csv",
+  "dhims2_reporting_rates.csv",
+  "dhims2_climate_app_export.csv",
+  "district_lookup.csv",
+  "population_district.csv",
+  "district_covariates.csv",
+  "measles_age_cases_monthly.csv",
+  "measles_age_structure.csv",
+  "measles_immunisation.csv",
+  "school_contact_calendar.csv",
+  "panel_ready.csv",
+  "ghana_districts.gpkg"
+ ],
+ "about": "Build the checked district-month measles panel from the raw DHIMS2-style exports: duplicates, name-to-code joins, reporting completeness, impossible values, age consistency, denominators, immunisation and school contact."
+}

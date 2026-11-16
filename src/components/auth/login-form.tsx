@@ -126,8 +126,8 @@ export function LoginForm({
               </p>
               <p className="mt-1 text-ink-2">{problem}</p>
               <p className="mt-2 text-ink-2">
-                The site stays locked until it is. The administrator sets these in cPanel → Setup Node.js App → Environment
-                variables, then restarts the app (see DEPLOY-CPANEL.md).
+                The site stays locked until it is. The administrator sets these in the server&apos;s .env file, then restarts the
+                app with docker compose up -d (see DEPLOY-DOCKER.md).
               </p>
             </div>
           ) : disabled ? (

@@ -1,0 +1,134 @@
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp12);
+    margin-block-end: var(--spacers-dp12);
+    flex-wrap: wrap;
+}
+
+.title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ghs-brand-ink);
+    letter-spacing: -0.02em;
+}
+
+.autosave {
+    font-size: 12px;
+    color: var(--colors-grey600);
+    margin-inline-start: auto;
+}
+
+.levelSwitch {
+    display: flex;
+    gap: var(--spacers-dp16);
+    margin-block-end: var(--spacers-dp12);
+}
+
+.notice {
+    margin-block-end: var(--spacers-dp16);
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--spacers-dp48);
+}
+
+.body {
+    display: flex;
+    gap: var(--spacers-dp16);
+    align-items: flex-start;
+}
+
+.content {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+}
+
+.sidebar {
+    flex: 0 0 260px;
+    inline-size: 260px;
+    position: sticky;
+    inset-block-start: var(--spacers-dp16);
+    padding: var(--spacers-dp16);
+    background: var(--colors-white);
+    border: 1px solid var(--ghs-line);
+    border-radius: var(--ghs-radius-card);
+    box-shadow: var(--ghs-shadow-card);
+}
+
+.progress {
+    padding-block-end: var(--spacers-dp12);
+    margin-block-end: var(--spacers-dp12);
+    border-block-end: 1px solid var(--colors-grey200);
+}
+
+.progressLabel {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--colors-grey600);
+}
+
+.progressValue {
+    font-size: 24px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--colors-grey900);
+}
+
+.objectiveTitle {
+    margin: var(--spacers-dp12) 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--colors-grey800);
+}
+
+.feedback {
+    margin-block-start: var(--spacers-dp24);
+    padding: var(--spacers-dp16);
+    background: var(--colors-white);
+    border: 1px solid var(--ghs-line);
+    border-radius: var(--ghs-radius-card);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacers-dp12);
+    box-shadow: var(--ghs-shadow-card);
+}
+
+.sectionTitle {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--colors-grey900);
+}
+
+.recommendation {
+    padding-block-end: var(--spacers-dp8);
+}
+
+.recommendationHelp {
+    margin: 2px 0 0 26px;
+    font-size: 12px;
+    color: var(--colors-grey600);
+}
+
+.blockerList {
+    margin: 0;
+    padding-inline-start: var(--spacers-dp16);
+}
+
+@media (max-width: 1100px) {
+    .body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        inline-size: 100%;
+        flex: 1 1 auto;
+        position: static;
+    }
+}

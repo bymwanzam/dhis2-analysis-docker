@@ -153,7 +153,7 @@ export function changeProblem(
     return "This is the last administrator. Make someone else an administrator first.";
   }
   if (change.kind === "delete" && target.source === "server") {
-    return "This account comes from the server settings (AUTH_USERS). Disable it here, or remove it from AUTH_USERS in cPanel.";
+    return "This account comes from the server settings (AUTH_USERS). Disable it here, or remove it from AUTH_USERS in the server settings.";
   }
   return null;
 }

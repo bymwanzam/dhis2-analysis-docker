@@ -1,0 +1,2492 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2026-09-17T07:10:14.436Z\n"
+"PO-Revision-Date: 2026-09-17T07:10:14.436Z\n"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Regional Assessment"
+msgstr "Regional Assessment"
+
+msgid "District Assessment"
+msgstr "District Assessment"
+
+msgid "Regional Peer Review"
+msgstr "Regional Peer Review"
+
+msgid "District Peer Review"
+msgstr "District Peer Review"
+
+msgid "Reports"
+msgstr "Reports"
+
+msgid "Administration"
+msgstr "Administration"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Main navigation"
+msgstr "Main navigation"
+
+msgid "Holistic Assessment"
+msgstr "Holistic Assessment"
+
+msgid "Ghana Health Service"
+msgstr "Ghana Health Service"
+
+msgid "© {{year}} Bigvalues IT Systems"
+msgstr "© {{year}} Bigvalues IT Systems"
+
+msgid "Version {{version}} (Build {{build}})"
+msgstr "Version {{version}} (Build {{build}})"
+
+msgid "Assessment year"
+msgstr "Assessment year"
+
+msgid "No regions found"
+msgstr "No regions found"
+
+msgid "Region"
+msgstr "Region"
+
+msgid "No districts found"
+msgstr "No districts found"
+
+msgid "District"
+msgstr "District"
+
+msgid "DHIS2"
+msgstr "DHIS2"
+
+msgid "Manual"
+msgstr "Manual"
+
+msgid "{{code}} previous year value"
+msgstr "{{code}} previous year value"
+
+msgid "{{code}} current year value"
+msgstr "{{code}} current year value"
+
+msgid "{{code}} local target"
+msgstr "{{code}} local target"
+
+msgid "lower is better"
+msgstr "lower is better"
+
+msgid "higher is better"
+msgstr "higher is better"
+
+msgid "Agree"
+msgstr "Agree"
+
+msgid "Suggested score"
+msgstr "Suggested score"
+
+msgid "Suggest score…"
+msgstr "Suggest score…"
+
+msgid "Value"
+msgstr "Value"
+
+msgid "Suggested corrected value"
+msgstr "Suggested corrected value"
+
+msgid "Justification (required for an adjustment)"
+msgstr "Justification (required for an adjustment)"
+
+msgid "Justification"
+msgstr "Justification"
+
+msgid "Reviewer suggests score {{score}}"
+msgstr "Reviewer suggests score {{score}}"
+
+msgid "Suggested value {{value}}"
+msgstr "Suggested value {{value}}"
+
+msgid "#"
+msgstr "#"
+
+msgid "Indicator"
+msgstr "Indicator"
+
+msgid "Source"
+msgstr "Source"
+
+msgid "Previous"
+msgstr "Previous"
+
+msgid "Current"
+msgstr "Current"
+
+msgid "Target"
+msgstr "Target"
+
+msgid "Change"
+msgstr "Change"
+
+msgid "Gap"
+msgstr "Gap"
+
+msgid "Score"
+msgstr "Score"
+
+msgid "Review"
+msgstr "Review"
+
+msgid "Reviewer feedback"
+msgstr "Reviewer feedback"
+
+msgid "Objective milestone"
+msgstr "Objective milestone"
+
+msgid "weight {{w}}"
+msgstr "weight {{w}}"
+
+msgid "Evidence"
+msgstr "Evidence"
+
+msgid "Describe the evidence supporting this milestone status"
+msgstr "Describe the evidence supporting this milestone status"
+
+msgid "Evidence supports the claimed status"
+msgstr "Evidence supports the claimed status"
+
+msgid "Reviewer comment"
+msgstr "Reviewer comment"
+
+msgid "Reviewer"
+msgstr "Reviewer"
+
+msgid "Score overridden"
+msgstr "Score overridden"
+
+msgid "Overall performance"
+msgstr "Overall performance"
+
+msgid "Raw score {{score}} of {{max}}"
+msgstr "Raw score {{score}} of {{max}}"
+
+msgid "{{answered}} of {{total}} rows complete ({{pct}})"
+msgstr "{{answered}} of {{total}} rows complete ({{pct}})"
+
+msgid "Objective scores"
+msgstr "Objective scores"
+
+msgid "Objective {{n}}"
+msgstr "Objective {{n}}"
+
+msgid "{{answered}}/{{total}} complete"
+msgstr "{{answered}}/{{total}} complete"
+
+msgid "Draft"
+msgstr "Draft"
+
+msgid "Submitted"
+msgstr "Submitted"
+
+msgid "Under review"
+msgstr "Under review"
+
+msgid "Revision requested"
+msgstr "Revision requested"
+
+msgid "Approved"
+msgstr "Approved"
+
+msgid "Rejected"
+msgstr "Rejected"
+
+msgid "Approve"
+msgstr "Approve"
+
+msgid "Request revision"
+msgstr "Request revision"
+
+msgid "Reject"
+msgstr "Reject"
+
+msgid "Achieved"
+msgstr "Achieved"
+
+msgid "In progress"
+msgstr "In progress"
+
+msgid "Not achieved"
+msgstr "Not achieved"
+
+msgid "Open"
+msgstr "Open"
+
+msgid "Closed"
+msgstr "Closed"
+
+msgid "Locked"
+msgstr "Locked"
+
+msgid "Archived"
+msgstr "Archived"
+
+msgid "Owners may enter data and submit."
+msgstr "Owners may enter data and submit."
+
+msgid "Data entry continues, but nothing new may be submitted."
+msgstr "Data entry continues, but nothing new may be submitted."
+
+msgid ""
+"Neither editing nor submission is allowed; reviews already under way can "
+"still be completed."
+msgstr ""
+"Neither editing nor submission is allowed; reviews already under way can "
+"still be completed."
+
+msgid "The year is finished and kept for reference only."
+msgstr "The year is finished and kept for reference only."
+
+msgid "Highly Performing"
+msgstr "Highly Performing"
+
+msgid "Moderately Performing"
+msgstr "Moderately Performing"
+
+msgid "Sustained"
+msgstr "Sustained"
+
+msgid "Underperforming"
+msgstr "Underperforming"
+
+msgid "Severely Underperforming"
+msgstr "Severely Underperforming"
+
+msgid "Exceeding most targets with positive trends"
+msgstr "Exceeding most targets with positive trends"
+
+msgid "Meeting most targets with stable performance"
+msgstr "Meeting most targets with stable performance"
+
+msgid "Maintaining baseline with room for improvement"
+msgstr "Maintaining baseline with room for improvement"
+
+msgid "Below targets, intervention recommended"
+msgstr "Below targets, intervention recommended"
+
+msgid "Critical gaps requiring urgent intervention"
+msgstr "Critical gaps requiring urgent intervention"
+
+msgid "No data / not achieved"
+msgstr "No data / not achieved"
+
+msgid "Declined"
+msgstr "Declined"
+
+msgid "No change"
+msgstr "No change"
+
+msgid "Improved"
+msgstr "Improved"
+
+msgid "Target met"
+msgstr "Target met"
+
+msgid "This assessment is locked and cannot be submitted."
+msgstr "This assessment is locked and cannot be submitted."
+
+msgid "At least {{pct}}% must be complete before submitting."
+msgstr "At least {{pct}}% must be complete before submitting."
+
+msgid "The {{year}} assessment period is not open for submission."
+msgstr "The {{year}} assessment period is not open for submission."
+
+msgid "Assessment is not ready to submit."
+msgstr "Assessment is not ready to submit."
+
+msgid "Completion {{pct}}%"
+msgstr "Completion {{pct}}%"
+
+msgid "Only a submitted assessment can be reviewed."
+msgstr "Only a submitted assessment can be reviewed."
+
+msgid "At least {{pct}}% of rows must be verified before submitting a review."
+msgstr "At least {{pct}}% of rows must be verified before submitting a review."
+
+msgid "Choose a recommendation."
+msgstr "Choose a recommendation."
+
+msgid "Review is not ready to submit."
+msgstr "Review is not ready to submit."
+
+msgid "{{count}} indicator(s) unlocked"
+msgid_plural "{{count}} indicator(s) unlocked"
+msgstr[0] "{{count}} indicator(s) unlocked"
+msgstr[1] "{{count}} indicator(s) unlocked"
+
+msgid "{{count}} accepted"
+msgid_plural "{{count}} accepted"
+msgstr[0] "{{count}} accepted"
+msgstr[1] "{{count}} accepted"
+
+msgid "Could not load the audit trail"
+msgstr "Could not load the audit trail"
+
+msgid "Nothing recorded yet"
+msgstr "Nothing recorded yet"
+
+msgid ""
+"No assessment for {{year}} has any history. Entries appear as assessments "
+"are created, submitted and reviewed."
+msgstr ""
+"No assessment for {{year}} has any history. Entries appear as assessments "
+"are created, submitted and reviewed."
+
+msgid "Audit trail for {{year}}"
+msgstr "Audit trail for {{year}}"
+
+msgid "Showing the most recent {{limit}} of {{total}} events."
+msgstr "Showing the most recent {{limit}} of {{total}} events."
+
+msgid "{{total}} events."
+msgstr "{{total}} events."
+
+msgid "When"
+msgstr "When"
+
+msgid "Organisation unit"
+msgstr "Organisation unit"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "By"
+msgstr "By"
+
+msgid "Detail"
+msgstr "Detail"
+
+msgid "Backed up {{count}} keys"
+msgid_plural "Backed up {{count}} keys"
+msgstr[0] "Backed up {{count}} keys"
+msgstr[1] "Backed up {{count}} keys"
+
+msgid "Backup"
+msgstr "Backup"
+
+msgid ""
+"Downloads every key in the {{namespace}} datastore namespace as one JSON "
+"file — all assessments, the indicator mapping, the settings and the peer "
+"pairings."
+msgstr ""
+"Downloads every key in the {{namespace}} datastore namespace as one JSON "
+"file — all assessments, the indicator mapping, the settings and the peer "
+"pairings."
+
+msgid "Download backup"
+msgstr "Download backup"
+
+msgid "Restoring is done deliberately"
+msgstr "Restoring is done deliberately"
+
+msgid ""
+"There is no restore button here on purpose — writing a backup back over a "
+"live namespace would overwrite work in progress. Restore through the DHIS2 "
+"datastore API, key by key, once you are sure what you are replacing."
+msgstr ""
+"There is no restore button here on purpose — writing a backup back over a "
+"live namespace would overwrite work in progress. Restore through the DHIS2 "
+"datastore API, key by key, once you are sure what you are replacing."
+
+msgid "Assessment exports"
+msgstr "Assessment exports"
+
+msgid ""
+"Per-year CSV exports of the league table and the full indicator detail live "
+"on the Reports page, where a year and level can be chosen first."
+msgstr ""
+"Per-year CSV exports of the league table and the full indicator detail live "
+"on the Reports page, where a year and level can be chosen first."
+
+msgid "Mapping saved"
+msgstr "Mapping saved"
+
+msgid "{{mapped}} of {{total}} indicators mapped"
+msgstr "{{mapped}} of {{total}} indicators mapped"
+
+msgid "Save mapping"
+msgstr "Save mapping"
+
+msgid "Discard changes"
+msgstr "Discard changes"
+
+msgid "How mapping works"
+msgstr "How mapping works"
+
+msgid ""
+"Bind an indicator to a DHIS2 indicator or data element and the assessment "
+"page will fetch its current and previous year values from analytics. "
+"Unmapped indicators remain manual entry. Rows marked \"Built in\" are "
+"already bound to the GHS-HA indicators this app ships with; rebinding or "
+"clearing one overrides it."
+msgstr ""
+"Bind an indicator to a DHIS2 indicator or data element and the assessment "
+"page will fetch its current and previous year values from analytics. "
+"Unmapped indicators remain manual entry. Rows marked \"Built in\" are "
+"already bound to the GHS-HA indicators this app ships with; rebinding or "
+"clearing one overrides it."
+
+msgid "Assessment tool"
+msgstr "Assessment tool"
+
+msgid "Regional (94 indicators)"
+msgstr "Regional (94 indicators)"
+
+msgid "District (93 indicators)"
+msgstr "District (93 indicators)"
+
+msgid "Filter indicators"
+msgstr "Filter indicators"
+
+msgid "Search by name or code"
+msgstr "Search by name or code"
+
+msgid "Objective"
+msgstr "Objective"
+
+msgid "All objectives"
+msgstr "All objectives"
+
+msgid "Mapping status"
+msgstr "Mapping status"
+
+msgid "All"
+msgstr "All"
+
+msgid "Mapped"
+msgstr "Mapped"
+
+msgid "Unmapped"
+msgstr "Unmapped"
+
+msgid "Mapped to"
+msgstr "Mapped to"
+
+msgid "Built in"
+msgstr "Built in"
+
+msgid "Custom"
+msgstr "Custom"
+
+msgid "Manual entry"
+msgstr "Manual entry"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Map"
+msgstr "Map"
+
+msgid "Clear"
+msgstr "Clear"
+
+msgid "Search DHIS2 metadata"
+msgstr "Search DHIS2 metadata"
+
+msgid "Type at least 2 characters"
+msgstr "Type at least 2 characters"
+
+msgid "Searching…"
+msgstr "Searching…"
+
+msgid "Regional"
+msgstr "Regional"
+
+msgid "Could not load assessments"
+msgstr "Could not load assessments"
+
+msgid "{{year}} assessments"
+msgstr "{{year}} assessments"
+
+msgid "Nothing saved yet"
+msgstr "Nothing saved yet"
+
+msgid ""
+"No assessment has been saved for {{year}}. Counts appear here as regions "
+"and districts begin."
+msgstr ""
+"No assessment has been saved for {{year}}. Counts appear here as regions "
+"and districts begin."
+
+msgid "DHIS2 coverage"
+msgstr "DHIS2 coverage"
+
+msgid ""
+"How many rows of each tool are bound to a DHIS2 indicator. Unbound rows "
+"stay manual entry."
+msgstr ""
+"How many rows of each tool are bound to a DHIS2 indicator. Unbound rows "
+"stay manual entry."
+
+msgid "Tool"
+msgstr "Tool"
+
+msgid "Bound"
+msgstr "Bound"
+
+msgid "Rows"
+msgstr "Rows"
+
+msgid "Coverage"
+msgstr "Coverage"
+
+msgid "An org unit cannot review itself."
+msgstr "An org unit cannot review itself."
+
+msgid "{{reviewer}} will review {{assessed}}"
+msgstr "{{reviewer}} will review {{assessed}}"
+
+msgid "Pairing removed"
+msgstr "Pairing removed"
+
+msgid "Peer review pairings for {{year}}"
+msgstr "Peer review pairings for {{year}}"
+
+msgid ""
+"Each pairing says that one org unit reviews another. Pairings are held per "
+"year, so last cycle is left intact when this one is redrawn."
+msgstr ""
+"Each pairing says that one org unit reviews another. Pairings are held per "
+"year, so last cycle is left intact when this one is redrawn."
+
+msgid "Level"
+msgstr "Level"
+
+msgid "Reviews"
+msgstr "Reviews"
+
+msgid "Add pairing"
+msgstr "Add pairing"
+
+msgid "No pairings yet"
+msgstr "No pairings yet"
+
+msgid "Nothing is paired for {{year}}. Add a pairing above."
+msgstr "Nothing is paired for {{year}}. Add a pairing above."
+
+msgid "Remove"
+msgstr "Remove"
+
+msgid "Period created for {{year}}"
+msgstr "Period created for {{year}}"
+
+msgid "{{year}} is now {{status}}"
+msgstr "{{year}} is now {{status}}"
+
+msgid "Periods"
+msgstr "Periods"
+
+msgid "Year"
+msgstr "Year"
+
+msgid "Create period"
+msgstr "Create period"
+
+msgid "No periods recorded"
+msgstr "No periods recorded"
+
+msgid ""
+"Every year is open until a period is created for it. Create one for the "
+"year you want to control; the others are unaffected."
+msgstr ""
+"Every year is open until a period is created for it. Create one for the "
+"year you want to control; the others are unaffected."
+
+msgid "Status"
+msgstr "Status"
+
+msgid "What it means"
+msgstr "What it means"
+
+msgid "Last changed"
+msgstr "Last changed"
+
+msgid "Change to"
+msgstr "Change to"
+
+msgid "Read-only outside national"
+msgstr "Read-only outside national"
+
+msgid ""
+"A period decides when the whole country submits, so it is opened and closed "
+"nationally. It is shown here because it governs whether your own "
+"assessments can be submitted."
+msgstr ""
+"A period decides when the whole country submits, so it is opened and closed "
+"nationally. It is shown here because it governs whether your own "
+"assessments can be submitted."
+
+msgid "A closed year is not a locked one"
+msgstr "A closed year is not a locked one"
+
+msgid ""
+"Closing a year stops new submissions but leaves data entry alone, so work "
+"in progress is not lost the moment a deadline passes. Locking stops editing "
+"too. Neither ever blocks a reviewer from finishing a review already under "
+"way — a review that could not be completed would strand the assessment it "
+"belongs to."
+msgstr ""
+"Closing a year stops new submissions but leaves data entry alone, so work "
+"in progress is not lost the moment a deadline passes. Locking stops editing "
+"too. Neither ever blocks a reviewer from finishing a review already under "
+"way — a review that could not be completed would strand the assessment it "
+"belongs to."
+
+msgid "Regions"
+msgstr "Regions"
+
+msgid "{{count}} regions"
+msgid_plural "{{count}} regions"
+msgstr[0] "{{count}} regions"
+msgstr[1] "{{count}} regions"
+
+msgid "{{count}} districts"
+msgid_plural "{{count}} districts"
+msgstr[0] "{{count}} districts"
+msgstr[1] "{{count}} districts"
+
+msgid "Districts"
+msgstr "Districts"
+
+msgid "Districts assessed"
+msgstr "Districts assessed"
+
+msgid "Regional assessment"
+msgstr "Regional assessment"
+
+msgid "Stored"
+msgstr "Stored"
+
+msgid "None"
+msgstr "None"
+
+msgid "{{count}} districts have no parent region"
+msgid_plural "{{count}} districts have no parent region"
+msgstr[0] "{{count}} districts have no parent region"
+msgstr[1] "{{count}} districts have no parent region"
+
+msgid ""
+"A district DHIS2 reports without a parent cannot be rolled up into a "
+"region, so it will be missing from the regional dashboard. Correct the "
+"hierarchy in the Maintenance app."
+msgstr ""
+"A district DHIS2 reports without a parent cannot be rolled up into a "
+"region, so it will be missing from the regional dashboard. Correct the "
+"hierarchy in the Maintenance app."
+
+msgid "Read from DHIS2, not stored here"
+msgstr "Read from DHIS2, not stored here"
+
+msgid ""
+"Regions and districts are DHIS2 metadata. The app reads them fresh every "
+"time rather than keeping its own copy, so changes made in the Maintenance "
+"app appear here immediately — and there is no second list to fall out of "
+"step."
+msgstr ""
+"Regions and districts are DHIS2 metadata. The app reads them fresh every "
+"time rather than keeping its own copy, so changes made in the Maintenance "
+"app appear here immediately — and there is no second list to fall out of "
+"step."
+
+msgid "Settings saved"
+msgstr "Settings saved"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Default assessment year"
+msgstr "Default assessment year"
+
+msgid "Organisation name"
+msgstr "Organisation name"
+
+msgid "Save settings"
+msgstr "Save settings"
+
+msgid "The framework is not a setting"
+msgstr "The framework is not a setting"
+
+msgid ""
+"Which tool an assessment uses is decided by the level being assessed - "
+"regional or district - not by a setting, because the two are different "
+"instruments and a record must keep the one it was scored against."
+msgstr ""
+"Which tool an assessment uses is decided by the level being assessed - "
+"regional or district - not by a setting, because the two are different "
+"instruments and a record must keep the one it was scored against."
+
+msgid "Regional tool"
+msgstr "Regional tool"
+
+msgid "District tool"
+msgstr "District tool"
+
+msgid "Targets saved for {{year}}"
+msgstr "Targets saved for {{year}}"
+
+msgid "No targets are stored for {{year}}"
+msgstr "No targets are stored for {{year}}"
+
+msgid "Copied {{count}} targets from {{year}}. Save to keep them."
+msgid_plural "Copied {{count}} targets from {{year}}. Save to keep them."
+msgstr[0] "Copied {{count}} targets from {{year}}. Save to keep them."
+msgstr[1] "Copied {{count}} targets from {{year}}. Save to keep them."
+
+msgid "Code"
+msgstr "Code"
+
+msgid "Direction"
+msgstr "Direction"
+
+msgid "Default target"
+msgstr "Default target"
+
+msgid "Default lower"
+msgstr "Default lower"
+
+msgid "Default upper"
+msgstr "Default upper"
+
+msgid "Lower"
+msgstr "Lower"
+
+msgid "Upper"
+msgstr "Upper"
+
+msgid "That file has no rows"
+msgstr "That file has no rows"
+
+msgid "That file has no Code column"
+msgstr "That file has no Code column"
+
+msgid "{{matched}} rows read, {{skipped}} ignored. Review and save."
+msgstr "{{matched}} rows read, {{skipped}} ignored. Review and save."
+
+msgid "Targets"
+msgstr "Targets"
+
+msgid "{{count}} of {{total}} rows overridden"
+msgid_plural "{{count}} of {{total}} rows overridden"
+msgstr[0] "{{count}} of {{total}} rows overridden"
+msgstr[1] "{{count}} of {{total}} rows overridden"
+
+msgid "Save targets"
+msgstr "Save targets"
+
+msgid "Copy from {{year}}"
+msgstr "Copy from {{year}}"
+
+msgid "Reset to defaults"
+msgstr "Reset to defaults"
+
+msgid "Import CSV"
+msgstr "Import CSV"
+
+msgid "Export CSV"
+msgstr "Export CSV"
+
+msgid "Read-only at district level"
+msgstr "Read-only at district level"
+
+msgid ""
+"These targets apply to every district on the tool, so they are set "
+"nationally or regionally. Rows whose target is genuinely set locally are "
+"marked \"varies\" below and are edited on the assessment itself."
+msgstr ""
+"These targets apply to every district on the tool, so they are set "
+"nationally or regionally. Rows whose target is genuinely set locally are "
+"marked \"varies\" below and are edited on the assessment itself."
+
+msgid "Default"
+msgstr "Default"
+
+msgid "Overridden"
+msgstr "Overridden"
+
+msgid "varies"
+msgstr "varies"
+
+msgid "Set"
+msgstr "Set"
+
+msgid "National"
+msgstr "National"
+
+msgid "Could not load users"
+msgstr "Could not load users"
+
+msgid "Users"
+msgstr "Users"
+
+msgid "{{count}} users can use this app"
+msgid_plural "{{count}} users can use this app"
+msgstr[0] "{{count}} users can use this app"
+msgstr[1] "{{count}} users can use this app"
+
+msgid "Nobody holds the app authorities"
+msgstr "Nobody holds the app authorities"
+
+msgid "User"
+msgstr "User"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Can enter data"
+msgstr "Can enter data"
+
+msgid "Can review"
+msgstr "Can review"
+
+msgid "Can administer"
+msgstr "Can administer"
+
+msgid "Through role"
+msgstr "Through role"
+
+msgid "Superuser"
+msgstr "Superuser"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Granted in DHIS2, shown here"
+msgstr "Granted in DHIS2, shown here"
+
+msgid ""
+"Authorities are granted to user roles in the DHIS2 Users app, not here. A "
+"user with no org unit at all gets the narrowest view rather than the "
+"widest, so an account that reaches the app but sees nothing is usually one "
+"with no organisation unit assigned."
+msgstr ""
+"Authorities are granted to user roles in the DHIS2 Users app, not here. A "
+"user with no org unit at all gets the narrowest view rather than the "
+"widest, so an account that reaches the app but sees nothing is usually one "
+"with no organisation unit assigned."
+
+msgid "Overview"
+msgstr "Overview"
+
+msgid "Mappings"
+msgstr "Mappings"
+
+msgid "Pairings"
+msgstr "Pairings"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Audit"
+msgstr "Audit"
+
+msgid "Administrator access required"
+msgstr "Administrator access required"
+
+msgid "National scope"
+msgstr "National scope"
+
+msgid "Regional scope"
+msgstr "Regional scope"
+
+msgid "District scope"
+msgstr "District scope"
+
+msgid "No indicators are mapped to DHIS2 yet. Map them on the Admin page."
+msgstr "No indicators are mapped to DHIS2 yet. Map them on the Admin page."
+
+msgid "Fetched {{matched}} of {{requested}} mapped indicators"
+msgstr "Fetched {{matched}} of {{requested}} mapped indicators"
+
+msgid "Could not fetch DHIS2 data — {{msg}}"
+msgstr "Could not fetch DHIS2 data — {{msg}}"
+
+msgid "Draft saved"
+msgstr "Draft saved"
+
+msgid "Submitted for peer review"
+msgstr "Submitted for peer review"
+
+msgid "Revision mode — {{count}} indicator(s) unlocked"
+msgid_plural "Revision mode — {{count}} indicator(s) unlocked"
+msgstr[0] "Revision mode — {{count}} indicator(s) unlocked"
+msgstr[1] "Revision mode — {{count}} indicator(s) unlocked"
+
+msgid "{{count}} adjustment(s) applied"
+msgid_plural "{{count}} adjustment(s) applied"
+msgstr[0] "{{count}} adjustment(s) applied"
+msgstr[1] "{{count}} adjustment(s) applied"
+
+msgid "Original scores kept"
+msgstr "Original scores kept"
+
+msgid "Assessment reopened as draft"
+msgstr "Assessment reopened as draft"
+
+msgid "Saving…"
+msgstr "Saving…"
+
+msgid "Auto-saved {{when}}"
+msgstr "Auto-saved {{when}}"
+
+msgid "Fetch DHIS2 data"
+msgstr "Fetch DHIS2 data"
+
+msgid "Save draft"
+msgstr "Save draft"
+
+msgid "Resubmit for review"
+msgstr "Resubmit for review"
+
+msgid "Submit for review"
+msgstr "Submit for review"
+
+msgid "Read-only access"
+msgstr "Read-only access"
+
+msgid "Select an organisation unit"
+msgstr "Select an organisation unit"
+
+msgid "Choose a region and then a district to begin."
+msgstr "Choose a region and then a district to begin."
+
+msgid "Choose a region to begin."
+msgstr "Choose a region to begin."
+
+msgid "Could not load assessment"
+msgstr "Could not load assessment"
+
+msgid ""
+"The reviewer asked for corrections to {{count}} indicator(s). Accepting "
+"unlocks only those rows."
+msgid_plural ""
+"The reviewer asked for corrections to {{count}} indicator(s). Accepting "
+"unlocks only those rows."
+msgstr[0] ""
+"The reviewer asked for corrections to {{count}} indicator(s). Accepting "
+"unlocks only those rows."
+msgstr[1] ""
+"The reviewer asked for corrections to {{count}} indicator(s). Accepting "
+"unlocks only those rows."
+
+msgid "Accept revision request"
+msgstr "Accept revision request"
+
+msgid "Peer review complete"
+msgstr "Peer review complete"
+
+msgid ""
+"The reviewer approved this assessment and suggested {{count}} score "
+"adjustment(s)."
+msgid_plural ""
+"The reviewer approved this assessment and suggested {{count}} score "
+"adjustment(s)."
+msgstr[0] ""
+"The reviewer approved this assessment and suggested {{count}} score "
+"adjustment(s)."
+msgstr[1] ""
+"The reviewer approved this assessment and suggested {{count}} score "
+"adjustment(s)."
+
+msgid "Accept {{count}} changes"
+msgid_plural "Accept {{count}} changes"
+msgstr[0] "Accept {{count}} changes"
+msgstr[1] "Accept {{count}} changes"
+
+msgid "Reject all"
+msgstr "Reject all"
+
+msgid "Assessment rejected"
+msgstr "Assessment rejected"
+
+msgid "The reviewer found significant data quality issues."
+msgstr "The reviewer found significant data quality issues."
+
+msgid "Reopen as draft"
+msgstr "Reopen as draft"
+
+msgid "Revision mode"
+msgstr "Revision mode"
+
+msgid ""
+"Only the {{count}} flagged indicator(s) can be edited. Update them and "
+"resubmit for the same reviewer."
+msgid_plural ""
+"Only the {{count}} flagged indicator(s) can be edited. Update them and "
+"resubmit for the same reviewer."
+msgstr[0] ""
+"Only the {{count}} flagged indicator(s) can be edited. Update them and "
+"resubmit for the same reviewer."
+msgstr[1] ""
+"Only the {{count}} flagged indicator(s) can be edited. Update them and "
+"resubmit for the same reviewer."
+
+msgid "Before submitting"
+msgstr "Before submitting"
+
+msgid ""
+"Any indicator left without data scores -2. Current completion — {{pct}} "
+"(minimum {{min}})."
+msgstr ""
+"Any indicator left without data scores -2. Current completion — {{pct}} "
+"(minimum {{min}})."
+
+msgid "Objective {{n}} ({{done}}/{{total}})"
+msgstr "Objective {{n}} ({{done}}/{{total}})"
+
+msgid "Overall score"
+msgstr "Overall score"
+
+msgid "Performance"
+msgstr "Performance"
+
+msgid "Could not load the dashboard"
+msgstr "Could not load the dashboard"
+
+msgid "{{year}} {{level}} Assessment Dashboard"
+msgstr "{{year}} {{level}} Assessment Dashboard"
+
+msgid "Performance overview for the country"
+msgstr "Performance overview for the country"
+
+msgid "Performance overview for {{name}}"
+msgstr "Performance overview for {{name}}"
+
+msgid "Performance overview"
+msgstr "Performance overview"
+
+msgid "No assessments for {{year}}"
+msgstr "No assessments for {{year}}"
+
+msgid ""
+"No regional assessment has been saved for this year yet, so there is no "
+"national picture to show."
+msgstr ""
+"No regional assessment has been saved for this year yet, so there is no "
+"national picture to show."
+
+msgid "Average of {{count}} regions assessed"
+msgid_plural "Average of {{count}} regions assessed"
+msgstr[0] "Average of {{count}} regions assessed"
+msgstr[1] "Average of {{count}} regions assessed"
+
+msgid "Regions completed"
+msgstr "Regions completed"
+
+msgid "Districts completed"
+msgstr "Districts completed"
+
+msgid "National Performance by Objective"
+msgstr "National Performance by Objective"
+
+msgid "Regional Assessment Status"
+msgstr "Regional Assessment Status"
+
+msgid "No assessment for {{year}}"
+msgstr "No assessment for {{year}}"
+
+msgid "Nothing has been saved for {{name}} yet. Open the assessment to begin."
+msgstr "Nothing has been saved for {{name}} yet. Open the assessment to begin."
+
+msgid ""
+"Your DHIS2 account is not assigned to a region or district with an "
+"assessment this year."
+msgstr ""
+"Your DHIS2 account is not assigned to a region or district with an "
+"assessment this year."
+
+msgid "Ranked {{position}} of {{of}} regions"
+msgstr "Ranked {{position}} of {{of}} regions"
+
+msgid "{{pct}} complete"
+msgstr "{{pct}} complete"
+
+msgid "National Average"
+msgstr "National Average"
+
+msgid "vs National Avg"
+msgstr "vs National Avg"
+
+msgid "Completed"
+msgstr "Completed"
+
+msgid "Performance by Objective"
+msgstr "Performance by Objective"
+
+msgid "{{answered}} of {{total}} rows · {{label}}"
+msgstr "{{answered}} of {{total}} rows · {{label}}"
+
+msgid "District Assessment Status"
+msgstr "District Assessment Status"
+
+msgid ""
+"Welcome to the GHS Holistic Assessment application. This guide will help "
+"you get started with the annual health sector performance assessment."
+msgstr ""
+"Welcome to the GHS Holistic Assessment application. This guide will help "
+"you get started with the annual health sector performance assessment."
+
+msgid "Select assessment year"
+msgstr "Select assessment year"
+
+msgid ""
+"Use the year selector to choose the assessment year. Typically you will be "
+"assessing data from the previous calendar year."
+msgstr ""
+"Use the year selector to choose the assessment year. Typically you will be "
+"assessing data from the previous calendar year."
+
+msgid "Navigate to assessment"
+msgstr "Navigate to assessment"
+
+msgid ""
+"Click Regional Assessment in the sidebar to enter regional data, or "
+"District Assessment for district-level assessment."
+msgstr ""
+"Click Regional Assessment in the sidebar to enter regional data, or "
+"District Assessment for district-level assessment."
+
+msgid "Select your region or district"
+msgstr "Select your region or district"
+
+msgid ""
+"Choose your region from the dropdown. For district assessment, also select "
+"the district. The form loads any previously saved data and auto-populates "
+"available DHIS2 indicators."
+msgstr ""
+"Choose your region from the dropdown. For district assessment, also select "
+"the district. The form loads any previously saved data and auto-populates "
+"available DHIS2 indicators."
+
+msgid "Enter indicator values"
+msgstr "Enter indicator values"
+
+msgid ""
+"Work through each objective tab, entering current year and previous year "
+"values for all 94 indicators. Scores are calculated as you type."
+msgstr ""
+"Work through each objective tab, entering current year and previous year "
+"values for all 94 indicators. Scores are calculated as you type."
+
+msgid "Complete milestones"
+msgstr "Complete milestones"
+
+msgid ""
+"For each objective, mark the milestone achievement and provide evidence. "
+"Milestones carry a quarter of the objective weight."
+msgstr ""
+"For each objective, mark the milestone achievement and provide evidence. "
+"Milestones carry a quarter of the objective weight."
+
+msgid "Save and submit"
+msgstr "Save and submit"
+
+msgid ""
+"Save frequently using Save Draft. Once at least 80% complete, click Submit "
+"for Review to send it to your peer reviewer."
+msgstr ""
+"Save frequently using Save Draft. Once at least 80% complete, click Submit "
+"for Review to send it to your peer reviewer."
+
+msgid "Permissions"
+msgstr "Permissions"
+
+msgid "Auto-save"
+msgstr "Auto-save"
+
+msgid ""
+"The system saves your work every 30 seconds while you are editing, and "
+"shows an \"Auto-saved\" timestamp. You can also save manually at any time. "
+"It is still worth saving before navigating away."
+msgstr ""
+"The system saves your work every 30 seconds while you are editing, and "
+"shows an \"Auto-saved\" timestamp. You can also save manually at any time. "
+"It is still worth saving before navigating away."
+
+msgid "Roles in the workflow"
+msgstr "Roles in the workflow"
+
+msgid "Role"
+msgstr "Role"
+
+msgid "Who"
+msgstr "Who"
+
+msgid "Responsibility"
+msgstr "Responsibility"
+
+msgid "Assessment owner"
+msgstr "Assessment owner"
+
+msgid "The region or district being assessed"
+msgstr "The region or district being assessed"
+
+msgid ""
+"Fetch data from DHIMS2, enter remaining indicator values and milestones, "
+"and submit for peer review."
+msgstr ""
+"Fetch data from DHIMS2, enter remaining indicator values and milestones, "
+"and submit for peer review."
+
+msgid "Peer reviewer"
+msgstr "Peer reviewer"
+
+msgid "The visiting or paired region/district"
+msgstr "The visiting or paired region/district"
+
+msgid ""
+"Review the submitted assessment, verify data accuracy, suggest score "
+"adjustments, and give a recommendation."
+msgstr ""
+"Review the submitted assessment, verify data accuracy, suggest score "
+"adjustments, and give a recommendation."
+
+msgid "Phase 1 — Data entry (owner)"
+msgstr "Phase 1 — Data entry (owner)"
+
+msgid ""
+"Select your region or district. Mapped indicators are pulled from DHIMS2 "
+"automatically."
+msgstr ""
+"Select your region or district. Mapped indicators are pulled from DHIMS2 "
+"automatically."
+
+msgid "Enter remaining indicators"
+msgstr "Enter remaining indicators"
+
+msgid ""
+"For indicators marked Manual, enter current and previous year values from "
+"your records, reports or registers."
+msgstr ""
+"For indicators marked Manual, enter current and previous year values from "
+"your records, reports or registers."
+
+msgid ""
+"For each objective, assess the milestone status and provide supporting "
+"evidence."
+msgstr ""
+"For each objective, assess the milestone status and provide supporting "
+"evidence."
+
+msgid "Save and review"
+msgstr "Save and review"
+
+msgid ""
+"Save as draft and check the summary panel for your overall score, objective "
+"scores and completion."
+msgstr ""
+"Save as draft and check the summary panel for your overall score, objective "
+"scores and completion."
+
+msgid "No data penalty"
+msgstr "No data penalty"
+
+msgid ""
+"Any indicator left without data automatically scores -2, which lowers the "
+"overall assessment substantially. If data is not supplied it is assumed the "
+"region or district has not provided the required information. Always enter "
+"all available data before submitting."
+msgstr ""
+"Any indicator left without data automatically scores -2, which lowers the "
+"overall assessment substantially. If data is not supplied it is assumed the "
+"region or district has not provided the required information. Always enter "
+"all available data before submitting."
+
+msgid "Phase 2 — Submission (owner)"
+msgstr "Phase 2 — Submission (owner)"
+
+msgid "Click Submit for Review on the assessment page."
+msgstr "Click Submit for Review on the assessment page."
+
+msgid "The status changes from Draft to Submitted."
+msgstr "The status changes from Draft to Submitted."
+
+msgid ""
+"The assessment locks — the owner cannot edit further until the review is "
+"resolved."
+msgstr ""
+"The assessment locks — the owner cannot edit further until the review is "
+"resolved."
+
+msgid "The paired reviewer can now open it."
+msgstr "The paired reviewer can now open it."
+
+msgid "Phase 3 — Peer review (visiting reviewer)"
+msgstr "Phase 3 — Peer review (visiting reviewer)"
+
+msgid ""
+"The reviewer does not enter or modify data. They review what was submitted "
+"and give feedback. Reviews auto-save every 30 seconds, and at least 80% of "
+"rows must be verified before submitting."
+msgstr ""
+"The reviewer does not enter or modify data. They review what was submitted "
+"and give feedback. Reviews auto-save every 30 seconds, and at least 80% of "
+"rows must be verified before submitting."
+
+msgid "Recommendation"
+msgstr "Recommendation"
+
+msgid "Meaning"
+msgstr "Meaning"
+
+msgid "What happens next"
+msgstr "What happens next"
+
+msgid "Assessment is accurate and complete"
+msgstr "Assessment is accurate and complete"
+
+msgid ""
+"The owner sees score suggestions and can accept or reject each one. "
+"Accepted adjustments are applied."
+msgstr ""
+"The owner sees score suggestions and can accept or reject each one. "
+"Accepted adjustments are applied."
+
+msgid "Manual indicator values need correction"
+msgstr "Manual indicator values need correction"
+
+msgid ""
+"The owner accepts the request to enter revision mode. Only flagged "
+"indicators become editable, then they resubmit to the same reviewer."
+msgstr ""
+"The owner accepts the request to enter revision mode. Only flagged "
+"indicators become editable, then they resubmit to the same reviewer."
+
+msgid "Significant data quality issues"
+msgstr "Significant data quality issues"
+
+msgid ""
+"The assessment is unlocked to Draft. The owner must substantially revise "
+"and resubmit."
+msgstr ""
+"The assessment is unlocked to Draft. The owner must substantially revise "
+"and resubmit."
+
+msgid "Phase 4 — Response (owner)"
+msgstr "Phase 4 — Response (owner)"
+
+msgid ""
+"Open the Peer Review page to see the reviewer comments, suggested "
+"adjustments and recommendation."
+msgstr ""
+"Open the Peer Review page to see the reviewer comments, suggested "
+"adjustments and recommendation."
+
+msgid "For Approve — accept or reject individual score adjustments."
+msgstr "For Approve — accept or reject individual score adjustments."
+
+msgid ""
+"For Request revision — accept the request, update the flagged indicators, "
+"then resubmit."
+msgstr ""
+"For Request revision — accept the request, update the flagged indicators, "
+"then resubmit."
+
+msgid "For Reject — the assessment returns to Draft for a full revision."
+msgstr "For Reject — the assessment returns to Draft for a full revision."
+
+msgid ""
+"Every indicator is scored from -2 to +2. The score depends on whether data "
+"was supplied, whether the target was met, how performance changed since "
+"last year, and how far performance sits from target."
+msgstr ""
+"Every indicator is scored from -2 to +2. The score depends on whether data "
+"was supplied, whether the target was met, how performance changed since "
+"last year, and how far performance sits from target."
+
+msgid "Outcome scale"
+msgstr "Outcome scale"
+
+msgid "Target achieved and performance improved or held steady"
+msgstr "Target achieved and performance improved or held steady"
+
+msgid ""
+"Target achieved with a small decline, or target missed but performance "
+"improved"
+msgstr ""
+"Target achieved with a small decline, or target missed but performance "
+"improved"
+
+msgid ""
+"Target achieved but performance dropped sharply, or target missed and "
+"performance flat within 40% of target"
+msgstr ""
+"Target achieved but performance dropped sharply, or target missed and "
+"performance flat within 40% of target"
+
+msgid "Target missed and performance declined"
+msgstr "Target missed and performance declined"
+
+msgid "No data supplied"
+msgstr "No data supplied"
+
+msgid "The 0-5 performance scale"
+msgstr "The 0-5 performance scale"
+
+msgid ""
+"An objective can score anywhere from minus its weight to plus its weight, "
+"and the whole assessment from -{{max}} to +{{max}}. That range is rescaled "
+"onto 0-5 for reporting, so a raw score of zero - no movement at all - sits "
+"at 2.50, the floor at 0 and the ceiling at 5."
+msgstr ""
+"An objective can score anywhere from minus its weight to plus its weight, "
+"and the whole assessment from -{{max}} to +{{max}}. That range is rescaled "
+"onto 0-5 for reporting, so a raw score of zero - no movement at all - sits "
+"at 2.50, the floor at 0 and the ceiling at 5."
+
+msgid ""
+"Because each objective is weighted by exactly its own maximum, averaging "
+"the three objective scores and rescaling the total come to the same number. "
+"The headline can never disagree with the three figures beneath it."
+msgstr ""
+"Because each objective is weighted by exactly its own maximum, averaging "
+"the three objective scores and rescaling the total come to the same number. "
+"The headline can never disagree with the three figures beneath it."
+
+msgid "Performance categories"
+msgstr "Performance categories"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "{{from}} and above"
+msgstr "{{from}} and above"
+
+msgid "How scores are weighted"
+msgstr "How scores are weighted"
+
+msgid ""
+"Each indicator carries a weight derived from expert scoring. Within an "
+"objective, an indicator contributes its share of that objective weight."
+msgstr ""
+"Each indicator carries a weight derived from expert scoring. Within an "
+"objective, an indicator contributes its share of that objective weight."
+
+msgid ""
+"The milestone for each objective carries 25% of that objective weight, so "
+"it moves the score more than any single indicator."
+msgstr ""
+"The milestone for each objective carries 25% of that objective weight, so "
+"it moves the score more than any single indicator."
+
+msgid "Objective weights"
+msgstr "Objective weights"
+
+msgid "Indicators"
+msgstr "Indicators"
+
+msgid "Max score"
+msgstr "Max score"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Performance index"
+msgstr "Performance index"
+
+msgid ""
+"Raw scores run from -3.7333 to +3.7333. The performance index rescales that "
+"onto 0-100 so a single headline number can be compared across years and org "
+"units."
+msgstr ""
+"Raw scores run from -3.7333 to +3.7333. The performance index rescales that "
+"onto 0-100 so a single headline number can be compared across years and org "
+"units."
+
+msgid ""
+"The assessment is organised into 3 strategic objectives aligned with the "
+"Health Sector Medium-Term Development Plan (HSMTDP). Each objective carries "
+"its own indicators and one milestone."
+msgstr ""
+"The assessment is organised into 3 strategic objectives aligned with the "
+"Health Sector Medium-Term Development Plan (HSMTDP). Each objective carries "
+"its own indicators and one milestone."
+
+msgid "Assessment structure"
+msgstr "Assessment structure"
+
+msgid "Focus area"
+msgstr "Focus area"
+
+msgid "Weight"
+msgstr "Weight"
+
+msgid "{{count}} indicators, 1 milestone"
+msgid_plural "{{count}} indicators, 1 milestone"
+msgstr[0] "{{count}} indicators, 1 milestone"
+msgstr[1] "{{count}} indicators, 1 milestone"
+
+msgid "Regional and district are different instruments"
+msgstr "Regional and district are different instruments"
+
+msgid ""
+"The two tools are not the same questionnaire, so the app ships both and "
+"picks one from the level being assessed. They also reuse the same indicator "
+"codes for different indicators, which is why nothing keyed by code is "
+"shared between them."
+msgstr ""
+"The two tools are not the same questionnaire, so the app ships both and "
+"picks one from the level being assessed. They also reuse the same indicator "
+"codes for different indicators, which is why nothing keyed by code is "
+"shared between them."
+
+msgid "Count"
+msgstr "Count"
+
+msgid "Milestones"
+msgstr "Milestones"
+
+msgid "Objective 1 indicators"
+msgstr "Objective 1 indicators"
+
+msgid "Why the counts differ"
+msgstr "Why the counts differ"
+
+msgid ""
+"The district tool drops one Objective 1 indicator that only applies "
+"regionally, so its codes run one behind from that point on. 1.17 is "
+"\"Doctor to population ratio\" regionally but \"Physician Assistant to "
+"population ratio\" in a district."
+msgstr ""
+"The district tool drops one Objective 1 indicator that only applies "
+"regionally, so its codes run one behind from that point on. 1.17 is "
+"\"Doctor to population ratio\" regionally but \"Physician Assistant to "
+"population ratio\" in a district."
+
+msgid "Where values come from"
+msgstr "Where values come from"
+
+msgid "Label"
+msgstr "Label"
+
+msgid ""
+"Bound to a DHIS2 indicator, so the value can be fetched from analytics. "
+"{{bound}} of the {{total}} regional rows ship already bound."
+msgstr ""
+"Bound to a DHIS2 indicator, so the value can be fetched from analytics. "
+"{{bound}} of the {{total}} regional rows ship already bound."
+
+msgid ""
+"No DHIS2 source, so the figure is typed in from reports, registers or "
+"returns."
+msgstr ""
+"No DHIS2 source, so the figure is typed in from reports, registers or "
+"returns."
+
+msgid ""
+"A negative indicator, where a fall is an improvement - mortality rates, for "
+"instance. The scoring engine reverses the comparison for these."
+msgstr ""
+"A negative indicator, where a fall is an improvement - mortality rates, for "
+"instance. The scoring engine reverses the comparison for these."
+
+msgid "Who can edit"
+msgstr "Who can edit"
+
+msgid "DHIS2 authority"
+msgstr "DHIS2 authority"
+
+msgid "Grants"
+msgstr "Grants"
+
+msgid "Read-only access to assessments"
+msgstr "Read-only access to assessments"
+
+msgid "Enter and submit assessment data for your own region or district"
+msgstr "Enter and submit assessment data for your own region or district"
+
+msgid ""
+"Conduct a peer review of another region or district's assessment. Without "
+"it the peer review page is read-only"
+msgstr ""
+"Conduct a peer review of another region or district's assessment. Without "
+"it the peer review page is read-only"
+
+msgid ""
+"Open the Administration page — periods, targets, indicator mapping and the "
+"rest"
+msgstr ""
+"Open the Administration page — periods, targets, indicator mapping and the "
+"rest"
+
+msgid "ALL (superuser)"
+msgstr "ALL (superuser)"
+
+msgid "Passes every check"
+msgstr "Passes every check"
+
+msgid "Before you submit"
+msgstr "Before you submit"
+
+msgid "Complete at least {{pct}} of all rows. Anything left empty scores -2."
+msgstr "Complete at least {{pct}} of all rows. Anything left empty scores -2."
+
+msgid "Set a status and evidence for all 3 milestones."
+msgstr "Set a status and evidence for all 3 milestones."
+
+msgid "Check the summary panel - it scores live as you type."
+msgstr "Check the summary panel - it scores live as you type."
+
+msgid ""
+"Every submitted assessment is reviewed by a peer - another region or "
+"district, paired in advance. Reviewers never edit the figures; they verify "
+"rows, suggest adjustments with a justification, and recommend an outcome."
+msgstr ""
+"Every submitted assessment is reviewed by a peer - another region or "
+"district, paired in advance. Reviewers never edit the figures; they verify "
+"rows, suggest adjustments with a justification, and recommend an outcome."
+
+msgid "Who may review"
+msgstr "Who may review"
+
+msgid ""
+"Conducting a review needs the {{auth}} authority. Anyone without it can "
+"still open the page and read a review and its feedback, but cannot change "
+"either — which is how the assessment’s own owner reads what their reviewer "
+"said."
+msgstr ""
+"Conducting a review needs the {{auth}} authority. Anyone without it can "
+"still open the page and read a review and its feedback, but cannot change "
+"either — which is how the assessment’s own owner reads what their reviewer "
+"said."
+
+msgid "What a reviewer does"
+msgstr "What a reviewer does"
+
+msgid ""
+"Tick Agree on each row that stands up, or suggest a different score with a "
+"written justification."
+msgstr ""
+"Tick Agree on each row that stands up, or suggest a different score with a "
+"written justification."
+
+msgid "Verify at least {{pct}} of rows before the review can be submitted."
+msgstr "Verify at least {{pct}} of rows before the review can be submitted."
+
+msgid "Recommend an outcome — approve, request a revision, or reject."
+msgstr "Recommend an outcome — approve, request a revision, or reject."
+
+msgid "What each recommendation does"
+msgstr "What each recommendation does"
+
+msgid "Effect"
+msgstr "Effect"
+
+msgid ""
+"The assessment is approved. Any suggested score adjustments are offered to "
+"the owner, who accepts or rejects them."
+msgstr ""
+"The assessment is approved. Any suggested score adjustments are offered to "
+"the owner, who accepts or rejects them."
+
+msgid ""
+"Only the rows the reviewer flagged with a suggested value become editable "
+"again. Everything else stays locked."
+msgstr ""
+"Only the rows the reviewer flagged with a suggested value become editable "
+"again. Everything else stays locked."
+
+msgid "The assessment goes back as rejected and the owner can reopen it as a draft."
+msgstr "The assessment goes back as rejected and the owner can reopen it as a draft."
+
+msgid "Read-only by design"
+msgstr "Read-only by design"
+
+msgid ""
+"A paired assessment is always shown read-only. A reviewer changes a score "
+"by suggesting it, never by typing over the data."
+msgstr ""
+"A paired assessment is always shown read-only. A reviewer changes a score "
+"by suggesting it, never by typing over the data."
+
+msgid ""
+"Seven reports over the assessments stored for a year, each of which can be "
+"taken away as a PDF, a spreadsheet or a CSV, or printed."
+msgstr ""
+"Seven reports over the assessments stored for a year, each of which can be "
+"taken away as a PDF, a spreadsheet or a CSV, or printed."
+
+msgid "Available reports"
+msgstr "Available reports"
+
+msgid "Report"
+msgstr "Report"
+
+msgid "What it shows"
+msgstr "What it shows"
+
+msgid "Export options"
+msgstr "Export options"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Contains"
+msgstr "Contains"
+
+msgid "PDF"
+msgstr "PDF"
+
+msgid ""
+"A banner-style landscape document, suitable for printing and circulating. "
+"Each section becomes a table, and every page is numbered and dated."
+msgstr ""
+"A banner-style landscape document, suitable for printing and circulating. "
+"Each section becomes a table, and every page is numbered and dated."
+
+msgid "Excel"
+msgstr "Excel"
+
+msgid ""
+"An XLSX workbook with one sheet per section. Numeric columns carry real "
+"numbers rather than text, so a column can be summed without being retyped."
+msgstr ""
+"An XLSX workbook with one sheet per section. Numeric columns carry real "
+"numbers rather than text, so a column can be summed without being retyped."
+
+msgid "CSV"
+msgstr "CSV"
+
+msgid ""
+"The same rows as one flat file, written with a UTF-8 byte order mark so "
+"Excel reads accented names correctly."
+msgstr ""
+"The same rows as one flat file, written with a UTF-8 byte order mark so "
+"Excel reads accented names correctly."
+
+msgid "Print"
+msgstr "Print"
+
+msgid ""
+"Prints the report as shown, with the app chrome hidden. Table headers "
+"repeat on each sheet and rows are never split across a page break."
+msgstr ""
+"Prints the report as shown, with the app chrome hidden. Table headers "
+"repeat on each sheet and rows are never split across a page break."
+
+msgid "Read from the datastore, not analytics"
+msgstr "Read from the datastore, not analytics"
+
+msgid ""
+"Every report is built from the assessments already stored for the year, "
+"which are the same records the dashboard reads. No report makes an "
+"analytics call of its own, so two reports of the same year cannot disagree "
+"about a figure."
+msgstr ""
+"Every report is built from the assessments already stored for the year, "
+"which are the same records the dashboard reads. No report makes an "
+"analytics call of its own, so two reports of the same year cannot disagree "
+"about a figure."
+
+msgid ""
+"Administration is where the assessment year is opened, targets are set and "
+"indicators are bound to DHIS2 data. It needs the {{auth}} authority."
+msgstr ""
+"Administration is where the assessment year is opened, targets are set and "
+"indicators are bound to DHIS2 data. It needs the {{auth}} authority."
+
+msgid "Tab access by user level"
+msgstr "Tab access by user level"
+
+msgid ""
+"Which tabs you see follows how far your remit reaches — ten nationally, "
+"five regionally, three at district level. The cut follows what each "
+"decision governs, not seniority."
+msgstr ""
+"Which tabs you see follows how far your remit reaches — ten nationally, "
+"five regionally, three at district level. The cut follows what each "
+"decision governs, not seniority."
+
+msgid "User level"
+msgstr "User level"
+
+msgid "Tabs available"
+msgstr "Tabs available"
+
+msgid ""
+"Overview, Periods, Targets, Mappings, Regions, Pairings, Users, Settings, "
+"Data, Audit"
+msgstr ""
+"Overview, Periods, Targets, Mappings, Regions, Pairings, Users, Settings, "
+"Data, Audit"
+
+msgid "Overview, Periods, Targets, Pairings, Audit"
+msgstr "Overview, Periods, Targets, Pairings, Audit"
+
+msgid "Overview, Targets, Pairings"
+msgstr "Overview, Targets, Pairings"
+
+msgid "Assessment periods"
+msgstr "Assessment periods"
+
+msgid ""
+"A period decides whether a year accepts submissions. Closing a year stops "
+"new submissions but leaves data entry alone, so work in progress is not "
+"lost the moment a deadline passes; locking stops editing too. Neither "
+"blocks a reviewer from finishing a review already under way."
+msgstr ""
+"A period decides whether a year accepts submissions. Closing a year stops "
+"new submissions but leaves data entry alone, so work in progress is not "
+"lost the moment a deadline passes; locking stops editing too. Neither "
+"blocks a reviewer from finishing a review already under way."
+
+msgid "Editing"
+msgstr "Editing"
+
+msgid "Submission"
+msgstr "Submission"
+
+msgid "A year with no period is open"
+msgstr "A year with no period is open"
+
+msgid ""
+"The gate is opted into — creating a period for one year leaves every other "
+"year alone. That way adding periods to an instance which already holds "
+"assessments does not freeze the past ones."
+msgstr ""
+"The gate is opted into — creating a period for one year leaves every other "
+"year alone. That way adding periods to an instance which already holds "
+"assessments does not freeze the past ones."
+
+msgid "Target management"
+msgstr "Target management"
+
+msgid ""
+"Targets are what each row is scored against, and they are recorded per year "
+"and per tool. Edit them in place, import or export the whole tool as CSV, "
+"copy last year as a starting point, or reset a year back to the figures the "
+"tool ships with."
+msgstr ""
+"Targets are what each row is scored against, and they are recorded per year "
+"and per tool. Edit them in place, import or export the whole tool as CSV, "
+"copy last year as a starting point, or reset a year back to the figures the "
+"tool ships with."
+
+msgid "Only differences are stored"
+msgstr "Only differences are stored"
+
+msgid ""
+"A target typed back to the figure the tool ships with stops being an "
+"override, so a corrected framework in a later release still reaches that "
+"row. Rows whose target is genuinely set locally are marked \"varies\" and "
+"are edited on the assessment itself, not here."
+msgstr ""
+"A target typed back to the figure the tool ships with stops being an "
+"override, so a corrected framework in a later release still reaches that "
+"row. Rows whose target is genuinely set locally are marked \"varies\" and "
+"are edited on the assessment itself, not here."
+
+msgid "Regions and Users"
+msgstr "Regions and Users"
+
+msgid ""
+"Both are read-only. Org units, roles and authorities belong to DHIS2 and "
+"are edited in the Maintenance and Users apps; a second place to change them "
+"would be a second place for them to be wrong. What these tabs add is what "
+"DHIS2 cannot say from inside itself — how much of the hierarchy has been "
+"assessed, and who actually reaches this app and through which role."
+msgstr ""
+"Both are read-only. Org units, roles and authorities belong to DHIS2 and "
+"are edited in the Maintenance and Users apps; a second place to change them "
+"would be a second place for them to be wrong. What these tabs add is what "
+"DHIS2 cannot say from inside itself — how much of the hierarchy has been "
+"assessed, and who actually reaches this app and through which role."
+
+msgid "Indicator mapping"
+msgstr "Indicator mapping"
+
+msgid "Choose the tool — regional or district."
+msgstr "Choose the tool — regional or district."
+
+msgid ""
+"Find the row you want and select Map, then search DHIS2 for the indicator "
+"or data element behind it."
+msgstr ""
+"Find the row you want and select Map, then search DHIS2 for the indicator "
+"or data element behind it."
+
+msgid "Save the mapping."
+msgstr "Save the mapping."
+
+msgid ""
+"Once a row is bound, Fetch DHIS2 data on the assessment page pulls its "
+"current and previous year values from analytics. Anything left unbound "
+"stays manual entry."
+msgstr ""
+"Once a row is bound, Fetch DHIS2 data on the assessment page pulls its "
+"current and previous year values from analytics. Anything left unbound "
+"stays manual entry."
+
+msgid "Built in and custom"
+msgstr "Built in and custom"
+
+msgid ""
+"Rows marked \"Built in\" are already bound to the GHS-HA indicators the app "
+"ships with, so a fresh install needs no mapping to use them. Rebinding or "
+"clearing one marks it \"Custom\" and overrides what shipped; the app stores "
+"only the difference, so a corrected binding in a later release still "
+"reaches rows nobody has touched."
+msgstr ""
+"Rows marked \"Built in\" are already bound to the GHS-HA indicators the app "
+"ships with, so a fresh install needs no mapping to use them. Rebinding or "
+"clearing one marks it \"Custom\" and overrides what shipped; the app stores "
+"only the difference, so a corrected binding in a later release still "
+"reaches rows nobody has touched."
+
+msgid "Mapping is kept per tool"
+msgstr "Mapping is kept per tool"
+
+msgid ""
+"The regional and district tools reuse the same codes for different "
+"indicators, so each keeps its own mapping. One saved for a tool can never "
+"leak into the other."
+msgstr ""
+"The regional and district tools reuse the same codes for different "
+"indicators, so each keeps its own mapping. One saved for a tool can never "
+"leak into the other."
+
+msgid "Why is my score negative?"
+msgstr "Why is my score negative?"
+
+msgid ""
+"Indicators without data score -2. If much of the form is empty the total "
+"will be negative. Fill in every indicator you have data for."
+msgstr ""
+"Indicators without data score -2. If much of the form is empty the total "
+"will be negative. Fill in every indicator you have data for."
+
+msgid "Why can I not edit the form?"
+msgstr "Why can I not edit the form?"
+
+msgid "Why are only some indicators editable?"
+msgstr "Why are only some indicators editable?"
+
+msgid ""
+"You are in revision mode. Only the indicators the reviewer flagged can be "
+"changed; everything else stays locked."
+msgstr ""
+"You are in revision mode. Only the indicators the reviewer flagged can be "
+"changed; everything else stays locked."
+
+msgid "An indicator says Manual but should come from DHIMS2."
+msgstr "An indicator says Manual but should come from DHIMS2."
+
+msgid ""
+"It has not been mapped yet. An administrator can bind it to a DHIS2 "
+"indicator or data element on the Admin page."
+msgstr ""
+"It has not been mapped yet. An administrator can bind it to a DHIS2 "
+"indicator or data element on the Admin page."
+
+msgid "Can I submit a partially complete assessment?"
+msgstr "Can I submit a partially complete assessment?"
+
+msgid ""
+"Only once at least {{pct}} of rows have data. Remember that empty rows "
+"still score -2."
+msgstr ""
+"Only once at least {{pct}} of rows have data. Remember that empty rows "
+"still score -2."
+
+msgid "I submitted a review by mistake."
+msgstr "I submitted a review by mistake."
+
+msgid "Use Recall review on the Peer Review page to pull it back and correct it."
+msgstr "Use Recall review on the Peer Review page to pull it back and correct it."
+
+msgid "Where is the data stored?"
+msgstr "Where is the data stored?"
+
+msgid ""
+"In the DHIS2 datastore under the ghs-holistic-assessment namespace, one "
+"record per year and organisation unit."
+msgstr ""
+"In the DHIS2 datastore under the ghs-holistic-assessment namespace, one "
+"record per year and organisation unit."
+
+msgid "Quick start"
+msgstr "Quick start"
+
+msgid "Workflow"
+msgstr "Workflow"
+
+msgid "Assessment"
+msgstr "Assessment"
+
+msgid "Scoring"
+msgstr "Scoring"
+
+msgid "Peer review"
+msgstr "Peer review"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "FAQ"
+msgstr "FAQ"
+
+msgid "Help & Documentation"
+msgstr "Help & Documentation"
+
+msgid "Learn how to use the GHS Holistic Assessment application"
+msgstr "Learn how to use the GHS Holistic Assessment application"
+
+msgid "The owner sees your score suggestions and can accept or reject each one."
+msgstr "The owner sees your score suggestions and can accept or reject each one."
+
+msgid ""
+"The owner can unlock only the indicators you flagged with a suggested "
+"value, then resubmit to you."
+msgstr ""
+"The owner can unlock only the indicators you flagged with a suggested "
+"value, then resubmit to you."
+
+msgid "The assessment is unlocked back to draft for a substantial revision."
+msgstr "The assessment is unlocked back to draft for a substantial revision."
+
+msgid "Review submitted"
+msgstr "Review submitted"
+
+msgid "Review recalled for corrections"
+msgstr "Review recalled for corrections"
+
+msgid "Review saved"
+msgstr "Review saved"
+
+msgid "Peer Review"
+msgstr "Peer Review"
+
+msgid "District assessment"
+msgstr "District assessment"
+
+msgid "Save review"
+msgstr "Save review"
+
+msgid "Recall review"
+msgstr "Recall review"
+
+msgid "Submit review"
+msgstr "Submit review"
+
+msgid "Select the assessment to review"
+msgstr "Select the assessment to review"
+
+msgid "Choose the region or district you are paired with as the visiting reviewer."
+msgstr "Choose the region or district you are paired with as the visiting reviewer."
+
+msgid "Read-only — you cannot conduct reviews"
+msgstr "Read-only — you cannot conduct reviews"
+
+msgid ""
+"Conducting a peer review needs the {{auth}} authority, which your DHIS2 "
+"account does not hold. You can read the review and the feedback on it, but "
+"not change either. Ask an administrator to grant the authority to one of "
+"your user roles."
+msgstr ""
+"Conducting a peer review needs the {{auth}} authority, which your DHIS2 "
+"account does not hold. You can read the review and the feedback on it, but "
+"not change either. Ask an administrator to grant the authority to one of "
+"your user roles."
+
+msgid "Nothing to review yet"
+msgstr "Nothing to review yet"
+
+msgid ""
+"This assessment is {{status}}. Only a submitted assessment can be peer "
+"reviewed."
+msgstr ""
+"This assessment is {{status}}. Only a submitted assessment can be peer "
+"reviewed."
+
+msgid "Recall the review if you need to make corrections."
+msgstr "Recall the review if you need to make corrections."
+
+msgid "Overall feedback"
+msgstr "Overall feedback"
+
+msgid "Strengths"
+msgstr "Strengths"
+
+msgid "Areas for improvement"
+msgstr "Areas for improvement"
+
+msgid "General observations"
+msgstr "General observations"
+
+msgid "Submit recommendation"
+msgstr "Submit recommendation"
+
+msgid "Rows verified"
+msgstr "Rows verified"
+
+msgid "Reports & Analytics"
+msgstr "Reports & Analytics"
+
+msgid ""
+"Seven reports over the assessments stored for a year. Every figure is read "
+"from the datastore, not from analytics."
+msgstr ""
+"Seven reports over the assessments stored for a year. Every figure is read "
+"from the datastore, not from analytics."
+
+msgid "All regions"
+msgstr "All regions"
+
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
+msgid "Nothing has been stored for this year yet, so there is nothing to report on."
+msgstr "Nothing has been stored for this year yet, so there is nothing to report on."
+
+msgid "Export PDF"
+msgstr "Export PDF"
+
+msgid "Export Excel"
+msgstr "Export Excel"
+
+msgid "Not configured"
+msgstr "Not configured"
+
+msgid "Set a year and organisation unit for this dashboard item."
+msgstr "Set a year and organisation unit for this dashboard item."
+
+msgid "Could not load"
+msgstr "Could not load"
+
+msgid "No assessment"
+msgstr "No assessment"
+
+msgid "No assessment has been saved for {{year}}."
+msgstr "No assessment has been saved for {{year}}."
+
+msgid "Performance score"
+msgstr "Performance score"
+
+msgid "{{pct}} complete · raw {{score}} of {{max}}"
+msgstr "{{pct}} complete · raw {{score}} of {{max}}"
+
+msgid "Rank"
+msgstr "Rank"
+
+msgid "Score (0-5)"
+msgstr "Score (0-5)"
+
+msgid "Complete"
+msgstr "Complete"
+
+msgid "Measure"
+msgstr "Measure"
+
+msgid "National score (mean of regions)"
+msgstr "National score (mean of regions)"
+
+msgid "National category"
+msgstr "National category"
+
+msgid "Regions assessed"
+msgstr "Regions assessed"
+
+msgid "Regions submitted or beyond"
+msgstr "Regions submitted or beyond"
+
+msgid "Mean regional completion"
+msgstr "Mean regional completion"
+
+msgid ""
+"The national score is the unweighted mean of the regional scores. Districts "
+"are assessed on a different instrument against their own targets, so they "
+"are counted here but not averaged into it."
+msgstr ""
+"The national score is the unweighted mean of the regional scores. Districts "
+"are assessed on a different instrument against their own targets, so they "
+"are counted here but not averaged into it."
+
+msgid "Performance category distribution"
+msgstr "Performance category distribution"
+
+msgid "Regions ranked"
+msgstr "Regions ranked"
+
+msgid "National Summary"
+msgstr "National Summary"
+
+msgid "{{year}} holistic assessment"
+msgstr "{{year}} holistic assessment"
+
+msgid "Obj {{n}}"
+msgstr "Obj {{n}}"
+
+msgid "Regional comparison"
+msgstr "Regional comparison"
+
+msgid ""
+"Objective figures are on the same 0-5 scale as the overall score, so they "
+"can be read against it directly."
+msgstr ""
+"Objective figures are on the same 0-5 scale as the overall score, so they "
+"can be read against it directly."
+
+msgid "Objective spread across regions"
+msgstr "Objective spread across regions"
+
+msgid "Best"
+msgstr "Best"
+
+msgid "Mean"
+msgstr "Mean"
+
+msgid "Worst"
+msgstr "Worst"
+
+msgid "Regional Performance"
+msgstr "Regional Performance"
+
+msgid "Objective score by organisation unit"
+msgstr "Objective score by organisation unit"
+
+msgid "Objective score (0-5)"
+msgstr "Objective score (0-5)"
+
+msgid "Rows answered"
+msgstr "Rows answered"
+
+msgid "Milestone"
+msgstr "Milestone"
+
+msgid "Outcome"
+msgstr "Outcome"
+
+msgid "Objective {{n}} Performance"
+msgstr "Objective {{n}} Performance"
+
+msgid "{{count}} assessments"
+msgid_plural "{{count}} assessments"
+msgstr[0] "{{count}} assessments"
+msgstr[1] "{{count}} assessments"
+
+msgid "By organisation unit"
+msgstr "By organisation unit"
+
+msgid "{{direction}} indicator. {{definition}}"
+msgstr "{{direction}} indicator. {{definition}}"
+
+msgid "A lower figure is better on this"
+msgstr "A lower figure is better on this"
+
+msgid "A higher figure is better on this"
+msgstr "A higher figure is better on this"
+
+msgid "Outcome spread"
+msgstr "Outcome spread"
+
+msgid "Organisation units"
+msgstr "Organisation units"
+
+msgid "Indicator Analysis"
+msgstr "Indicator Analysis"
+
+msgid "{{count}} organisation units report this row"
+msgid_plural "{{count}} organisation units report this row"
+msgstr[0] "{{count}} organisation units report this row"
+msgstr[1] "{{count}} organisation units report this row"
+
+msgid "Review status"
+msgstr "Review status"
+
+msgid "Adjustments"
+msgstr "Adjustments"
+
+msgid "Completion"
+msgstr "Completion"
+
+msgid "Assessments at this level"
+msgstr "Assessments at this level"
+
+msgid "With a review started"
+msgstr "With a review started"
+
+msgid "Awaiting revision"
+msgstr "Awaiting revision"
+
+msgid "Peer Review Summary"
+msgstr "Peer Review Summary"
+
+msgid "{{count}} of {{total}} reviewed"
+msgid_plural "{{count}} of {{total}} reviewed"
+msgstr[0] "{{count}} of {{total}} reviewed"
+msgstr[1] "{{count}} of {{total}} reviewed"
+
+msgid "Districts of {{region}}"
+msgstr "Districts of {{region}}"
+
+msgid "All districts"
+msgstr "All districts"
+
+msgid ""
+"Districts are ranked within the set shown. A district is scored on the "
+"district tool against district targets, so its figure is not comparable "
+"with a region’s."
+msgstr ""
+"Districts are ranked within the set shown. A district is scored on the "
+"district tool against district targets, so its figure is not comparable "
+"with a region’s."
+
+msgid "District Performance"
+msgstr "District Performance"
+
+msgid ""
+"High-level overview across all regions — overall scores, rankings and the "
+"spread of performance categories."
+msgstr ""
+"High-level overview across all regions — overall scores, rankings and the "
+"spread of performance categories."
+
+msgid ""
+"Regional comparison with rankings, a breakdown by objective and the spread "
+"of each objective across regions."
+msgstr ""
+"Regional comparison with rankings, a breakdown by objective and the spread "
+"of each objective across regions."
+
+msgid "Objective Performance"
+msgstr "Objective Performance"
+
+msgid ""
+"One objective in depth — its score for every organisation unit, how "
+"complete it is, and the milestone attached to it."
+msgstr ""
+"One objective in depth — its score for every organisation unit, how "
+"complete it is, and the milestone attached to it."
+
+msgid ""
+"One indicator across every organisation unit — target, current and previous "
+"values, change, gap and outcome."
+msgstr ""
+"One indicator across every organisation unit — target, current and previous "
+"values, change, gap and outcome."
+
+msgid ""
+"Regional peer review — who reviewed whom, how far each review got, what was "
+"adjusted and what was recommended."
+msgstr ""
+"Regional peer review — who reviewed whom, how far each review got, what was "
+"adjusted and what was recommended."
+
+msgid ""
+"District scores, rankings and performance categories, for one region or for "
+"the whole country."
+msgstr ""
+"District scores, rankings and performance categories, for one region or for "
+"the whole country."
+
+msgid ""
+"District peer review — review status, feedback and the score adjustments "
+"made at district level."
+msgstr ""
+"District peer review — review status, feedback and the score adjustments "
+"made at district level."
+
+msgid "Sheet"
+msgstr "Sheet"
+
+msgid "Generated {{date}}"
+msgstr "Generated {{date}}"
+
+msgid "Page {{page}} of {{pages}}"
+msgstr "Page {{page}} of {{pages}}"
+
+msgctxt ""
+"ADMIN. Grant them to the relevant roles in the Users app; the app install "
+"creates all three authorities."
+msgid ""
+"No user role on this instance carries GHS_ASSESSMENT_EDIT, GHS_PEER_REVIEW "
+"or GHS_ASSESSMENT"
+msgstr ""
+"No user role on this instance carries GHS_ASSESSMENT_EDIT, GHS_PEER_REVIEW "
+"or GHS_ASSESSMENT_ADMIN. Grant them to the relevant roles in the Users app; "
+"the app install creates all three authorities."
+
+msgctxt "ADMIN authority to configure the assessment."
+msgid "You need the GHS_ASSESSMENT"
+msgstr "You need the GHS_ASSESSMENT_ADMIN authority to configure the assessment."
+
+msgctxt ""
+"EDIT authority, so this assessment is read-only. Contact your DHIS2 "
+"administrator to request edit access."
+msgid "You do not have the GHS_ASSESSMENT"
+msgstr ""
+"You do not have the GHS_ASSESSMENT_EDIT authority, so this assessment is "
+"read-only. Contact your DHIS2 administrator to request edit access."
+
+msgctxt ""
+"EDIT authority in DHIS2. Users without it see assessments read-only. "
+"Contact your DHIS2 administrator if you need edit access."
+msgid "To edit an assessment you need the GHS_ASSESSMENT"
+msgstr ""
+"To edit an assessment you need the GHS_ASSESSMENT_EDIT authority in DHIS2. "
+"Users without it see assessments read-only. Contact your DHIS2 "
+"administrator if you need edit access."
+
+msgctxt ""
+"EDIT authority, or the assessment has been submitted and is locked pending "
+"peer review."
+msgid "Either you lack the GHS_ASSESSMENT"
+msgstr ""
+"Either you lack the GHS_ASSESSMENT_EDIT authority, or the assessment has "
+"been submitted and is locked pending peer review."
+
+msgctxt "Application title"
+msgid "__MANIFEST_APP_TITLE"
+msgstr "GHS Holistic Assessment"
+
+msgctxt "Application description"
+msgid "__MANIFEST_APP_DESCRIPTION"
+msgstr ""
+"Annual regional and district health sector performance assessment with peer "
+"review, scoring and reporting."
+
+msgctxt "Title for shortcut used by command palette"
+msgid "__MANIFEST_SHORTCUT_Dashboard"
+msgstr "Dashboard"
+
+msgctxt "Title for shortcut used by command palette"
+msgid "__MANIFEST_SHORTCUT_Regional Assessment"
+msgstr "Regional Assessment"
+
+msgctxt "Title for shortcut used by command palette"
+msgid "__MANIFEST_SHORTCUT_District Assessment"
+msgstr "District Assessment"
+
+msgctxt "Title for shortcut used by command palette"
+msgid "__MANIFEST_SHORTCUT_Regional Peer Review"
+msgstr "Regional Peer Review"
+
+msgctxt "Title for shortcut used by command palette"
+msgid "__MANIFEST_SHORTCUT_District Peer Review"
+msgstr "District Peer Review"
+
+msgctxt "Title for shortcut used by command palette"
+msgid "__MANIFEST_SHORTCUT_Reports"
+msgstr "Reports"
+
+msgctxt "Title for shortcut used by command palette"
+msgid "__MANIFEST_SHORTCUT_Administration"
+msgstr "Administration"
+
+msgctxt "Title for shortcut used by command palette"
+msgid "__MANIFEST_SHORTCUT_Help & Documentation"
+msgstr "Help & Documentation"

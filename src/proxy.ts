@@ -11,6 +11,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE, safeNext } from "@/lib/auth/session";
 import { authState, resolveSession } from "@/lib/auth/state";
+import { HOLISTIC_SESSION_COOKIE } from "@/lib/holistic/paths";
 
 const PUBLIC_PATHS = ["/login", "/api/auth/login", "/api/auth/logout"];
 /** Where someone who must change their password may still go. */
@@ -52,8 +53,10 @@ export async function proxy(request: NextRequest) {
   const next = safeNext(`${pathname}${search}`);
   if (next !== "/") login.searchParams.set("next", next);
   const response = NextResponse.redirect(login);
-  // An expired, forged or revoked cookie is removed rather than sent again and again.
+  // An expired, forged or revoked cookie is removed rather than sent again and again,
+  // with the Holistic Assessment session that was opened under it.
   if (request.cookies.has(SESSION_COOKIE)) response.cookies.delete(SESSION_COOKIE);
+  if (request.cookies.has(HOLISTIC_SESSION_COOKIE)) response.cookies.delete(HOLISTIC_SESSION_COOKIE);
   return response;
 }
 

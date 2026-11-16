@@ -1,0 +1,62 @@
+{
+    "comment": [
+        "Org units on the GHS instance (dhims.chimgh.org) and on a local instance share no UIDs,",
+        "so prefill-assessments.mjs matches them by name. Most match on the name alone, or once an",
+        "administrative suffix like 'Municipal' is dropped. The rest are listed here.",
+        "",
+        "'districts' maps 'Region/Name on the source' to 'Region/Name on the target'. Only put a pair",
+        "here when you are sure it is the same place under a different spelling. Never use it to",
+        "paper over a district split - filing one district's figures under another is worse than",
+        "leaving the row blank for somebody to enter by hand.",
+        "",
+        "'unresolved' is not read by the script. It records the source districts that had no safe",
+        "counterpart when this file was written, and why, so the question does not have to be",
+        "rediscovered. Move an entry into 'districts' once somebody who knows the boundaries",
+        "confirms it."
+    ],
+
+    "districts": {
+        "Ashanti/Adansi Akrofuom": "Ashanti/Akrofuom",
+        "Bono/Sunyani Municipal": "Bono/Suinyani Municipal",
+        "Bono East/Atebubu-Amanten": "Bono East/Atebubu-Amantin",
+        "Central/Efutu": "Central/Effutu Municipal",
+        "Central/Komenda-Edna-Eguafo-Abirem": "Central/Komenda Edina Eguafo Abrem",
+        "Central/Mfantseman": "Central/Mfantsiman Municipal",
+        "Central/Twifo Ati Morkwa": "Central/Twifo Atti Morkwa",
+        "Eastern/Akwapim North": "Eastern/Akuapem North",
+        "Eastern/Akwapim South": "Eastern/Akuapem South",
+        "Eastern/Denkyembour": "Eastern/Denkyembuor",
+        "Greater Accra/Okai Koi North": "Greater Accra/Okaikwei North",
+        "Northern/Gushiegu": "Northern/Gushegu",
+        "Upper West/Lambussie": "Upper West/Lambussie Karni",
+        "Volta/Agortime-Ziope": "Volta/Agotime Ziope"
+    },
+
+    "unresolved": {
+        "Ashanti/Adansi Asokwa": "target has Asokwa and Amansie South; not clearly either",
+        "Ashanti/Adansi North": "no counterpart; target's Amansie South is a different district",
+        "Ashanti/Adansi South": "no counterpart; target's Amansie South is a different district",
+        "Ashanti/Asante Mampong": "target has Mampong and Asokore Mampong; ambiguous",
+        "Ashanti/Atwima Nwabiagya": "target splits it into Atwima Nwabiagya North and South",
+        "Ashanti/Kwadaso": "absent from the target",
+        "Ashanti/Oforikrom": "absent from the target",
+        "Ashanti/Old Tafo": "absent from the target",
+        "Ashanti/Suame": "absent from the target",
+        "Bono/Berekum": "target splits it into Berekum East and Berekum West",
+        "Bono/Dormaa Municipal": "target has Dormaa East and Dormaa West; ambiguous",
+        "Bono/Sunyani West": "target has Suinyani East, which may or may not be this district",
+        "Bono East/Pru": "absent from the target",
+        "Central/Assin Foso": "target has Assin North and Assin South; ambiguous",
+        "Central/Awutu Senya": "target splits it into Awutu Senya East and West",
+        "Eastern/Asuogyaman": "absent from the target",
+        "North East/Bunkpurugu -Nakpanduri": "target has Bunkpurugu Nakpayili; Nakpanduri and Nakpayili are different towns",
+        "Northern/Tatale-Sangule": "absent from the target",
+        "Upper East/Kasena-Nankana": "target has Kassena Nankana East and West; ambiguous",
+        "Upper East/Kasena-Nankana West": "target has Kassena Nankana West, but the source also has an unsplit Kasena-Nankana",
+        "Volta/Adaklu": "absent from the target",
+        "Western/Wassa Amenfi Central": "target has Amenfi Central and Wassa Amenfi East; ambiguous",
+        "Western/Wassa Amenfi West": "target has Amenfi West and Wassa Amenfi East; ambiguous",
+        "Western North/Aowin": "absent from the target",
+        "Western North/Bibiani-Anhwiaso-Bekwai": "absent from the target"
+    }
+}

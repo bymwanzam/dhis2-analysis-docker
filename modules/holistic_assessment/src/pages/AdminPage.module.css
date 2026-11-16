@@ -1,0 +1,297 @@
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp12);
+    margin-block-end: var(--spacers-dp16);
+    flex-wrap: wrap;
+}
+
+.title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ghs-brand-ink);
+    letter-spacing: -0.02em;
+}
+
+.count {
+    font-size: 13px;
+    color: var(--colors-grey600);
+    margin-inline-end: auto;
+}
+
+.controls {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacers-dp16);
+    flex-wrap: wrap;
+    padding: var(--spacers-dp12) var(--spacers-dp16);
+    background: var(--colors-white);
+    border: 1px solid var(--ghs-line);
+    border-radius: var(--ghs-radius-card);
+    margin-block: var(--spacers-dp16);
+    box-shadow: var(--ghs-shadow-card);
+}
+
+.grow {
+    flex: 1 1 260px;
+}
+
+.field {
+    min-inline-size: 170px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--spacers-dp48);
+}
+
+.tableWrapper {
+    inline-size: 100%;
+    overflow-x: auto;
+    background: var(--colors-white);
+    border: 1px solid var(--ghs-line);
+    border-radius: var(--ghs-radius-card);
+    box-shadow: var(--ghs-shadow-card);
+}
+
+.table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-inline-size: 760px;
+}
+
+.table th {
+    background: var(--colors-grey100);
+    text-align: start;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--colors-grey800);
+    padding: var(--spacers-dp8);
+    border-block-end: 1px solid var(--colors-grey300);
+}
+
+.table td {
+    padding: var(--spacers-dp8);
+    border-block-end: 1px solid var(--colors-grey200);
+    vertical-align: top;
+}
+
+.code {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--colors-grey700);
+    white-space: nowrap;
+}
+
+.name {
+    max-inline-size: 420px;
+}
+
+.source {
+    display: block;
+    margin-block-start: 2px;
+    font-size: 11px;
+    color: var(--colors-grey600);
+}
+
+.bound {
+    color: var(--colors-grey900);
+}
+
+.type {
+    display: inline-block;
+    margin-inline-start: var(--spacers-dp8);
+    padding: 1px 6px;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--ghs-obj1-tint);
+    color: var(--ghs-obj1-ink);
+    border: 1px solid var(--ghs-obj1-border);
+}
+
+/*
+ * Teal for a binding the app ships, violet for one somebody chose here. It is
+ * the difference between a row a future release may correct for you and one it
+ * will leave alone, so it is worth telling apart at a glance.
+ */
+.builtin,
+.custom {
+    display: inline-block;
+    margin-inline-start: var(--spacers-dp8);
+    padding: 1px 6px;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.builtin {
+    background: var(--ghs-dhis2-tint);
+    color: var(--ghs-dhis2-ink);
+    border: 1px solid var(--ghs-dhis2-border);
+}
+
+.custom {
+    background: var(--ghs-review-tint);
+    color: var(--ghs-review-ink);
+    border: 1px solid var(--ghs-review-border);
+}
+
+.unmapped {
+    color: var(--ghs-manual-ink);
+    background: var(--ghs-manual-tint);
+    border: 1px solid var(--ghs-manual-border);
+    border-radius: 9px;
+    padding: 1px 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.actionCell {
+    display: flex;
+    gap: var(--spacers-dp4);
+    white-space: nowrap;
+}
+
+.searchRow {
+    background: var(--ghs-obj1-tint);
+}
+
+.searching {
+    font-size: 12px;
+    color: var(--colors-grey600);
+}
+
+.results {
+    list-style: none;
+    margin: var(--spacers-dp8) 0 0;
+    padding: 0;
+    max-block-size: 260px;
+    overflow-y: auto;
+    border: 1px solid var(--ghs-line);
+    border-radius: var(--ghs-radius-card);
+    background: var(--colors-white);
+    box-shadow: var(--ghs-shadow-card);
+}
+
+.results:empty {
+    display: none;
+}
+
+.resultBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacers-dp8);
+    inline-size: 100%;
+    padding: var(--spacers-dp8);
+    background: none;
+    border: none;
+    border-block-end: 1px solid var(--colors-grey200);
+    text-align: start;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    color: var(--colors-grey900);
+}
+
+.resultBtn:hover {
+    background: var(--ghs-obj1-tint);
+}
+
+.tabBody {
+    margin-block-start: var(--spacers-dp16);
+}
+
+.tabHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--spacers-dp8);
+    flex-wrap: wrap;
+    margin-block: var(--spacers-dp12);
+}
+
+.sectionTitle {
+    margin: var(--spacers-dp16) 0 var(--spacers-dp4);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--colors-grey900);
+}
+
+.sectionTitle:first-child {
+    margin-block-start: 0;
+}
+
+.sectionBody {
+    margin: 0 0 var(--spacers-dp12);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--colors-grey700);
+    max-inline-size: 80ch;
+}
+
+.formRow {
+    display: flex;
+    gap: var(--spacers-dp16);
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.statGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacers-dp8);
+    margin-block-end: var(--spacers-dp16);
+}
+
+.stat {
+    text-align: center;
+    padding: var(--spacers-dp12) var(--spacers-dp8);
+    border-radius: 6px;
+    background: var(--colors-grey050);
+    border: 1px solid var(--colors-grey200);
+}
+
+.statValue {
+    font-size: 24px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--colors-grey900);
+    margin-block-end: 4px;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+/* Numbers line up on their last digit so a column can be scanned down. */
+.numeric {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+}
+
+/* A qualifier printed beside a name, such as a target that is set locally. */
+.hint {
+    font-size: 11px;
+    color: var(--ghs-manual-ink);
+    background: var(--ghs-manual-tint);
+    border: 1px solid var(--ghs-manual-border);
+    border-radius: 3px;
+    padding: 0 4px;
+    white-space: nowrap;
+}
+
+.overrideCell {
+    white-space: nowrap;
+}
+
+/* A row's buttons, which wrap rather than widening the table. */
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacers-dp4);
+}

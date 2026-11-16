@@ -1,0 +1,409 @@
+/*
+ * The shell: a deep-green sidebar beside a light canvas. The page column holds
+ * the main content and the footer, so the footer sits under the page and the
+ * sidebar runs the full height.
+ */
+.shell {
+    min-block-size: 100vh;
+    background: var(--ghs-canvas);
+    color: var(--colors-grey900);
+}
+
+.layout {
+    display: flex;
+    min-block-size: 100vh;
+}
+
+/* ------------------------------------------------------------- sidebar */
+
+.sidebar {
+    flex: 0 0 260px;
+    inline-size: 260px;
+    background: var(--ghs-brand-gradient);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Two soft rings echoing the brand mark, purely decorative. */
+.sidebar::before,
+.sidebar::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 36px solid rgba(255, 255, 255, 0.04);
+    pointer-events: none;
+}
+.sidebar::before {
+    inline-size: 320px;
+    block-size: 320px;
+    inset-block-end: -120px;
+    inset-inline-start: -140px;
+}
+.sidebar::after {
+    inline-size: 180px;
+    block-size: 180px;
+    inset-block-start: -70px;
+    inset-inline-end: -80px;
+    border-width: 24px;
+}
+
+.sidebarInner {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    block-size: 100vh;
+    overflow-y: auto;
+    padding: 22px 14px 16px;
+    box-sizing: border-box;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px 22px;
+}
+
+.brandMark {
+    flex: 0 0 auto;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+}
+
+.brandText {
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+}
+
+.brandTitle {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: #fff;
+}
+
+.brandSubtitle {
+    margin-block-start: 2px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.navGroups {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.navGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.navHeading {
+    padding: 0 12px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.navList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.navLink {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.86);
+    text-decoration: none;
+    transition:
+        background-color 0.18s var(--ghs-ease),
+        color 0.18s var(--ghs-ease),
+        transform 0.18s var(--ghs-ease);
+}
+
+.navIcon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    opacity: 0.9;
+}
+
+.navIcon svg {
+    inline-size: 20px;
+    block-size: 20px;
+}
+
+.navLabel {
+    min-inline-size: 0;
+}
+
+.navLink:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transform: translateX(2px);
+}
+
+.navLink:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+/*
+ * The current page is a white pill with dark-green ink (well over 7:1).
+ * `aria-current` says the same thing without colour, which is what carries it
+ * under forced colours, where the rule below gives it an outline instead.
+ */
+.navLinkActive,
+.navLinkActive:hover {
+    background: #fff;
+    color: var(--ghs-brand-ink);
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    transform: none;
+}
+
+.navLinkActive .navIcon {
+    opacity: 1;
+    color: var(--ghs-brand);
+}
+
+@media (forced-colors: active) {
+    .navLinkActive,
+    .navLinkActive:hover {
+        outline: 2px solid CanvasText;
+        outline-offset: -2px;
+    }
+}
+
+/* Who is signed in, and the way out. */
+.account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-block-start: 18px;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.avatar {
+    flex: 0 0 auto;
+    display: inline-grid;
+    place-items: center;
+    inline-size: 36px;
+    block-size: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f6a961, #e07b22);
+    color: #3b1d03;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.accountText {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+}
+
+.accountName {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.accountRole {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.signOut {
+    flex: 0 0 auto;
+    display: inline-grid;
+    place-items: center;
+    inline-size: 34px;
+    block-size: 34px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.86);
+    cursor: pointer;
+    transition: background-color 0.18s var(--ghs-ease);
+}
+
+.signOut svg {
+    inline-size: 20px;
+    block-size: 20px;
+}
+
+.signOut:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+}
+
+.signOut:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 1px;
+}
+
+.visuallyHidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- page */
+
+.mainColumn {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    display: flex;
+    flex-direction: column;
+    /* A faint wash of brand colour at the top of the canvas. */
+    background:
+        radial-gradient(1200px 320px at 30% -120px, rgba(11, 107, 53, 0.07), transparent 70%),
+        var(--ghs-canvas);
+}
+
+.main {
+    flex: 1 1 auto;
+    padding: 28px 32px;
+}
+
+.page {
+    max-inline-size: 1440px;
+    margin-inline: auto;
+    animation: ghs-rise 0.35s var(--ghs-ease) both;
+}
+
+/*
+ * Who owns the app and exactly which build is running — the first two
+ * questions asked when a figure on screen is disputed, so they are on every
+ * page.
+ */
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 14px 32px;
+    border-block-start: 1px solid var(--ghs-line);
+    font-size: 12px;
+    color: var(--colors-grey700);
+}
+
+.footerBuild {
+    font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------- narrow */
+
+/* On a phone the sidebar becomes a bar across the top. */
+@media (max-width: 860px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        flex: 0 0 auto;
+        inline-size: auto;
+    }
+
+    .sidebar::before,
+    .sidebar::after {
+        display: none;
+    }
+
+    .sidebarInner {
+        position: static;
+        block-size: auto;
+        padding: 12px 16px;
+        gap: 10px;
+    }
+
+    .brand {
+        padding: 0;
+    }
+
+    .brandMark {
+        inline-size: 32px;
+        block-size: 32px;
+    }
+
+    .navGroups {
+        flex-direction: row;
+        gap: 4px;
+        overflow-x: auto;
+        margin-inline: -16px;
+        padding: 2px 16px 4px;
+        scrollbar-width: none;
+    }
+
+    .navGroups::-webkit-scrollbar {
+        display: none;
+    }
+
+    .navHeading {
+        display: none;
+    }
+
+    .navList {
+        flex-direction: row;
+        gap: 4px;
+    }
+
+    .navLink {
+        white-space: nowrap;
+        padding: 8px 12px;
+    }
+
+    .navLink:hover {
+        transform: none;
+    }
+
+    .account {
+        position: absolute;
+        inset-block-start: 10px;
+        inset-inline-end: 12px;
+        margin: 0;
+        padding: 0;
+        background: none;
+        border: 0;
+    }
+
+    .accountText {
+        display: none;
+    }
+
+    .main {
+        padding: 20px 16px;
+    }
+
+    .footer {
+        padding: 12px 16px;
+    }
+}

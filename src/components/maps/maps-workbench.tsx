@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowUp, ChevronRight, Map as MapIcon, MapPinOff } from "lucide-react";
 import { ChartFrame, type ChartView } from "@/components/charts/chart-frame";
 import { ChoroplethMap, MapLegend } from "@/components/charts/choropleth-map";
@@ -79,6 +80,11 @@ const DEFAULT_STATE: MapsState = {
 export function MapsWorkbench() {
   const { status, loading: checking } = useConnection();
   const connected = status?.connected === true;
+  const router = useRouter();
+  const [geoEpiDataset, setGeoEpiDataset] = React.useState<string | null>(null);
+  const [sendingToGeoEpi, setSendingToGeoEpi] = React.useState(false);
+  const [geoEpiError, setGeoEpiError] = React.useState<string | null>(null);
+
   // Unit ids mean nothing on another server, so the selection is kept per server.
   const [state, setState, hydrated] = usePersistentState<MapsState>(
     `dhis2.maps.state::${status?.baseUrl ?? "unset"}`,
@@ -224,7 +230,7 @@ export function MapsWorkbench() {
   const format = (value: number) => formatMapValue(state.dataType, value);
   const nextLevel = scope && scope.level < MAX_MAP_LEVEL ? levelName(scope.level + 1) : null;
 
-  /** The map as GeoJSON: what the JSON download saves. */
+  /** The map as GeoJSON: what the JSON download saves and what GeoEpi receives. */
   function mapGeoJson(item: MapDataItem) {
     return toMapGeoJson(model.all, model.values, {
       name: item.displayName,
@@ -238,6 +244,32 @@ export function MapsWorkbench() {
       organisationUnitLevel: shownLevel,
       parentOrganisationUnit: parent?.name ?? null,
     });
+  }
+
+  async function sendToGeoEpi() {
+    if (!state.item) return;
+    setSendingToGeoEpi(true);
+    setGeoEpiError(null);
+    setGeoEpiDataset(null);
+
+    try {
+      const response = await fetch("/geoepi/api/datasets/dhis2-map", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(mapGeoJson(state.item)),
+      });
+      const result = (await response.json()) as { id?: string; detail?: string; error?: string };
+      if (!response.ok || !result.id) {
+        throw new Error(result.detail ?? result.error ?? "The map data could not be sent.");
+      }
+      setGeoEpiDataset(result.id);
+    } catch (cause) {
+      setGeoEpiError(
+        cause instanceof Error ? cause.message : "The map data could not be sent to GeoEpi.",
+      );
+    } finally {
+      setSendingToGeoEpi(false);
+    }
   }
 
   return (
@@ -450,6 +482,12 @@ export function MapsWorkbench() {
                 check that analytics tables have been generated since the data was entered.
               </Alert>
             ) : null}
+            {geoEpiError ? (
+              <Alert tone="error" title="Could not send map to GeoEpi">
+                {geoEpiError}
+              </Alert>
+            ) : null}
+
             <ChartFrame
               title={`${state.item.displayName} by ${shownLevel.toLowerCase()}${within}`}
               description={`${periodSummary} · ${aggregationNote(state.dataType, shownLevel)}`}
@@ -460,6 +498,29 @@ export function MapsWorkbench() {
                 <>
                   <MapSchemePicker value={scheme} onChange={setScheme} />
                   <BackgroundPicker value={panelBackground} onChange={setPanelBackground} />
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => void sendToGeoEpi()}
+                    disabled={sendingToGeoEpi || !model.all.some((unit) => unit.geometry)}
+                    loading={sendingToGeoEpi}
+                    title="Send the selected DHIS2 values and boundaries to GeoEpi"
+                  >
+                    Send to GeoEpi
+                  </Button>
+                  {geoEpiDataset ? (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() =>
+                        router.push(
+                          `/geoepi?notebook=dhis2_map_explorer&dataset=${encodeURIComponent(geoEpiDataset)}`,
+                        )
+                      }
+                    >
+                      Open in GeoEpi
+                    </Button>
+                  ) : null}
                   <Button
                     size="sm"
                     variant="secondary"

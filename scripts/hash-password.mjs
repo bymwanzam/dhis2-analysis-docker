@@ -8,8 +8,8 @@
  *       prints one AUTH_USERS entry: username:scrypt$…
  *       join several with commas: alice:scrypt$…,bob:scrypt$…
  *
- * Paste the output into cPanel → Setup Node.js App → Environment variables,
- * then restart the app. Run it on your own computer; the password never
+ * Paste the output into the server's .env file (DEPLOY-DOCKER.md), then
+ * restart the app with docker compose up -d. Run it on your own computer; the password never
  * leaves it and is not written anywhere.
  */
 import { randomBytes, scrypt } from "node:crypto";

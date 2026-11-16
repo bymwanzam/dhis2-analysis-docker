@@ -25,6 +25,24 @@ nothing else, and every path is checked against the allowlist in
 `src/lib/dhis2/paths.ts` before the credential is attached. Adding a write endpoint to
 that list would turn a viewer's session into a write credential — don't.
 
+**GeoEpi is reached only through its proxy.** `src/app/geoepi/[...path]/route.ts`
+forwards only what `src/lib/geoepi/paths.ts` allows, to signed-in people only (the route
+checks the session again). It does not require a DHIS2 connection, and it has no accounts
+of its own: every signed-in person shares its datasets and runs. The DHIS2 token is never
+sent to GeoEpi. GeoEpi runs notebooks, so a route added to that list is reachable by every
+signed-in person; add the test with it.
+
+**Holistic Assessment signs in only with this app's connection.**
+`src/app/holistic/[...path]/route.ts` forwards only what `src/lib/holistic/paths.ts`
+allows, and only the module's `ghsha_sid` cookie, never `dhis2_conn`. The one way in is
+`POST /holistic/auth/connect`, which reads `readConnection()` on the server and posts it to
+the module's `/auth/login`; keep `auth/login` off the allowlist. The module
+(`modules/holistic_assessment/`) gets `DHIS2_BASE_URL` from Compose, never `DHIS2_TOKEN`.
+It writes to its own Postgres, not to DHIS2; its DHIS2 pass-through stays GET-only. Its
+session holds the DHIS2 token of whoever opened it, so signing in, signing out and an
+expired site session all clear `ghsha_sid` (`src/app/api/auth/`, `src/proxy.ts`) — keep
+that, or the next person on a shared browser works as the last one.
+
 **Charts follow `docs/DESIGN.md`.** Colour is assigned by entity in a fixed, validated
 order and never cycled; there is never a second y-axis; every chart has a table view.
 Re-run the palette validator if you change a colour.
@@ -47,6 +65,16 @@ a chart that hides that is worse than no chart.
 - `src/components/query/` — the three pickers and the shared query state.
 - `src/lib/hooks.ts` — `useAsyncData` is the only place a fetch effect sets state; use it
   rather than writing another one.
+- `geoepi/` — the GeoEpi service (FastAPI + papermill + R notebooks), its own container
+  on the Compose network. Its viewer, `geoepi/app/static/index.html`, is framed by the
+  `/geoepi` page. It copies the colour roles from `src/app/globals.css` and follows the
+  shell's `data-theme`, so change both if you change a surface or ink colour.
+- `/measles` frames the same viewer with `track=measles` (`src/lib/geoepi/launch.ts`), so it
+  lists only the measles modules (`geoepi/notebooks/measles_*`, built by
+  `geoepi/tools/prepare_measles.py`); `/geoepi` lists the modules with no track.
+- The Maps page hands a map to GeoEpi (`POST /geoepi/api/datasets/dhis2-map`), then links
+  to `/geoepi?notebook=dhis2_map_explorer&dataset=…`; the page passes those two
+  parameters on to the viewer.
 
 ## Checks
 
@@ -56,13 +84,28 @@ npm run lint
 npm run build
 ```
 
-`npm test` covers the shaping functions, the pairwise quality checks and the proxy
-allowlist. It is fast and has no dependencies — keep it that way, and add to it when you
-touch `analytics.ts`, `quality.ts`, `dq-rules.ts` or `dhis2/paths.ts`.
+`npm test` covers the shaping functions, the pairwise quality checks, the sign-in rules and
+all three proxy allowlists. It is fast and has no dependencies — keep it that way, and add
+to it when you touch `analytics.ts`, `quality.ts`, `dq-rules.ts`, `dhis2/paths.ts`,
+`geoepi/paths.ts` or `holistic/paths.ts`.
+
+Holistic Assessment has its own checks:
+
+```bash
+cd modules/holistic_assessment && npm ci && npm test && npm run lint
+```
+
+GeoEpi has its own checks (they need `pip install -r geoepi/requirements.txt`):
+
+```bash
+python geoepi/tests/test_api.py
+node geoepi/tests/test_lib.js
+```
 
 ## Deploying
 
-`npm run build:cpanel` produces the bundle for cPanel shared hosting (DEPLOY-CPANEL.md).
-The app is one Node process with no database, which is what makes that possible; keep it
-so. `deploy/cpanel/app.js` is the Passenger startup file and pins `HOSTNAME` because the
-cPanel shell leaks the machine name into the process.
+`docker compose up -d --build` runs the stack (DEPLOY-DOCKER.md): the app, GeoEpi,
+Holistic Assessment and its Postgres. Only the app publishes a port. The site's account
+file is `/data/users.json` on the `app-data` volume (`AUTH_STORE`, set in the Dockerfile
+and compose file), so a rebuilt container keeps the accounts. The Dockerfile runs
+`npm test` before `npm run build`; an image is never built from failing code.

@@ -6,8 +6,9 @@
  * per account name and slowed down, which also keeps someone guessing here
  * from locking a DHIS2 account. The password is never stored or logged.
  *
- * Any DHIS2 token saved in this browser is cleared: the person signing in
- * connects with their own.
+ * Any DHIS2 token saved in this browser is cleared, and so is a Holistic
+ * Assessment session (which holds the previous person's DHIS2 token): the
+ * person signing in connects with their own.
  */
 import { NextResponse } from "next/server";
 import { authState } from "@/lib/auth/state";
@@ -18,6 +19,7 @@ import { AttemptLimiter } from "@/lib/auth/rate-limit";
 import { sameOrigin } from "@/lib/auth/server";
 import { SESSION_COOKIE, newSession, safeNext, signSession } from "@/lib/auth/session";
 import { CONNECTION_COOKIE, cookieSecure } from "@/lib/dhis2/connection";
+import { HOLISTIC_SESSION_COOKIE } from "@/lib/holistic/paths";
 
 export const dynamic = "force-dynamic";
 
@@ -112,5 +114,6 @@ export async function POST(request: Request) {
     maxAge: Math.round(config.sessionHours * 3600),
   });
   response.cookies.delete(CONNECTION_COOKIE);
+  response.cookies.delete(HOLISTIC_SESSION_COOKIE);
   return response;
 }

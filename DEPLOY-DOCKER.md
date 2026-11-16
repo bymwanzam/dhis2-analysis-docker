@@ -1,0 +1,170 @@
+# Deploying with Docker
+
+This project runs as a Docker Compose stack. DHIS2 Analysis and GeoEpi run in separate
+containers suited to their runtimes; only the Next.js app is published to the host. GeoEpi
+is available as the **GeoEpi** page of the app (`/geoepi`), and its datasets and job outputs
+persist in named volumes.
+
+## What you need
+
+- Docker Engine 24+ with Compose v2 (Docker Desktop on Windows/macOS, or Docker on a
+  Linux server/VPS)
+- Internet access during the build (npm packages and the web font are downloaded)
+- Enough build time and disk space for GeoEpi's R spatial packages and notebooks
+
+## Quick start
+
+From this folder:
+
+```bash
+docker compose up -d --build
+```
+
+The site is behind sign-in, so set that up first (next section). Then open
+http://localhost:3000, sign in, go to **Connection** and enter your own DHIS2 personal
+access token.
+
+The DHIS2 Analysis image runs the test suite before it is built. GeoEpi's first image
+build installs R spatial packages and can take 10–20 minutes.
+
+Stop it with `docker compose down`. GeoEpi datasets and run history are kept in named
+volumes. The GeoEpi service is not published as a separate host port; open the **GeoEpi**
+page after connecting to DHIS2.
+
+## Sign-in (required)
+
+The whole site — including GeoEpi and Holistic Assessment — is behind a sign-in page.
+Until it is set up, the site stays locked and the sign-in page says what is missing.
+
+Copy `.env.example` to `.env` beside `docker-compose.yml`. Make a secret:
+
+```bash
+node scripts/hash-password.mjs --secret
+# no Node on the host? after the first build:
+docker compose run --rm dhis2-analysis node scripts/hash-password.mjs --secret
+```
+
+| Variable | What to put |
+|---|---|
+| `AUTH_SECRET` | **Required.** The secret printed above. Changing it signs everyone out. |
+| `AUTH_DHIS2_URL` | Your DHIS2 server. People sign in with their own DHIS2 username and password. Defaults to `DHIS2_BASE_URL`. |
+| `AUTH_USERS` | Optional site accounts that are not DHIS2 accounts: `node scripts/hash-password.mjs admin "a long password"`. In `.env`, wrap the value in single quotes — it contains `$` signs. |
+| `AUTH_ALLOWED_USERS` | Optional: only these DHIS2 usernames may sign in, comma-separated. |
+| `AUTH_ADMINS` | Optional: DHIS2 usernames that may manage site accounts. |
+| `AUTH_SESSION_HOURS` | Optional, default `12`. |
+
+Set at least one of `AUTH_DHIS2_URL` (or `DHIS2_BASE_URL`) or `AUTH_USERS`.
+
+`AUTH_USERS` only seeds the first administrator; after that, accounts are managed in the
+site (account menu → **Manage users**). They are kept in `/data/users.json` on the
+`app-data` volume, so rebuilding the containers keeps them. The file holds scrypt hashes
+only. If every administrator is locked out,
+`docker compose exec dhis2-analysis rm /data/users.json` brings the `AUTH_USERS`
+administrator back.
+
+**Every person uses their own DHIS2 token.** Do not set `DHIS2_TOKEN` for a site several
+people sign in to: it would give every one of them the same DHIS2 account. Signing out
+forgets the person's token and their Holistic Assessment session.
+
+GeoEpi has no accounts of its own: every signed-in person sees the same GeoEpi datasets
+and runs.
+
+## Other settings
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `HOST_PORT` | `3000` | Port on the host machine. Change it if 3000 is taken. |
+| `DHIS2_BASE_URL` | – | The DHIS2 server for sign-in and Holistic Assessment. |
+| `DHIS2_TOKEN` | – | Pins one account for everyone. Single-user installs only. |
+| `DHIS2_TOKEN_TYPE` | `ApiToken` | Or `Bearer`. |
+| `COOKIE_SECURE` | secure | `false` only for plain-http access on a trusted internal network — see below. |
+| `HOLISTIC_DB_PASSWORD` | `holistic` | Holistic Assessment's Postgres password, letters and digits. Set it before the first start. |
+
+Apply changes with `docker compose up -d` (add `--build` after a code change). Never
+commit `.env` or put a real token in any file you share.
+
+## HTTPS
+
+The login cookie is marked *Secure*, so browsers only send it over HTTPS — with one
+exception: `http://localhost` counts as secure, which is why the quick start works on
+your own machine.
+
+**For anyone else to use it, put HTTPS in front.** The simplest is Caddy, which obtains
+and renews a certificate automatically. Add to `docker-compose.yml`:
+
+```yaml
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    command: caddy reverse-proxy --from maps.example.org --to dhis2-analysis:3000
+    volumes:
+      - caddy-data:/data
+    restart: unless-stopped
+
+volumes:
+  caddy-data:
+```
+
+Point the domain's DNS at the server, and remove the `ports:` block from the
+`dhis2-analysis` service so the app is only reachable through Caddy. Nginx, Traefik or an
+existing reverse proxy work equally well: forward to port 3000 and keep HTTPS in front.
+
+### Internal network without HTTPS
+
+If the app runs on an office or directorate network and people open it as
+`http://192.168.x.x:3000`, browsers drop the Secure cookie and every connection is lost
+on the next click. For that case only, set in `.env`:
+
+```
+COOKIE_SECURE=false
+```
+
+The token still never reaches the browser and the cookie is still `HttpOnly`, but it
+travels unencrypted on that network. Use it only on a network you trust, and prefer HTTPS.
+
+## Updating
+
+Replace the source with the new version, then:
+
+```bash
+docker compose up -d --build
+```
+
+## Moving the image to a server without building there
+
+On the machine that built it, save both service images:
+
+```bash
+docker save dhis2-analysis:latest dhis2-analysis-geoepi:latest dhis2-analysis-holistic:latest -o dhis2-analysis-images.tar
+```
+
+Copy the `.tar`, the project files (including `geoepi/` and `modules/`), `docker-compose.yml` and your
+`.env` to the server, then:
+
+```bash
+docker load -i dhis2-analysis-images.tar
+docker compose up -d          # no --build: uses the loaded image
+```
+
+## Checking on it
+
+```bash
+docker compose ps             # STATUS shows (healthy) once it is up
+docker compose logs -f        # server output
+```
+
+| Symptom | Likely cause |
+|---|---|
+| `ports are not available … 3000` | Something else uses port 3000. Set `HOST_PORT=3001` (or another) in `.env`. |
+| Build fails at `npm test` | A test failed; the output above it names the test. No image is built from failing code. |
+| Build fails fetching packages or fonts | No internet during the build, or a proxy blocking npm / Google Fonts. |
+| Sign-in page says "Sign-in is not set up yet" | `AUTH_SECRET` missing or shorter than 32 characters, or no `AUTH_DHIS2_URL`/`DHIS2_BASE_URL`/`AUTH_USERS`. Fix `.env`, then `docker compose up -d`. |
+| An `AUTH_USERS` account is refused | The `$` signs in the hash were read as variables: wrap the value in single quotes in `.env`. |
+| Connect succeeds, then "not connected" | Opened over plain `http://` from another machine. Use HTTPS, or `COOKIE_SECURE=false` on a trusted network. |
+| Cannot reach DHIS2 from the container | The server's firewall or DNS. Test with `docker exec dhis2-analysis wget -qO- https://your-dhis2/api/system/ping`. |
+
+---
+
+Built by **Bigvalues IT Systems** · WhatsApp [024 682 8504](https://wa.me/233246828504)
